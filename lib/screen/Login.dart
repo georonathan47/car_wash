@@ -1,5 +1,6 @@
 import 'package:carwash/constants.dart';
 import 'package:carwash/screen/Layout.dart';
+import 'package:carwash/screen/Register.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -67,11 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 20),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                minimumSize: Size(
-                                    (MediaQuery.of(context).size.width / 2.3),
-                                    70),
+                                minimumSize: Size((MediaQuery.of(context).size.width / 2.3), 50),
                                 primary: Const.primaryColor2,
-                                onPrimary: Colors.black,
+                                onPrimary: Colors.white,
                                 textStyle: TextStyle(
                                     color: Colors.black, fontSize: 22),
                                 shape: RoundedRectangleBorder(
@@ -93,9 +92,10 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         onPressed: () {
                           // Navigate to registration page
-                          // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+                          // For example:
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
                         },
-                        child: Text("Don't have an account? Register here"),
+                        child: Text("Don't have an account? Register here",style: TextStyle(color: Const.primaryColor2),),
                       ),
                     ],
                   ),

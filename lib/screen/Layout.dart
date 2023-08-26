@@ -1,6 +1,7 @@
 import 'package:carwash/constants.dart';
 import 'package:carwash/screen/Active.dart';
 import 'package:carwash/screen/Activites.dart';
+import 'package:carwash/screen/ChangePassword.dart';
 import 'package:carwash/screen/Home.dart';
 import 'package:carwash/screen/Profile.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,12 @@ class _CWLayoutState extends State<CWLayout> {
         color: Colors.black,
         child: BottomNavigationBar(
           backgroundColor: Colors.black, // Set the background color
-          unselectedItemColor: Colors.black, // Set the unselected item color
-          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.white54, // Set the unselected item color
+          selectedItemColor: Colors.white,
           currentIndex: _selectedIndex,
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
@@ -104,6 +108,7 @@ class SideBarMenu extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
               // Handle profile menu action
             },
           ),
@@ -111,6 +116,7 @@ class SideBarMenu extends StatelessWidget {
             leading: Icon(Icons.padding),
             title: Text('Packages'),
             onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
               // Handle packages menu action
             },
           ),
@@ -118,20 +124,32 @@ class SideBarMenu extends StatelessWidget {
             leading: Icon(Icons.assignment),
             title: Text('Active Orders'),
             onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
               // Handle active orders menu action
             },
           ),
           ListTile(
             leading: Icon(Icons.history),
-            title: Text('Order History'),
+            title: Text('Acivities'),
             onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
               // Handle order history menu action
             },
           ),
           ListTile(
+            leading: Icon(Icons.lock),
+            title: Text('Change Password'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordPage()));
+              // Handle order history menu action
+            },
+          ),
+
+          ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
             onTap: () {
+              Navigator.pop(context);
               // Handle logout menu action
             },
           ),

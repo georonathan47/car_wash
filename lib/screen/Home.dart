@@ -19,13 +19,7 @@ class HomeScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      SubscribeProduct(subscriptionProducts[index]),
-                ),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SubscribeProduct(subscriptionProducts[index])));
             },
             child: SubscriptionCard(subscriptionProducts[index]),
           );
