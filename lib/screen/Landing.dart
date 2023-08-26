@@ -1,4 +1,5 @@
 import 'package:carwash/constants.dart';
+import 'package:carwash/screen/Login.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -78,7 +79,7 @@ class _LandingPageState extends State<LandingPage> {
                                   BorderRadius.circular(50))),
                               child: Text('Sign In'),
                               onPressed: () {
-                                //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SplashScreen()));
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
                               },
                             ),
                           ],

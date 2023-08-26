@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/devops/Documents/GitHub/Carwash/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/Users/devops/Documents/GitHub/car_wash/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/devops/Documents/GitHub/Carwash/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/devops/Documents/GitHub/car_wash/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

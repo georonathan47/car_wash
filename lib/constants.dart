@@ -7,4 +7,14 @@ class Const{
   static wi(context){
     return MediaQuery.of(context).size.width;
   }
+  static hi(context){
+    return MediaQuery.of(context).size.height;
+  }
+  static appbar(String title){
+    return AppBar(
+      backgroundColor: Const.primaryColor1,
+      title: Text(title),
+    );
+  }
+
 }

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/devops/Documents/GitHub/Carwash/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "outputFile": "/Users/devops/Documents/GitHub/car_wash/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
             "map": [
                 {
                     "source": "/Users/devops/.gradle/caches/transforms-3/49bc944d29f70d45aa5add8e43e3247e/transformed/jetified-window-1.0.0-beta04/res/values/values.xml",
@@ -42,7 +42,7 @@
                     }
                 },
                 {
-                    "source": "/Users/devops/Documents/GitHub/Carwash/android/app/src/main/res/values/styles.xml",
+                    "source": "/Users/devops/Documents/GitHub/car_wash/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
