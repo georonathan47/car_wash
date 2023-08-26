@@ -1,6 +1,8 @@
 import 'package:carwash/constants.dart';
 import 'package:carwash/screen/Active.dart';
+import 'package:carwash/screen/Activites.dart';
 import 'package:carwash/screen/Home.dart';
+import 'package:carwash/screen/Profile.dart';
 import 'package:flutter/material.dart';
 
 class CWLayout extends StatefulWidget {
@@ -14,8 +16,8 @@ class _CWLayoutState extends State<CWLayout> {
   final List<Widget> _pages = [
     HomeScreen(),
     ActiveOrderScreen(),
-    OrderHistoryScreen(),
-    ProfileSettingsScreen(),
+    ActivityPage(),
+    ProfilePage(),
   ];
 
   @override
@@ -139,22 +141,3 @@ class SideBarMenu extends StatelessWidget {
   }
 }
 
-
-
-class OrderHistoryScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Order History'),
-    );
-  }
-}
-
-class ProfileSettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Profile Settings'),
-    );
-  }
-}
