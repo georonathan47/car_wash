@@ -3,6 +3,11 @@ import 'package:carwash/screen/Layout.dart';
 import 'package:carwash/screen/Login.dart';
 import 'package:flutter/material.dart';
 
+
+
+
+enum UserRole { Manager, Technician }
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -11,6 +16,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  UserRole selectedRole = UserRole.Technician;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +95,45 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(height: 20),
+
+
+
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Select Role :',style: TextStyle(fontWeight: FontWeight.bold),),
+
+                        RadioListTile<UserRole>(
+                          title: Text('Manager'),
+                          value: UserRole.Manager,
+                          groupValue: selectedRole,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedRole = value!;
+                            });
+                          },
+                        ),
+                        RadioListTile<UserRole>(
+                          title: Text('Technician'),
+                          value: UserRole.Technician,
+                          groupValue: selectedRole,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedRole = value!;
+                            });
+                          },
+                        ),
+                        Divider(),
+
+                      ],
+                    ),
+                  ),
+
+
+
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),

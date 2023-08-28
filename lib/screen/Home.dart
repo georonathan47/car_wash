@@ -1,40 +1,20 @@
 import 'package:carwash/constants.dart';
-import 'package:carwash/model/Product.dart';
-import 'package:carwash/screen/SubscribeProduct.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class HomeScreen extends StatelessWidget {
-  final List<Product> subscriptionProducts = [
-    Product('Simple Wash', 'Basic car wash', 20),
-    Product('Car Wash and Polish', 'Wash and polish package', 40),
-    Product('Deluxe Car Care', 'Complete car care package', 60),
-  ];
+class Subscription {
+  final String customerName;
+  final String location;
+  final String carDetails;
+  final List<DateTime> carWashTimes;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      child: ListView.builder(
-        itemCount: subscriptionProducts.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SubscribeProduct(subscriptionProducts[index])));
-            },
-            child: SubscriptionCard(subscriptionProducts[index]),
-          );
-        },
-      ),
-    );
-  }
+  Subscription(this.customerName, this.location, this.carDetails, this.carWashTimes);
 }
 
-
-
 class SubscriptionCard extends StatelessWidget {
-  final Product product;
+  final Subscription subscription;
 
-  SubscriptionCard(this.product);
+  SubscriptionCard(this.subscription);
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +24,12 @@ class SubscriptionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(Const.logo),
-                  fit: BoxFit.cover,
-                ),
+          Container(
+            height: 150,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Const.logo),
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -61,23 +39,73 @@ class SubscriptionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.title,
+                  'Subscription Details',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 4),
-                Text(
-                  product.description,
-                  style: TextStyle(color: Colors.grey),
-                ),
+                Divider(),
+                Text('Customer: ${subscription.customerName}'),
+                Text('Location: ${subscription.location}'),
+                Text('Car Details: ${subscription.carDetails}'),
                 SizedBox(height: 8),
                 Text(
-                  '\$${product.price.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'Car Wash Times:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: subscription.carWashTimes.map((dateTime) {
+                    return Text(
+                      DateFormat('MMM d, h:mm a').format(dateTime),
+                      style: TextStyle(color: Colors.grey),
+                    );
+                  }).toList(),
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SubscriptionListScreen extends StatelessWidget {
+  final List<Subscription> subscriptionList = [
+    Subscription(
+      'John Doe',
+      '123 Main St',
+      'Car Model: ABC123, Plate: XYZ456',
+      [
+        DateTime.now().add(Duration(days: 1, hours: 9)),
+        DateTime.now().add(Duration(days: 8, hours: 9)),
+        DateTime.now().add(Duration(days: 15, hours: 9)),
+        DateTime.now().add(Duration(days: 22, hours: 9)),
+      ],
+    ),
+    Subscription(
+      'John Doe',
+      '123 Main St',
+      'Car Model: ABC123, Plate: XYZ456',
+      [
+        DateTime.now().add(Duration(days: 1, hours: 9)),
+        DateTime.now().add(Duration(days: 8, hours: 9)),
+        DateTime.now().add(Duration(days: 15, hours: 9)),
+        DateTime.now().add(Duration(days: 22, hours: 9)),
+      ],
+    ),
+
+    // Add more subscriptions here
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: ListView.builder(
+        itemCount: subscriptionList.length,
+        itemBuilder: (context, index) {
+          return SubscriptionCard(subscriptionList[index]);
+        },
       ),
     );
   }

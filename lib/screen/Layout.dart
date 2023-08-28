@@ -15,7 +15,7 @@ class _CWLayoutState extends State<CWLayout> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(),
+    SubscriptionListScreen(),
     ActiveOrderScreen(),
     ActivityPage(),
     ProfilePage(),
@@ -120,6 +120,15 @@ class SideBarMenu extends StatelessWidget {
               // Handle packages menu action
             },
           ),
+          ListTile(
+            leading: Icon(Icons.supervised_user_circle_rounded),
+            title: Text('Customers'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
+              // Handle packages menu action
+            },
+          ),
+
           ListTile(
             leading: Icon(Icons.assignment),
             title: Text('Active Orders'),

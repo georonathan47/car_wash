@@ -1,7 +1,14 @@
 class Product {
   final String title;
-  final String description;
   final double price;
 
-  Product(this.title, this.description, this.price);
+  Product(this.title, this.price);
+
+}
+productList(){
+  return [
+    Product('Basic', 144),
+    Product('Premium', 199),
+    Product('One Time', 49),
+  ];
 }
