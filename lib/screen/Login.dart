@@ -68,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 20),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                minimumSize: Size((MediaQuery.of(context).size.width / 2.3), 50),
-                                primary: Const.primaryColor2,
+                                minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),
+                                primary: Const.primaryColor,
                                 onPrimary: Colors.white,
                                 textStyle: TextStyle(
                                     color: Colors.black, fontSize: 22),
@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                           // For example:
                           Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
                         },
-                        child: Text("Don't have an account? Register here",style: TextStyle(color: Const.primaryColor2),),
+                        child: Text("Don't have an account? Register here",style: TextStyle(color: Const.primaryColor),),
                       ),
                     ],
                   ),

@@ -25,7 +25,7 @@ class _CWLayoutState extends State<CWLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Const.primaryColor1,
+        backgroundColor: Const.primaryColor,
         title: Text('Car Wash App'),
       ),
       body: _pages[_selectedIndex],
@@ -78,7 +78,7 @@ class SideBarMenu extends StatelessWidget {
         children: <Widget>[
           Container(
             height: Const.hi(context)/3,
-            color: Const.primaryColor1,
+            color: Const.primaryColor,
             padding: EdgeInsets.only(left: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,

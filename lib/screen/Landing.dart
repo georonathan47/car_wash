@@ -1,5 +1,6 @@
 import 'package:carwash/constants.dart';
 import 'package:carwash/screen/Login.dart';
+import 'package:carwash/screen/Register.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -37,14 +38,6 @@ class _LandingPageState extends State<LandingPage> {
                                   width: Const.wi(context)/2,
                                   height: Const.wi(context)/2,
                                 ),
-                                Text(
-                                  'Car Wash App',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    color: Colors.black87,
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -58,7 +51,7 @@ class _LandingPageState extends State<LandingPage> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   minimumSize: Size((MediaQuery.of(context).size.width / 2.3), 70),
-                                  primary:Const.primaryColor1,
+                                  primary:Const.primaryColor,
                                   onPrimary: Colors.white,
                                   textStyle: TextStyle(color: Colors.black, fontSize: 22),
                                   shape: RoundedRectangleBorder(
@@ -66,17 +59,19 @@ class _LandingPageState extends State<LandingPage> {
                                       BorderRadius.circular(50))),
                               child: Text('Sign Up'),
                               onPressed: () {
-                                //Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterAs()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
                               },
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   minimumSize: Size((Const.wi(context) / 2.3), 70),
-                                  primary: Const.primaryColor2,
+                                  primary: Colors.white,
                                   onPrimary: Colors.black,
                                   textStyle: TextStyle(color: Colors.black, fontSize: 22),
-                                  shape: RoundedRectangleBorder(borderRadius:
-                                  BorderRadius.circular(50))),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                  ),
+                              ),
                               child: Text('Sign In'),
                               onPressed: () {
                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));

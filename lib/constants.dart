@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class Const{
   static var logo = 'assets/logo.png';
-  static Color primaryColor1 = const Color(0XFF27046B);
-  static Color primaryColor2 = const Color(0XFFfa9416);
+  static Color primaryColor = const Color(0XFF000000);
   static wi(context){
     return MediaQuery.of(context).size.width;
   }
@@ -12,7 +11,7 @@ class Const{
   }
   static appbar(String title){
     return AppBar(
-      backgroundColor: Const.primaryColor1,
+      backgroundColor: Const.primaryColor,
       title: Text(title),
     );
   }

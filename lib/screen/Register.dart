@@ -89,8 +89,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size((MediaQuery.of(context).size.width / 2.3), 50),
-                      primary: Const.primaryColor2,
+                      minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),
+                      primary: Const.primaryColor,
                       onPrimary: Colors.white,
                       textStyle: TextStyle(
                           color: Colors.black, fontSize: 22),
@@ -116,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 // For example:
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
               },
-              child: Text("Already have an account. Login here",style: TextStyle(color: Const.primaryColor2),),
+              child: Text("Already have an account. Login here",style: TextStyle(color: Const.primaryColor),),
             ),
           ],
         ),

@@ -48,7 +48,7 @@ class ChangePasswordPage extends StatelessWidget {
                   // Implement change password logic
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Const.primaryColor2, // Set background color to black
+                  primary: Const.primaryColor, // Set background color to black
                 ),
                 child: Text(
                   'Change Password',

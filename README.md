@@ -1,16 +1,13 @@
-# carwash
+1. Manager will be able to  
 
-A car wash mobile app
+    customer list with name and location and car details
+    subscription list
+    option to create a file for customer four times.
+    invoice list with statuses 
 
-## Getting Started
+2. Technician will able to
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    view his schedule to perform upcoming subscription
+    see location of customer
+    mark car wash as complete
+    can upload photos of car wash or receipt

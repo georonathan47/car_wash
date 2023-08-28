@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () {
               // Implement logic to change profile image
             },
-            child: Text('Change Profile Picture',style: TextStyle(color: Const.primaryColor2),),
+            child: Text('Change Profile Picture',style: TextStyle(color: Const.primaryColor),),
           ),
           SizedBox(height: 20),
           Padding(
@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Const.primaryColor2, // Set the background color to black
+                        primary: Const.primaryColor, // Set the background color to black
                       ),
                       onPressed: () {
                         // Implement save profile logic
