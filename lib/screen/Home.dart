@@ -1,112 +1,128 @@
-import 'package:carwash/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timeline_list/timeline.dart';
+import 'package:timeline_list/timeline_model.dart';
 
-class Subscription {
-  final String customerName;
-  final String location;
-  final String carDetails;
-  final List<DateTime> carWashTimes;
+class HomeScreen extends StatelessWidget {
+  final List<CarSubscription> activeOrders = [
+    CarSubscription('Car 1', DateTime(2023, 8, 6)),
+    CarSubscription('Car 2', DateTime(2023, 8, 10)),
+    // ... Add more active orders here
+  ];
 
-  Subscription(this.customerName, this.location, this.carDetails, this.carWashTimes);
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: activeOrders.length,
+      itemBuilder: (context, index) {
+        return OrderTimelineCard(activeOrders[index]);
+      },
+    );
+  }
 }
 
-class SubscriptionCard extends StatelessWidget {
-  final Subscription subscription;
+class CarSubscription {
+  final String carName;
+  final DateTime subscriptionDate;
 
-  SubscriptionCard(this.subscription);
+  CarSubscription(this.carName, this.subscriptionDate);
+}
+
+class OrderTimelineCard extends StatelessWidget {
+  final CarSubscription carSubscription;
+
+  OrderTimelineCard(this.carSubscription);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
       margin: EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 150,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(Const.logo),
-                fit: BoxFit.cover,
-              ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${carSubscription.carName}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Text(
+              'Model : 2015  Make : Corolla Plate No. E45E',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            SizedBox(height: 8),
+            Text(
+              'Subscription Date: ${DateFormat.yMMMMd().format(carSubscription.subscriptionDate)}',
+              style: TextStyle(color: Colors.grey),
+            ),
+            SizedBox(height: 20),
+            TimelineWidget(carSubscription.subscriptionDate),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  'Subscription Details',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Divider(),
-                Text('Customer: ${subscription.customerName}'),
-                Text('Location: ${subscription.location}'),
-                Text('Car Details: ${subscription.carDetails}'),
-                SizedBox(height: 8),
-                Text(
-                  'Car Wash Times:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: subscription.carWashTimes.map((dateTime) {
-                    return Text(
-                      DateFormat('MMM d, h:mm a').format(dateTime),
-                      style: TextStyle(color: Colors.grey),
-                    );
-                  }).toList(),
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement cancel subscription logic here
+                  },
+                  style: ElevatedButton.styleFrom(primary: Colors.red),
+                  child: Text('Cancel Subscription'),
                 ),
               ],
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
-class SubscriptionListScreen extends StatelessWidget {
-  final List<Subscription> subscriptionList = [
-    Subscription(
-      'John Doe',
-      '123 Main St',
-      'Car Model: ABC123, Plate: XYZ456',
-      [
-        DateTime.now().add(Duration(days: 1, hours: 9)),
-        DateTime.now().add(Duration(days: 8, hours: 9)),
-        DateTime.now().add(Duration(days: 15, hours: 9)),
-        DateTime.now().add(Duration(days: 22, hours: 9)),
-      ],
-    ),
-    Subscription(
-      'John Doe',
-      '123 Main St',
-      'Car Model: ABC123, Plate: XYZ456',
-      [
-        DateTime.now().add(Duration(days: 1, hours: 9)),
-        DateTime.now().add(Duration(days: 8, hours: 9)),
-        DateTime.now().add(Duration(days: 15, hours: 9)),
-        DateTime.now().add(Duration(days: 22, hours: 9)),
-      ],
-    ),
+class TimelineWidget extends StatelessWidget {
+  final DateTime subscriptionDate;
 
-    // Add more subscriptions here
-  ];
+  TimelineWidget(this.subscriptionDate);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final sundaysInMonth = [];
 
-      body: ListView.builder(
-        itemCount: subscriptionList.length,
-        itemBuilder: (context, index) {
-          return SubscriptionCard(subscriptionList[index]);
-        },
+    DateTime currentDate = subscriptionDate;
+    while (currentDate.month == subscriptionDate.month) {
+      if (currentDate.weekday == DateTime.sunday) {
+        sundaysInMonth.add(currentDate);
+      }
+      currentDate = currentDate.add(Duration(days: 1));
+    }
+
+    return Container(
+      height: MediaQuery.of(context).size.height/2,
+      child: Timeline(
+        lineColor:Colors.black,
+        children:[
+          for(int i = 0; i < sundaysInMonth.length; i++)...[
+            TimelineModel(
+              Container(
+                height: 100,
+                child: Row(
+                  children: [
+                    Text(DateFormat('MMM dd').format(sundaysInMonth[i])),
+                    Spacer(),
+                    Icon(Icons.check_circle_outline,color: i+1 == sundaysInMonth.length?Colors.green:Colors.black,),
+                    SizedBox(width: 16),
+                    Icon(Icons.payment_outlined),
+                  ],
+                ),
+              ),
+              icon: Icon(Icons.receipt, color: Colors.white,size: 10,),
+              iconBackground: i+1 == sundaysInMonth.length?Colors.green:Colors.black,
+            )
+          ],
+        ],
+
+        position: TimelinePosition.Left,
+        iconSize: 40,
       ),
     );
+
   }
 }

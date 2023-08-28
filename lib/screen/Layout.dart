@@ -1,7 +1,7 @@
 import 'package:carwash/constants.dart';
-import 'package:carwash/screen/Active.dart';
 import 'package:carwash/screen/Activites.dart';
 import 'package:carwash/screen/ChangePassword.dart';
+import 'package:carwash/screen/Customers.dart';
 import 'package:carwash/screen/Home.dart';
 import 'package:carwash/screen/Profile.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +15,7 @@ class _CWLayoutState extends State<CWLayout> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    SubscriptionListScreen(),
-    ActiveOrderScreen(),
+    HomeScreen(),
     ActivityPage(),
     ProfilePage(),
   ];
@@ -49,10 +48,6 @@ class _CWLayoutState extends State<CWLayout> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.assignment),
-              label: 'Active Order',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history),
@@ -124,7 +119,7 @@ class SideBarMenu extends StatelessWidget {
             leading: Icon(Icons.supervised_user_circle_rounded),
             title: Text('Customers'),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerListPage()));
               // Handle packages menu action
             },
           ),
