@@ -27,16 +27,14 @@ class _RegisterPageState extends State<RegisterPage> {
         height: Const.hi(context),
         child: ListView(
           children: <Widget>[
-            Expanded(
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Image.asset(
-                    Const.logo,
-                    width: Const.wi(context) / 2,
-                    height: Const.wi(context) / 2,
-                  ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Image.asset(
+                  Const.logo,
+                  width: Const.wi(context) / 2,
+                  height: Const.wi(context) / 2,
                 ),
               ),
             ),
