@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<Customer> customers = [
-    Customer(id: 1, name: "John Doe", location: "New York",phone: '021839034850',profile: ''),
-    Customer(id: 2, name: "Alice Smith", location: "Los Angeles",phone: '021839034850',profile: ''),
-    Customer(id: 3, name: "Bob Johnson", location: "Chicago",phone: '021839034850',profile: ''),
+    Customer(id: '1', name: "John Doe", location: "New York",phone: '021839034850',profile: ''),
+    Customer(id: '2', name: "Alice Smith", location: "Los Angeles",phone: '021839034850',profile: ''),
+    Customer(id: '3', name: "Bob Johnson", location: "Chicago",phone: '021839034850',profile: ''),
   ];
 
   @override
