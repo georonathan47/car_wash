@@ -3,16 +3,30 @@ import 'package:carwash/screen/Activites.dart';
 import 'package:carwash/screen/ChangePassword.dart';
 import 'package:carwash/screen/Customers.dart';
 import 'package:carwash/screen/Home.dart';
+import 'package:carwash/screen/Login.dart';
 import 'package:carwash/screen/Profile.dart';
+import 'package:carwash/screen/Subscription.dart';
 import 'package:flutter/material.dart';
 
 class CWLayout extends StatefulWidget {
+  final int selectedIndex;
+
+  // Named constructor that takes a default parameter
+  CWLayout({this.selectedIndex = 0});
+
+
   @override
   _CWLayoutState createState() => _CWLayoutState();
 }
 
 class _CWLayoutState extends State<CWLayout> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    _selectedIndex = widget.selectedIndex;
+
+    super.initState();
+  }
 
   final List<Widget> _pages = [
     HomeScreen(),
@@ -103,35 +117,37 @@ class SideBarMenu extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout(selectedIndex: 2,)));
               // Handle profile menu action
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.padding),
-            title: Text('Packages'),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
-              // Handle packages menu action
             },
           ),
           ListTile(
             leading: Icon(Icons.supervised_user_circle_rounded),
             title: Text('Customers'),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerListPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerPage()));
               // Handle packages menu action
             },
           ),
 
           ListTile(
-            leading: Icon(Icons.assignment),
-            title: Text('Active Orders'),
+            leading: Icon(Icons.padding),
+            title: Text('Packages'),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
-              // Handle active orders menu action
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+              // Handle packages menu action
             },
           ),
+          ListTile(
+            leading: Icon(Icons.payment),
+            title: Text('Invoice'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+              // Handle packages menu action
+            },
+          ),
+
+
           ListTile(
             leading: Icon(Icons.history),
             title: Text('Acivities'),
@@ -153,7 +169,8 @@ class SideBarMenu extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text('Logout'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+
               // Handle logout menu action
             },
           ),

@@ -1,75 +1,104 @@
+import 'package:carwash/constants.dart';
+import 'package:carwash/model/Customer.dart';
+import 'package:carwash/screen/CustomerDetails.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:timeline_list/timeline.dart';
-import 'package:timeline_list/timeline_model.dart';
 
 class HomeScreen extends StatelessWidget {
-  final List<CarSubscription> activeOrders = [
-    CarSubscription('Car 1', DateTime(2023, 8, 6)),
-    CarSubscription('Car 2', DateTime(2023, 8, 10)),
-    // ... Add more active orders here
+  final List<Customer> customers = [
+    Customer(id: 1, name: "John Doe", location: "New York",phone: '021839034850',profile: ''),
+    Customer(id: 2, name: "Alice Smith", location: "Los Angeles",phone: '021839034850',profile: ''),
+    Customer(id: 3, name: "Bob Johnson", location: "Chicago",phone: '021839034850',profile: ''),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: activeOrders.length,
-      itemBuilder: (context, index) {
-        return OrderTimelineCard(activeOrders[index]);
-      },
+    return Scaffold(
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Two cards per row
+        ),
+        itemCount: customers.length,
+        itemBuilder: (context, index) {
+          return CustomerCard(
+            customer: customers[index],
+          );
+        },
+      ),
     );
   }
 }
 
-class CarSubscription {
-  final String carName;
-  final DateTime subscriptionDate;
+class CustomerCard extends StatelessWidget {
+  final Customer customer;
 
-  CarSubscription(this.carName, this.subscriptionDate);
-}
-
-class OrderTimelineCard extends StatelessWidget {
-  final CarSubscription carSubscription;
-
-  OrderTimelineCard(this.carSubscription);
+  CustomerCard({required this.customer});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(16),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return InkWell(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerDetail(customer: customer,)));
+
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: new Border.all(
+              color: Colors.grey
+            )
+        ),
+        margin: EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '${carSubscription.carName}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Customer: ${customer.name}',
+                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(Icons.pin_drop_outlined,size: 14,),
+                      Text(
+                        ' ${customer.location}',
+                        style: TextStyle(fontSize: 14.0),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-            Text(
-              'Model : 2015  Make : Corolla Plate No. E45E',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Divider(),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Make: Corolla Model 2018 Plate # DUI89H',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
             ),
 
-            SizedBox(height: 8),
-            Text(
-              'Subscription Date: ${DateFormat.yMMMMd().format(carSubscription.subscriptionDate)}',
-              style: TextStyle(color: Colors.grey),
-            ),
-            SizedBox(height: 20),
-            TimelineWidget(carSubscription.subscriptionDate),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Implement cancel subscription logic here
-                  },
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                  child: Text('Cancel Subscription'),
+            Spacer(),
+            Container(
+              color: Colors.black, // Black strip background
+              width: double.infinity, // Take full width
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  'Date of Wash : 03-04-23',
+                  style: TextStyle(fontSize: 14.0, color: Colors.white),
                 ),
-              ],
-            )
+              ),
+            ),
           ],
         ),
       ),
@@ -77,52 +106,8 @@ class OrderTimelineCard extends StatelessWidget {
   }
 }
 
-class TimelineWidget extends StatelessWidget {
-  final DateTime subscriptionDate;
 
-  TimelineWidget(this.subscriptionDate);
 
-  @override
-  Widget build(BuildContext context) {
-    final sundaysInMonth = [];
 
-    DateTime currentDate = subscriptionDate;
-    while (currentDate.month == subscriptionDate.month) {
-      if (currentDate.weekday == DateTime.sunday) {
-        sundaysInMonth.add(currentDate);
-      }
-      currentDate = currentDate.add(Duration(days: 1));
-    }
 
-    return Container(
-      height: MediaQuery.of(context).size.height/2,
-      child: Timeline(
-        lineColor:Colors.black,
-        children:[
-          for(int i = 0; i < sundaysInMonth.length; i++)...[
-            TimelineModel(
-              Container(
-                height: 100,
-                child: Row(
-                  children: [
-                    Text(DateFormat('MMM dd').format(sundaysInMonth[i])),
-                    Spacer(),
-                    Icon(Icons.check_circle_outline,color: i+1 == sundaysInMonth.length?Colors.green:Colors.black,),
-                    SizedBox(width: 16),
-                    Icon(Icons.payment_outlined),
-                  ],
-                ),
-              ),
-              icon: Icon(Icons.receipt, color: Colors.white,size: 10,),
-              iconBackground: i+1 == sundaysInMonth.length?Colors.green:Colors.black,
-            )
-          ],
-        ],
 
-        position: TimelinePosition.Left,
-        iconSize: 40,
-      ),
-    );
-
-  }
-}
