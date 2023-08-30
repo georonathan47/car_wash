@@ -1,7 +1,9 @@
 import 'package:carwash/constants.dart';
 import 'package:carwash/screen/Layout.dart';
 import 'package:carwash/screen/Register.dart';
+import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,8 +13,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final String? token = await ShPref.getAuthToken();
+      if (token!='') {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CWLayout()));
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
+
+
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -44,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: TextField(
+                                controller: _emailController,
                                 decoration: InputDecoration(
                                   labelText: 'Email',
                                   border: OutlineInputBorder(
@@ -56,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: TextField(
+                                controller: _passwordController,
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   labelText: 'Password',
@@ -71,16 +92,32 @@ class _LoginPageState extends State<LoginPage> {
                                 minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),
                                 primary: Const.primaryColor,
                                 onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                    color: Colors.black, fontSize: 22),
+                                textStyle: TextStyle(color: Colors.black, fontSize: 22),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                               ),
                               child: Text('Login'),
-                              onPressed: () {
-                                // Implement your login logic here
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
+                              onPressed: () async{
+                                if (_emailController.text.isEmpty) {
+                                  Const.toastMessage('Email is required.');
+                                } else if (_passwordController.text.isEmpty) {
+                                  Const.toastMessage('Password is required.');
+                                } else {
+                                  Map<String,dynamic> data = {
+                                    'email': _emailController.text,
+                                    'password': _passwordController.text,
+                                  };
+
+                                  Map response=await _indexViewModel.loginApi(data);
+                                  print(response['data']);
+                                  print(response['data']['user']);
+                                  print(response['data']['token']);
+                                  ShPref.saveAuthToken(response['data']['token']);
+                                  ShPref.saveAuthId(response['data']['user']['id']);
+                                  ShPref.saveAuthRole(response['data']['user']['role']);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CWLayout()));
+                                }
                               },
                             ),
                           ],
