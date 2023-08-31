@@ -7,6 +7,21 @@ class Role{
   static String customer='customer';
   static String technician='technician';
 }
+class TaskStatus{
+  static int pending=0;
+  static int complete=1;
+}
+class OrderPayment{
+  static String pending='0';
+  static String complete='1';
+}
+class SubscriptionType{
+  static String oneTime='0';
+  static String recurring='1';
+}
+
+
+
 class ShPref{
   static saveAuthToken(String key) async {
     final prefs = await SharedPreferences.getInstance();
@@ -50,7 +65,18 @@ class Const{
   static var logo = 'assets/logo.png';
   static Color primaryColor = const Color(0XFF000000);
 
-
+  static LoadingIndictorWidtet({size = 20.0}) {
+    return Center(
+      child: Container(
+        width: size,
+        height: size,
+        child: CircularProgressIndicator(
+          semanticsLabel: 'Circular progress indicator',
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
   static wi(context){
     return MediaQuery.of(context).size.width;
   }

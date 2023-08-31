@@ -1,4 +1,4 @@
-#Wed Aug 30 15:38:22 PKT 2023
+#Thu Aug 31 14:44:42 PKT 2023
 base.0=/Users/devops/Documents/GitHub/car_wash/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

@@ -1,4 +1,5 @@
 import 'package:carwash/constants.dart';
+import 'package:carwash/model/User.dart';
 import 'package:carwash/screen/Activites.dart';
 import 'package:carwash/screen/ChangePassword.dart';
 import 'package:carwash/screen/Customers.dart';
@@ -6,25 +7,27 @@ import 'package:carwash/screen/Home.dart';
 import 'package:carwash/screen/Login.dart';
 import 'package:carwash/screen/Profile.dart';
 import 'package:carwash/screen/Subscription.dart';
+import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CWLayout extends StatefulWidget {
   final int selectedIndex;
-
-  // Named constructor that takes a default parameter
   CWLayout({this.selectedIndex = 0});
-
-
   @override
   _CWLayoutState createState() => _CWLayoutState();
 }
 
 class _CWLayoutState extends State<CWLayout> {
   int _selectedIndex = 0;
+  Future<void> _pullAuthUser() async {
+    Provider.of<IndexViewModel>(context, listen: false).setUser(User());
+    Provider.of<IndexViewModel>(context, listen: false).fetchUser();
+  }
   @override
   void initState() {
     _selectedIndex = widget.selectedIndex;
-
+    _pullAuthUser();
     super.initState();
   }
 
