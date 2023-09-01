@@ -1,4 +1,5 @@
 import 'package:carwash/screen/Landing.dart';
+import 'package:carwash/screen/Splash.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,9 +42,9 @@ class MyApp extends StatelessWidget {
           ),
 
         ),
-        initialRoute: 'landing',
+        initialRoute: 'splash',
         routes: {
-          'landing': (context) => LandingPage(),
+          'splash': (context) => SplashScreen(),
         },
       ),
     );

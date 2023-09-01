@@ -1,3 +1,4 @@
+import 'package:carwash/screen/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,6 +55,16 @@ class ShPref{
     final prefs = await SharedPreferences.getInstance();
     final String role = prefs.getString(Const.authRole) ?? '';
     return role;
+  }
+
+  static logout(context)async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(Const.authToken);
+    prefs.remove(Const.authId);
+    prefs.remove(Const.authRole);
+    Const.toastMessage('Logout successful');
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+        LoginPage()), (Route<dynamic> route) => false);
   }
 }
 class Const{

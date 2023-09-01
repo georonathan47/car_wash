@@ -1,62 +1,52 @@
+import 'package:carwash/model/Activity.dart';
+import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class Activity {
-  final String user;
-  final String action;
-  final DateTime date;
-
-  Activity(this.user, this.action, this.date);
+class ActivityPage extends StatefulWidget {
+  @override
+  State<ActivityPage> createState() => _ActivityPageState();
 }
 
-class ActivityPage extends StatelessWidget {
-  final List<Activity> activities = [
-    Activity('John Doe', 'Created a subscription', DateTime(2023, 8, 10)),
-    Activity('John Doe', 'Cancelled subscription', DateTime(2023, 8, 15)),
-    Activity('John Doe', 'Marked car wash as done', DateTime(2023, 8, 20)),
-    Activity('John Doe', 'Paid to vendor of car wash', DateTime(2023, 8, 25)),
-    Activity('John Doe', 'Created a subscription', DateTime(2023, 8, 10)),
-    Activity('John Doe', 'Cancelled subscription', DateTime(2023, 8, 15)),
-    Activity('John Doe', 'Marked car wash as done', DateTime(2023, 8, 20)),
-    Activity('John Doe', 'Paid to vendor of car wash', DateTime(2023, 8, 25)),
-    Activity('John Doe', 'Created a subscription', DateTime(2023, 8, 10)),
-    Activity('John Doe', 'Cancelled subscription', DateTime(2023, 8, 15)),
-    Activity('John Doe', 'Marked car wash as done', DateTime(2023, 8, 20)),
-    Activity('John Doe', 'Paid to vendor of car wash', DateTime(2023, 8, 25)),
+class _ActivityPageState extends State<ActivityPage> {
+  List<Activity?> activities = [];
 
-    // Add more activities here
-  ];
+  Future<void> _pullActivities() async {
+    Provider.of<IndexViewModel>(context, listen: false).setActivity([]);
+    Provider.of<IndexViewModel>(context, listen: false).fetchActivity({});
+  }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Provider.of<IndexViewModel>(context, listen: false).setActivity([]);
+      _pullActivities();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
+    activities = _indexViewModel.getActivities;
+
     return ListView.builder(
       itemCount: activities.length,
       itemBuilder: (context, index) {
-        return ActivityCard(activities[index]);
+        return Card(
+          margin: EdgeInsets.all(16),
+          child: ListTile(
+            title: Text(
+              '${activities[index]?.message}',
+              style: TextStyle(fontSize: 18),
+            ),
+            subtitle: Text(
+              '${activities[index]?.created_at}',
+              style: TextStyle(fontSize: 16, color: Colors.grey,),textAlign: TextAlign.right,
+            ),
+          ),
+        );
       },
-    );
-  }
-}
-
-class ActivityCard extends StatelessWidget {
-  final Activity activity;
-
-  ActivityCard(this.activity);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(16),
-      child: ListTile(
-        title: Text(
-          '${activity.user} ${activity.action}',
-          style: TextStyle(fontSize: 18),
-        ),
-        subtitle: Text(
-          '${DateFormat.yMMMMd().format(activity.date)}',
-          style: TextStyle(fontSize: 16, color: Colors.grey,),textAlign: TextAlign.right,
-        ),
-      ),
     );
   }
 }

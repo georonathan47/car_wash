@@ -1,4 +1,6 @@
+import 'package:carwash/apis/api_response.dart';
 import 'package:carwash/constants.dart';
+import 'package:carwash/model/User.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,13 +16,22 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
+  String? role;
+
+  User? authUser;
 
   int? authId;
+
+  Future<void> _pullAuthUser() async {
+    Provider.of<IndexViewModel>(context, listen: false).setUser(User());
+    Provider.of<IndexViewModel>(context, listen: false).fetchUser();
+  }
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      authId=ShPref.getAuthId();
+      authId=await ShPref.getAuthId();
+      _pullAuthUser();
     });
     super.initState();
   }
@@ -28,14 +39,37 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    nameController.text=_indexViewModel.getUser!.name!;
-    emailController.text=_indexViewModel.getUser!.email!;
-    phoneController.text=_indexViewModel.getUser!.phone!;
-    addressController.text=_indexViewModel.getUser!.address!;
+    authUser=_indexViewModel.getUser;
+    nameController.text='${authUser?.name}';
+    emailController.text='${authUser?.email}';
+    phoneController.text='${authUser?.phone}';
+    addressController.text='${authUser?.address}';
+    role=authUser?.role;
+
+
+
     return SingleChildScrollView(
-      child: Column(
+      child:
+      (_indexViewModel.getStatus.status == Status.IDLE)?
+      Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ((role) ==null)
+                ?Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: Colors.amber,
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: Text('${role?.toUpperCase()}',style: TextStyle(fontWeight: FontWeight.bold),),
+                )
+                :Container(),
+            ],
+          ),
           SizedBox(height: 20),
           CircleAvatar(
             radius: 60,
@@ -90,14 +124,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           Const.toastMessage('Address is required.');
                         } else {
                           Map<String, dynamic> data = {
-                            'id':authId,
+                            'user_id':_indexViewModel.getUser?.id.toString(),
+                            'email':emailController.text,
                             'name': nameController.text,
                             'phone': phoneController.text,
                             'address': addressController.text,
                           };
                           Map response=await _indexViewModel.editUser(data);
-
-                          print(response);
                         }
                       },
                       child: Text('Save Profile'),
@@ -108,6 +141,12 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ],
+      ): Container(
+        width: double.infinity,
+        height: Const.hi(context)-100,
+        child: Center(
+          child: Const.LoadingIndictorWidtet(),
+        ),
       ),
     );
   }
