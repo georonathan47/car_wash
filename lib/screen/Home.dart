@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap:(){
                                         if(tasks[x]!.tasks![y].accessor==true){
                                           Task _tysk = tasks[x]!.tasks![y];
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => TaskScreen(task: _tysk,)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => TaskScreen(task: _tysk,))).then((value) => _pullTasks());
                                         }else{
                                           Const.toastMessage('Its previous car washes are pending');
                                         }

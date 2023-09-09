@@ -1,3 +1,4 @@
+import 'package:carwash/app_url.dart';
 import 'package:carwash/screen/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -94,6 +95,10 @@ class Const{
   static hi(context){
     return MediaQuery.of(context).size.height;
   }
+  static getReceiptPath(image){
+    return AppUrl.url+'storage/receipt/'+image;
+  }
+
   static appbar(String title){
     return AppBar(
       backgroundColor: Const.primaryColor,

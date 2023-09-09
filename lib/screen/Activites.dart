@@ -1,3 +1,5 @@
+import 'package:carwash/apis/api_response.dart';
+import 'package:carwash/constants.dart';
 import 'package:carwash/model/Activity.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,13 @@ class _ActivityPageState extends State<ActivityPage> {
     IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
     activities = _indexViewModel.getActivities;
 
-    return ListView.builder(
+    return (_indexViewModel.getStatus.status == Status.IDLE)
+        ? (activities.length==0)
+          ? Container(
+              padding: EdgeInsets.all(30),
+              child: Text('No Activities'),
+            )
+          : ListView.builder(
       itemCount: activities.length,
       itemBuilder: (context, index) {
         return Card(
@@ -47,6 +55,11 @@ class _ActivityPageState extends State<ActivityPage> {
           ),
         );
       },
-    );
+    )
+        : Container(
+            width: Const.wi(context),
+            height: Const.hi(context)/1.3,
+            child: Const.LoadingIndictorWidtet(),
+        );
   }
 }

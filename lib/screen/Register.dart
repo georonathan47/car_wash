@@ -19,7 +19,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  bool _loading=false;
+  bool _passwordVisible = true;
 
   @override
   void dispose() {
@@ -103,12 +104,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
-                      obscureText: true,
+                      obscureText: _passwordVisible,
                       controller: _passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
+                        ),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          child: new Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                         ),
                       ),
                     ),
@@ -161,6 +170,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             });
                           },
                         ),
+                        RadioListTile<String>(
+                          title: Text('Customer'),
+                          value: Role.customer,
+                          groupValue: selectedRole,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedRole = value!;
+                            });
+                          },
+                        ),
+
                         Divider(),
 
                       ],
@@ -180,7 +200,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: Text('Register'),
+                    child: Text(_loading ? 'Processing..' :'Register'),
                     onPressed: () async{
                       if (_nameController.text.isEmpty) {
                         Const.toastMessage('Name is required.');
@@ -199,8 +219,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           'address': _addressController.text,
                           'role': selectedRole.toString(),
                         };
-                        await _indexViewModel.registerApi(data);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                        if(!_loading){
+                          try{
+                            setState(() { _loading=true; });
+                            await _indexViewModel.registerApi(data);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                          }catch(e){
+                            print(e);
+                          }
+                          setState(() { _loading=false; });
+                        }
+
                       }
                     },
                   ),
