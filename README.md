@@ -20,7 +20,7 @@ customer name, status->piad/unpaid, subscription, monthly
 
 Phase 2
 1. Later : Dashboard of customer to see availability choose date 
-2. Customer profile and sign in
+2. #Customer profile and sign in
 3. Requesting to cancel subscription 
 4. How many session are done 
 5. Payment method to pay (mada)
@@ -31,4 +31,5 @@ Phase 2
 QA
 
 1. Loaders
+2. Show/hide password
 

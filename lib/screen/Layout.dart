@@ -6,6 +6,7 @@ import 'package:carwash/screen/Customers.dart';
 import 'package:carwash/screen/Home.dart';
 import 'package:carwash/screen/Invoice.dart';
 import 'package:carwash/screen/Login.dart';
+import 'package:carwash/screen/Payment.dart';
 import 'package:carwash/screen/Profile.dart';
 import 'package:carwash/screen/Subscription.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
@@ -81,7 +82,7 @@ class _CWLayoutState extends State<CWLayout> {
                       ),
                       Container(
                         margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.all(2),
+                        padding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
                         decoration: BoxDecoration(
                             color: Colors.amber,
                             borderRadius: BorderRadius.circular(3)
@@ -117,8 +118,8 @@ class _CWLayoutState extends State<CWLayout> {
                   // Handle packages menu action
                 },
               ),
-            if(authUser?.role==Role.manager)
-            ListTile(
+            if(authUser?.role==Role.manager || authUser?.role==Role.customer)
+              ListTile(
               leading: Icon(Icons.padding),
               title: Text('Packages'),
               onTap: () {
@@ -127,7 +128,7 @@ class _CWLayoutState extends State<CWLayout> {
               },
             ),
             if(authUser?.role==Role.manager)
-            ListTile(
+              ListTile(
               leading: Icon(Icons.payment),
               title: Text('Invoice'),
               onTap: () {
@@ -136,8 +137,8 @@ class _CWLayoutState extends State<CWLayout> {
               },
             ),
 
-
-            ListTile(
+            if(authUser?.role==Role.manager)
+              ListTile(
               leading: Icon(Icons.history),
               title: Text('Acivities'),
               onTap: () {
@@ -176,7 +177,11 @@ class _CWLayoutState extends State<CWLayout> {
           showUnselectedLabels: true,
           onTap: (index) {
             setState(() {
-              _selectedIndex = index;
+              if (index == 1 && authUser!.role == Role.customer) {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentPage(),));
+              } else {
+                _selectedIndex = index;
+              }
             });
           },
           items: [
@@ -184,9 +189,13 @@ class _CWLayoutState extends State<CWLayout> {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
+            (authUser!.role ==  Role.customer)
+            ? BottomNavigationBarItem(
+              icon: Icon(Icons.payment),
+              label: 'Payment',
+            ) :BottomNavigationBarItem(
               icon: Icon(Icons.history),
-              label: 'Order History',
+              label: 'Activities',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),

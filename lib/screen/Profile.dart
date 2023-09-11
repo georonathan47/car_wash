@@ -17,10 +17,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController addressController = TextEditingController();
 
   String? role;
-
   User? authUser;
-
   int? authId;
+  bool _loading=false;
 
   Future<void> _pullAuthUser() async {
     Provider.of<IndexViewModel>(context, listen: false).setUser(User());
@@ -57,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ((role) ==null)
+              ((role) !=null)
                 ?Container(
                   margin: EdgeInsets.all(10),
                   padding: EdgeInsets.all(5),
@@ -130,10 +129,16 @@ class _ProfilePageState extends State<ProfilePage> {
                             'phone': phoneController.text,
                             'address': addressController.text,
                           };
-                          Map response=await _indexViewModel.editUser(data);
+                          if(!_loading){
+                            try{
+                              setState(() { _loading=true; });
+                              Map response=await _indexViewModel.editUser(data);
+                            }catch(e){ }
+                            setState(() { _loading=true; });
+                          }
                         }
                       },
-                      child: Text('Save Profile'),
+                      child: Text(_loading ? 'Processing..' : 'Save Profile'),
                     ),
                   ],
                 ),

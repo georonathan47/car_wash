@@ -14,8 +14,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
-  
+  bool _loading=false;
+
+  bool _currentPasswordVisible = true;
+  bool _newPasswordVisible = true;
+  bool _confirmPasswordVisible = true;
+
   @override
   Widget build(BuildContext context) {
     IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
@@ -37,27 +41,63 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             ),
             SizedBox(height: 20),
             TextField(
-              obscureText: true,
+              obscureText: _currentPasswordVisible,
               controller: _currentPasswordController,
               decoration: InputDecoration(
                 labelText: 'Current Password',
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _currentPasswordVisible = !_currentPasswordVisible;
+                    });
+                  },
+                  child: Icon(
+                    _currentPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16),
             TextField(
-              obscureText: true,
+              obscureText: _newPasswordVisible,
               controller: _newPasswordController,
 
               decoration: InputDecoration(
                 labelText: 'New Password',
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _newPasswordVisible = !_newPasswordVisible;
+                    });
+                  },
+                  child: Icon(
+                    _newPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16),
             TextField(
-              obscureText: true,
+              obscureText: _confirmPasswordVisible,
               controller: _confirmPasswordController,
               decoration: InputDecoration(
                 labelText: 'Confirm New Password',
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _confirmPasswordVisible = !_confirmPasswordVisible;
+                    });
+                  },
+                  child: Icon(
+                    _confirmPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 20),
@@ -81,15 +121,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       'new_password': _newPasswordController.text,
                       'confirm_password': _confirmPasswordController.text,
                     };
-                    await _indexViewModel.changePassword(data);
-                    Navigator.pop(context);
+                    if(!_loading){
+                      try{
+                        setState(() { _loading=true; });
+                        await _indexViewModel.changePassword(data);
+                        Navigator.pop(context);
+                      }catch(e){ }
+                      setState(() { _loading=false; });
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Const.primaryColor, // Set background color to black
                 ),
                 child: Text(
-                  'Change Password',
+                  _loading? 'Processing..':'Change Password',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
