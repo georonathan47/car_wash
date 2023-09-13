@@ -24,7 +24,7 @@ dependencies:
   fluttertoast:
   image_picker:
   dio:
-  flutter_checkout_payment: ^1.3.0
+  checkout_sdk_flutter: ^0.0.1
 
 dev_dependencies:
   flutter_test:

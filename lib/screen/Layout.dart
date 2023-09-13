@@ -178,7 +178,7 @@ class _CWLayoutState extends State<CWLayout> {
           onTap: (index) {
             setState(() {
               if (index == 1 && authUser!.role == Role.customer) {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentPage(),));
+                //Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentPage(),));
               } else {
                 _selectedIndex = index;
               }

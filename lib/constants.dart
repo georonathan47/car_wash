@@ -73,6 +73,7 @@ class Const{
   static String authToken='auth-token';
   static String authId='auth-id';
   static String authRole='auth-role';
+  static String CHECKOUT_PUBLIC_KEY='pk_sbox_ha5eozx3ipt7z6l73xqmncc3uus';
 
   static var logo = 'assets/logo.png';
   static Color primaryColor = const Color(0XFF000000);
@@ -92,6 +93,18 @@ class Const{
   static wi(context){
     return MediaQuery.of(context).size.width;
   }
+  static subscription(id){
+    if(id == 1){
+      return 'Basic';
+    }
+    if(id == 2){
+      return 'Premium';
+    }
+    if(id == 3){
+      return 'One Time';
+    }
+  }
+
   static hi(context){
     return MediaQuery.of(context).size.height;
   }
