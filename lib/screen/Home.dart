@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
     List<TaskWithDate?> tasks = _indexViewModel.getTasksList;
 
-    authUser = Provider.of<IndexViewModel>(context).getUser;
+    authUser = _indexViewModel.getUser;
     List<Car?> cars = _indexViewModel.getMyCars;
 
     return Scaffold(
@@ -160,8 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                          child: Text('Pay Now', style: TextStyle(color: Colors.white)),
                                        ),
 
-
-
                                    ],
                                  )
                                 ],
@@ -208,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              if(authUser?.role!=Role.customer)
+              if(authUser?.role==Role.manager || authUser?.role ==Role.technician)
                 if(_indexViewModel.getStatus.status ==  Status.IDLE)
                   if(tasks.length==0)
                     Center(

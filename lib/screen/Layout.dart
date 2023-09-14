@@ -9,6 +9,7 @@ import 'package:carwash/screen/Login.dart';
 import 'package:carwash/screen/Payment.dart';
 import 'package:carwash/screen/Profile.dart';
 import 'package:carwash/screen/Subscription.dart';
+import 'package:carwash/screen/Transactions.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,9 @@ class _CWLayoutState extends State<CWLayout> {
   @override
   void initState() {
     _selectedIndex = widget.selectedIndex;
-    _pullAuthUser();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _pullAuthUser();
+    });
     super.initState();
   }
 
@@ -178,7 +181,7 @@ class _CWLayoutState extends State<CWLayout> {
           onTap: (index) {
             setState(() {
               if (index == 1 && authUser!.role == Role.customer) {
-                //Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentPage(),));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionsPage(),));
               } else {
                 _selectedIndex = index;
               }
@@ -192,7 +195,7 @@ class _CWLayoutState extends State<CWLayout> {
             (authUser!.role ==  Role.customer)
             ? BottomNavigationBarItem(
               icon: Icon(Icons.payment),
-              label: 'Payment',
+              label: 'Transactions',
             ) :BottomNavigationBarItem(
               icon: Icon(Icons.history),
               label: 'Activities',
