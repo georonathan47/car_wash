@@ -90,6 +90,7 @@ class IndexViewModel extends ChangeNotifier {
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchExpenses, data, authToken);
       List<Expense?> expense=[];
       response['data'].forEach((item) {
+        item['user']=User.fromJson(item['user']);
         expense.add(Expense.fromJson(item));
       });
       _getStatus = ApiResponse.completed(expense);
@@ -206,6 +207,10 @@ class IndexViewModel extends ChangeNotifier {
         item['user']=Customer.fromJson(item['user']);
         _cars.add(Car.fromJson(item));
       });
+
+
+
+
       _getStatus = ApiResponse.completed(_cars);
       _getMyCars=_cars;
       notifyListeners();
@@ -338,6 +343,14 @@ class IndexViewModel extends ChangeNotifier {
         Car car=Car.fromJson(item);
         sub.add(car);
       });
+      print('object');
+      print(data['car_id']);
+      print(data['car_id'] == 'null');
+      if(data['car_id'] != 'null'){
+        sub = sub.where((car) => car?.id.toString() == data['car_id']).toList();
+      }
+
+
       _getStatus = ApiResponse.completed(sub);
       _getCars=sub;
       notifyListeners();

@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                      ElevatedButton(
                                        onPressed: ()async {
-                                         Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerDetail(customer: cars[x]!.customer!))).then((value) => _pullMyCars());
+                                         Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerDetail(customer: cars[x]!.customer!,carId:  cars[x]!.id,))).then((value) => _pullMyCars());
 
                                        },
                                        style: ElevatedButton.styleFrom(

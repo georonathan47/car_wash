@@ -23,7 +23,7 @@ Phase 2
 9. #How many session are done 
 10. #Payment method to pay (mada)
 11. #payment by cash/payment by bank 
-12. technician can upload invoices of gas/oil change/repair 
+12. #technician can upload invoices of gas/oil change/repair 
 13. notification
 
 QA of App

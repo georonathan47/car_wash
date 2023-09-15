@@ -3,6 +3,7 @@ import 'package:carwash/model/User.dart';
 import 'package:carwash/screen/Activites.dart';
 import 'package:carwash/screen/ChangePassword.dart';
 import 'package:carwash/screen/Customers.dart';
+import 'package:carwash/screen/Expenses.dart';
 import 'package:carwash/screen/Home.dart';
 import 'package:carwash/screen/Invoice.dart';
 import 'package:carwash/screen/Login.dart';
@@ -149,6 +150,26 @@ class _CWLayoutState extends State<CWLayout> {
                 // Handle order history menu action
               },
             ),
+            if(authUser?.role==Role.technician)
+              ListTile(
+              leading: Icon(Icons.bar_chart_sharp),
+              title: Text('My Expenses'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ExpensePage()));
+                // Handle order history menu action
+              },
+            ),
+            if(authUser?.role==Role.manager)
+              ListTile(
+              leading: Icon(Icons.bar_chart_sharp),
+              title: Text('All Expenses'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ExpensePage()));
+                // Handle order history menu action
+              },
+            ),
+
+
             ListTile(
               leading: Icon(Icons.lock),
               title: Text('Change Password'),

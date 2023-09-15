@@ -12,7 +12,8 @@ import 'package:timeline_list/timeline_model.dart';
 
 class CustomerDetail extends StatefulWidget {
   final Customer customer;
-  CustomerDetail({required this.customer});
+  final int? carId;
+  CustomerDetail({required this.customer,this.carId=null});
 
   @override
   State<CustomerDetail> createState() => _CustomerDetailState();
@@ -21,7 +22,7 @@ class CustomerDetail extends StatefulWidget {
 class _CustomerDetailState extends State<CustomerDetail> {
 
   Future<void> _pullCars() async {
-    Provider.of<IndexViewModel>(context, listen: false).fetchCars({'id': widget.customer.id.toString()});
+    Provider.of<IndexViewModel>(context, listen: false).fetchCars({'id': widget.customer.id.toString(),'car_id':widget.carId.toString()});
   }
 
   List<Car?> cars=[];
