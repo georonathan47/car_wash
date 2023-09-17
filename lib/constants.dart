@@ -74,7 +74,7 @@ class Const{
   static String authId='auth-id';
   static String authRole='auth-role';
   static String CHECKOUT_PUBLIC_KEY='pk_sbox_ha5eozx3ipt7z6l73xqmncc3uus';
-  static List<String> ExpenseTypes=['Repair','Oil Change','Gas'];
+  static List<String> ExpenseTypes=['Repair','Oil Change','Gas','Accessories','Water','Others'];
 
   static var logo = 'assets/logo.png';
   static Color primaryColor = const Color(0XFF000000);

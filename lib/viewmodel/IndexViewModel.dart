@@ -416,6 +416,16 @@ class IndexViewModel extends ChangeNotifier {
       Const.toastMessage(e.toString());
     }
   }
+  Future updateLocation(dynamic data) async {
+    try{
+      dynamic response = await _apiServices.getPostApiResponse(AppUrl.updateLocation, data);
+      print('object ${response}');
+      return response;
+    }catch(e){
+      Const.toastMessage(e.toString());
+    }
+  }
+
   Future addCar(dynamic data) async {
     String authToken= await ShPref.getAuthToken();
     try{

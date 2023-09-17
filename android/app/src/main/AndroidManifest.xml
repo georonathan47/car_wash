@@ -5,6 +5,8 @@
         android:label="Car Wash"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyBgOM4iXth5olyb34-rcv9lbZsMcINhIvw"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

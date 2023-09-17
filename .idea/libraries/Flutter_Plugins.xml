@@ -20,6 +20,20 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/file_selector_linux-0.9.2" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.3.3" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/geocoding-2.1.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_maps_flutter_ios-2.3.1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/geolocator_apple-2.2.7" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/location-4.4.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/geolocator_web-2.1.6" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_api_headers-1.6.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/geolocator-9.0.2" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/geocoding_android-2.1.2" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/geocoding_ios-2.1.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/geolocator_android-4.2.4" />
+      <root url="file://$USER_HOME$/.pub-cache/git/plugins-a4837e7dcc7f2817c441d449402afe890d99cffd/packages/google_maps_flutter/google_maps_flutter" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_maps_flutter_android-2.5.1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/location_web-3.1.1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/package_info_plus-4.1.0" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

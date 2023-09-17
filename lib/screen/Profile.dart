@@ -1,6 +1,7 @@
 import 'package:carwash/apis/api_response.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/User.dart';
+import 'package:carwash/screen/HomeLocation.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -108,8 +109,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.amber, // Set the background color to black
+                      ),
+                      onPressed: ()async {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeLocationScreen()));
+                      },
+                      child: Text('My Google Location'),
+                    ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Const.primaryColor, // Set the background color to black

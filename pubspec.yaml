@@ -25,6 +25,17 @@ dependencies:
   image_picker:
   dio:
   checkout_sdk_flutter: ^0.0.1
+  geolocator: ^9.0.2
+  flutter_google_places: ^0.3.0
+  geocoding: ^2.0.5
+  location: ^4.4.0
+
+
+  google_maps_flutter:
+    git:
+      url: https://github.com/lukaskurz/plugins
+      path: packages/google_maps_flutter/google_maps_flutter
+      ref: main
 
 dev_dependencies:
   flutter_test:

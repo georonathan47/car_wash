@@ -6,6 +6,8 @@ class User {
   String? address;
   String? profile;
   String? role;
+  String? long;
+  String? lat;
 
   User(
       {this.id,
@@ -14,7 +16,10 @@ class User {
         this.phone,
         this.address,
         this.profile,
-        this.role});
+        this.long,
+        this.lat,
+        this.role
+      });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'] as int?;
@@ -24,6 +29,8 @@ class User {
     address = json['address'] as String?;
     profile = json['profile'] as String?;
     role = json['role'] as String?;
+    long = json['long'] as String?;
+    lat = json['lat'] as String?;
   }
 
 }
