@@ -3,6 +3,7 @@ import 'package:carwash/screen/Layout.dart';
 import 'package:carwash/screen/Register.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,6 +22,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final status = await OneSignal.shared.getDeviceState();
+      String? osUserID = status?.userId;
+      await ShPref.storeDeviceId(osUserID);
+
       final String? token = await ShPref.getAuthToken();
       if (token!='') {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CWLayout()));

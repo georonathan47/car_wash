@@ -38,6 +38,8 @@ class ShPref{
     await prefs.setString(Const.authRole,key);
   }
   static storeDeviceId(String? id)async{
+    final pprefs = await SharedPreferences.getInstance();
+    pprefs.remove('user-device-id');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user-device-id',id!);
   }
