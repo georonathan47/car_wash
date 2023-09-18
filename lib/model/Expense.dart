@@ -8,6 +8,7 @@ class Expense {
   final String? narration;
   final String? date;
   final String? amount;
+  final String? image;
   final User? user;
 
   Expense({
@@ -17,6 +18,7 @@ class Expense {
     this.narration,
     this.amount,
     this.date,
+    this.image,
     this.user,
   });
 
@@ -29,6 +31,7 @@ class Expense {
       type :json['type'] as String?,
       narration:json['narration'] as String?,
       amount:json['amount'] as String?,
+      image:json['image'] as String?,
       date:json['date'] as String?,
       user:json['user'] as User?,
     );

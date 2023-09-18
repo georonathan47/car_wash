@@ -417,9 +417,10 @@ class IndexViewModel extends ChangeNotifier {
     }
   }
   Future updateLocation(dynamic data) async {
+    String authToken= await ShPref.getAuthToken();
     try{
-      dynamic response = await _apiServices.getPostApiResponse(AppUrl.updateLocation, data);
-      print('object ${response}');
+      dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.updateLocation, data,authToken);
+      Const.toastMessage(response['message']);
       return response;
     }catch(e){
       Const.toastMessage(e.toString());
@@ -457,9 +458,10 @@ class IndexViewModel extends ChangeNotifier {
       Const.toastMessage(e.toString());
     }
   }
-  Future createExpense(dynamic data) async {
+  Future createExpense(Map<String, dynamic> data) async {
     String authToken= await ShPref.getAuthToken();
     try{
+      print(data);
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.createExpense, data,authToken);
       Const.toastMessage(response['message']);
       fetchUser();
@@ -515,6 +517,23 @@ class IndexViewModel extends ChangeNotifier {
       Const.toastMessage(e.toString());
     }
   }
+  Future storeDeviceId() async {
+    String authToken= await ShPref.getAuthToken();
+    String? deviceId= await ShPref.getDeviceId();
+    print('deviceId ${deviceId}');
+    if(deviceId != null){
+      try{
+        dynamic data={'device_id':deviceId};
+        dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.storeNotificationDevice, data,authToken);
+        print('notification device stored');
+        return response;
+      }catch(e){
+        print('object ${e.toString()}');
+      }
+    }
+
+  }
+
   
 
 }

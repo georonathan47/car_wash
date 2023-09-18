@@ -1,9 +1,11 @@
 import 'package:carwash/apis/api_response.dart';
+import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Activity.dart';
 import 'package:carwash/model/Expense.dart';
 import 'package:carwash/model/User.dart';
 import 'package:carwash/screen/CreateExpense.dart';
+import 'package:carwash/screen/Image.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -54,22 +56,37 @@ class _ExpensePageState extends State<ExpensePage> {
                   padding: EdgeInsets.all(30),
                   child: Center(child: Text('No Expense')),
                 )
-              : DataTable(
-                columns: [
-                  DataColumn(label: Text('By')),
-                  DataColumn(label: Text('Date')),
-                  DataColumn(label: Text('Narration')),
-                  DataColumn(label: Text('Amount'),numeric: true),
-                ],
-                columnSpacing: 10,
-                rows: List<DataRow>.generate(expenses.length, (index) => DataRow(
-                  cells: [
-                    DataCell(Text('${expenses[index]?.user?.name}')),
-                    DataCell(Text('${expenses[index]?.date}')),
-                    DataCell(Text('${expenses[index]?.narration}')),
-                    DataCell(Text('${expenses[index]?.amount}')),
+              : Container(
+                width: Const.wi(context),
+                child: DataTable(
+                  columns: [
+                    DataColumn(label: Text('By')),
+                    DataColumn(label: Text('Date')),
+                    DataColumn(label: Text('Narration')),
+                    DataColumn(label: Text('Amount'),numeric: true),
                   ],
-                ),
+                  columnSpacing: 10,
+                  rows: List<DataRow>.generate(expenses.length, (index) => DataRow(
+                    cells: [
+                      DataCell(
+                        Row(
+                          children: [
+                            Text('${expenses[index]?.user?.name}'),
+                           InkWell(
+                             onTap: (){
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                     ShowImage('${AppUrl.url}storage/expense/${expenses[index]?.image}')));},
+                             child:  Icon(Icons.broken_image_outlined,size: 20,),
+                           )
+                          ],
+                        )
+                      ),
+                      DataCell(Text('${expenses[index]?.date}')),
+                      DataCell(Text('${expenses[index]?.narration}')),
+                      DataCell(Text('${expenses[index]?.amount}')),
+                    ],
+                  ),
+                  ),
                 ),
               )
             : Container(

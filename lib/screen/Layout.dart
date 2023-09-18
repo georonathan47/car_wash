@@ -13,6 +13,7 @@ import 'package:carwash/screen/Subscription.dart';
 import 'package:carwash/screen/Transactions.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CWLayout extends StatefulWidget {
@@ -34,6 +35,7 @@ class _CWLayoutState extends State<CWLayout> {
   void initState() {
     _selectedIndex = widget.selectedIndex;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Provider.of<IndexViewModel>(context,listen: false).storeDeviceId();
       _pullAuthUser();
     });
     super.initState();

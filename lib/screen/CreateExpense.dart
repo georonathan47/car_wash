@@ -1,9 +1,14 @@
-import 'package:carwash/apis/api_response.dart';
+import 'dart:io';
+
+import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
-import 'package:carwash/model/User.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart';
+
 
 class CreateExpensePage extends StatefulWidget {
   @override
@@ -16,7 +21,29 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
   final TextEditingController amountController = TextEditingController();
 
   bool _loading=false;
+  XFile? imagePath;
+  bool isSelectedFile=false;
 
+  void getImage(String type) async {
+    final ImagePicker _picker = ImagePicker();
+    imagePath = await _picker.pickImage(
+      source: (type == 'gallery') ? ImageSource.gallery : ImageSource.camera,
+      imageQuality: 100,
+      maxHeight: 1000,
+    );
+    if (imagePath != null) {
+      File file = File(imagePath!.path);
+      double temp = file.lengthSync() / (1024 * 1024);
+      setState(() {
+        isSelectedFile = true;
+      });
+    } else {
+      setState(() {
+        isSelectedFile = false;
+      });
+      Const.toastMessage('Image not selected!');
+    }
+  }
 
   @override
   void initState() {
@@ -69,6 +96,98 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                       },
                     ),
                   SizedBox(height: 20),
+
+
+                  Row(
+                    mainAxisAlignment: imagePath==null ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      (imagePath==null)
+                          ? Container()
+                          : Container(
+                        width: Const.wi(context) / 5,
+                        height: Const.wi(context) / 5,
+                        padding: EdgeInsets.all(10),
+                        margin: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey, // Color of the dashed border
+                            width: 1, // Width of the dashed border
+                          ),
+                          borderRadius: BorderRadius.circular(8), // Adjust the radius as needed
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: Image.file(File(imagePath!.path)),
+                      ),
+
+                      (imagePath==null) ? InkWell(
+                        onTap: (){
+                          getImage('gallery');
+                        },
+                        child: Container(
+                          width: Const.wi(context) / 10,
+                          height: Const.wi(context) / 10,
+                          margin: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey, // Color of the dashed border
+                              width: 1, // Width of the dashed border
+                            ),
+                            borderRadius: BorderRadius.circular(8), // Adjust the radius as needed
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Icon(
+                            Icons.image,
+                            size: 25,
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                        ),
+                      ) : Container(),
+                      (imagePath==null)  ? InkWell(
+                        onTap: (){
+                          getImage('camera');
+                        },
+                        child: Container(
+                          width: Const.wi(context) / 10,
+                          height: Const.wi(context) / 10,
+                          margin: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey, // Color of the dashed border
+                              width: 1, // Width of the dashed border
+                            ),
+                            borderRadius: BorderRadius.circular(8), // Adjust the radius as needed
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 25,
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                        ),
+                      ) : Container(),
+
+
+                      (imagePath==null) ? Container() : Container(
+                        padding:EdgeInsets.only(top: 10),
+                        child: ElevatedButton(
+                          onPressed: ()async {
+                            setState(() {
+                              imagePath=null;
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.grey, // Background color
+                          ),
+                          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+                        ),
+                      ) ,
+
+                    ],
+                  ),
+
+
+                  SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -83,22 +202,21 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                             Const.toastMessage('Narration is required.');
                           } else if (amountController.text.isEmpty) {
                             Const.toastMessage('Amount is required.');
+                          } else if (imagePath?.path == null) {
+                            Const.toastMessage('Image is required.');
                           } else {
-                            Map<String, dynamic> data = {
-                              'type':typeController.text,
-                              'narration': narrationController.text,
-                              'amount': amountController.text,
-                            };
-                            if(!_loading){
-                              try{
-                                setState(() { _loading=true; });
-                                Map response=await _indexViewModel.createExpense(data);
-                                Navigator.pop(context);
-                              }catch(e){
+                            setState(() { _loading=true; });
+                            String path = imagePath!.path;
+                            dynamic formData=FormData.fromMap(
+                                {
+                                  'narration': narrationController.text,
+                                  'amount': amountController.text,
+                                  'type':typeController.text,
+                                  'image': await MultipartFile.fromFile(path, filename: basename(path)),
+                                }
+                            );
+                            uploadFile(context, formData);
 
-                              }
-                              setState(() { _loading=true; });
-                            }
                           }
                         },
                         child: Text(_loading ? 'Processing..' : 'Save'),
@@ -112,5 +230,39 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
         ),
       ),
     );
+  }
+
+
+
+  Dio dio = new Dio();
+  uploadFile(context,formData) async {
+    String authToken=await ShPref.getAuthToken();
+    String uploadUrl = AppUrl.createExpense;
+    Response response = await dio.post(
+      uploadUrl,
+      data: formData,
+      options: Options(
+        headers: {
+          "Accept": "application/json",
+          'Authorization': "Bearer " + authToken
+        },
+        receiveTimeout: 200000,
+        sendTimeout: 200000,
+        followRedirects: false,
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      ),
+    );
+    setState(() { _loading=false; });
+    if (response.statusCode == 200){
+      setState(() {
+        imagePath=null;
+      });
+      Navigator.pop(context);
+      Const.toastMessage('Expense booked successfully!!');
+    } else{
+      Const.toastMessage('Something went wrong! Please try again!');
+    }
   }
 }

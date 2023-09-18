@@ -7,6 +7,7 @@ import 'package:carwash/model/TaskWithDate.dart';
 import 'package:carwash/model/User.dart';
 import 'package:carwash/screen/CustomerDetails.dart';
 import 'package:carwash/screen/Payment.dart';
+import 'package:carwash/screen/ShowLocation.dart';
 import 'package:carwash/screen/TaskDetails.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
@@ -259,7 +260,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text('${tasks[x]!.tasks![y].order?.user?.name} ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text('${tasks[x]!.tasks![y].order?.user?.name} ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+
+                                                  if(tasks[x]!.tasks![y].order?.user?.long != null)
+                                                  InkWell(
+                                                    onTap: (){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowLocation(
+                                                        User(
+                                                          id: tasks[x]!.tasks![y].order?.user?.id,
+                                                          name: tasks[x]!.tasks![y].order?.user?.name,
+                                                          long: tasks[x]!.tasks![y].order?.user?.long,
+                                                          lat: tasks[x]!.tasks![y].order?.user?.lat,
+                                                          address: tasks[x]!.tasks![y].order?.user?.location,
+                                                        )
+                                                      )));
+                                                    },
+                                                    child: Icon(Icons.pin_drop_outlined),
+                                                  )
+                                                ],
+                                              ),
                                               Text('Car ➤ ${tasks[x]!.tasks![y].order?.car?.make} | ${tasks[x]!.tasks![y].order?.car?.model} | ${tasks[x]!.tasks![y].order?.car?.plate}'),
                                               Text('Status ➤ ${tasks[x]!.tasks![y].status == TaskStatus.pending ? ' Pending' : 'Done'}')
                                             ],

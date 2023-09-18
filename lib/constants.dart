@@ -37,6 +37,14 @@ class ShPref{
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(Const.authRole,key);
   }
+  static storeDeviceId(String? id)async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user-device-id',id!);
+  }
+  static getDeviceId()async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user-device-id');
+  }
 
 
 
@@ -57,6 +65,10 @@ class ShPref{
     final String role = prefs.getString(Const.authRole) ?? '';
     return role;
   }
+
+
+
+
 
   static logout(context)async{
     final prefs = await SharedPreferences.getInstance();
