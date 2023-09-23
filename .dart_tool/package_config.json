@@ -602,6 +602,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "simple_gesture_detector",
+      "rootUri": "file:///Users/devops/.pub-cache/hosted/pub.dev/simple_gesture_detector-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/devops/Documents/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -654,6 +660,12 @@
       "rootUri": "file:///Users/devops/.pub-cache/hosted/pub.dev/synchronized-3.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "table_calendar",
+      "rootUri": "file:///Users/devops/.pub-cache/hosted/pub.dev/table_calendar-3.0.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "term_glyph",
@@ -728,7 +740,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-09-21T12:49:24.579719Z",
+  "generated": "2023-09-23T18:59:12.581921Z",
   "generator": "pub",
   "generatorVersion": "3.1.0"
 }

@@ -1,6 +1,7 @@
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/User.dart';
 import 'package:carwash/screen/Activites.dart';
+import 'package:carwash/screen/Calendar.dart';
 import 'package:carwash/screen/ChangePassword.dart';
 import 'package:carwash/screen/Customers.dart';
 import 'package:carwash/screen/Expenses.dart';
@@ -178,12 +179,22 @@ class _CWLayoutState extends State<CWLayout> {
             if(authUser?.role==Role.manager)
               ListTile(
               leading: Icon(Icons.history),
-              title: Text('Acivities'),
+              title: Text('Activities'),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
                 // Handle order history menu action
               },
             ),
+            if(authUser?.role==Role.manager)
+              ListTile(
+              leading: Icon(Icons.calendar_month),
+              title: Text('Calendar'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarScreen()));
+                // Handle order history menu action
+              },
+            ),
+
             if(authUser?.role==Role.technician)
               ListTile(
               leading: Icon(Icons.bar_chart_sharp),
