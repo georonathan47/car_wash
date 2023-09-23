@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initOneSignal(context) async {
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-    OneSignal.shared.setAppId('f92a3eeb-ed75-4b6b-ba23-1ae05f7540e6');
+    OneSignal.shared.setAppId(Const.ONE_SIGNAL_APP_ID);
     OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
         print('Accepted permission $accepted');
       },
@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
 
     final status = await OneSignal.shared.getDeviceState();
     osUserID = status?.userId;
-    await ShPref.storeDeviceId(osUserID);
+    //await ShPref.storeDeviceId(osUserID);
 
     await OneSignal.shared.promptUserForPushNotificationPermission(
       fallbackToSettings: true,

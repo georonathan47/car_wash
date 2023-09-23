@@ -34,11 +34,16 @@ dependencies:
   onesignal_flutter: ^3.5.0
 
 
+
   google_maps_flutter:
     git:
       url: https://github.com/lukaskurz/plugins
       path: packages/google_maps_flutter/google_maps_flutter
       ref: main
+  flutter_launcher_icons: ^0.13.1
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/logo.png"
 
 dev_dependencies:
   flutter_test:

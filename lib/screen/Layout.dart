@@ -26,16 +26,48 @@ class CWLayout extends StatefulWidget {
 class _CWLayoutState extends State<CWLayout> {
   int _selectedIndex = 0;
   User? authUser;
+  String? osUserID;
 
   Future<void> _pullAuthUser() async {
     Provider.of<IndexViewModel>(context, listen: false).setUser(User());
     Provider.of<IndexViewModel>(context, listen: false).fetchUser();
   }
+
+  Future<void> initOneSignal(BuildContext context) async {
+    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+    OneSignal.shared.setAppId(Const.ONE_SIGNAL_APP_ID);
+    OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+        print('Accepted permission $accepted');
+      },
+    );
+    final status = await OneSignal.shared.getDeviceState();
+    osUserID = status?.userId;
+    await ShPref.storeDeviceId(osUserID);
+
+    await OneSignal.shared.promptUserForPushNotificationPermission(
+      fallbackToSettings: true,
+    );
+
+    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
+          dynamic response =  result.notification.additionalData;
+          /*
+          if (url == 'post') {
+            print ('post url');
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SinglePostScreen(d_id)));
+          }
+*/
+        });
+  }
+
+
+
   @override
   void initState() {
     _selectedIndex = widget.selectedIndex;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Provider.of<IndexViewModel>(context,listen: false).storeDeviceId();
+      await initOneSignal(context);
+      await Provider.of<IndexViewModel>(context,listen: false).storeDeviceId(osUserID);
       _pullAuthUser();
     });
     super.initState();

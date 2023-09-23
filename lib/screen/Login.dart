@@ -22,9 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final status = await OneSignal.shared.getDeviceState();
-      String? osUserID = status?.userId;
-      await ShPref.storeDeviceId(osUserID);
+
 
       final String? token = await ShPref.getAuthToken();
       if (token!='') {

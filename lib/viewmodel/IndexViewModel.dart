@@ -517,9 +517,8 @@ class IndexViewModel extends ChangeNotifier {
       Const.toastMessage(e.toString());
     }
   }
-  Future storeDeviceId() async {
+  Future storeDeviceId(deviceId) async {
     String authToken= await ShPref.getAuthToken();
-    String? deviceId= await ShPref.getDeviceId();
     print('deviceId ${deviceId}');
     if(deviceId != null){
       try{
