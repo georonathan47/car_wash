@@ -5,6 +5,7 @@ class Task {
   int? id;
   int? order_id;
   String? date;
+  String? time;
   int? status;
   bool? accessor;
   Order? order;
@@ -16,6 +17,7 @@ class Task {
         this.accessor,
         this.order,
         this.date,
+        this.time,
         this.images,
         this.status});
 
@@ -24,6 +26,7 @@ class Task {
     order_id = json['order_id'];
     date = json['date'];
     status = json['status'];
+    time = json['time'];
     accessor = json['accessor'];
     order = json['order'] as Order?;
     images = json['images'] as List<String>?;

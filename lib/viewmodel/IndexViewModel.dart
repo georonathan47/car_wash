@@ -380,6 +380,31 @@ class IndexViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+  ///////////////////////////////////////////////////////
+  List<String>? _get4Sundays=[];
+  List<String>? get get4Sundays => _get4Sundays;
+  void set4Sundays(List<String> _sundays) {
+    _get4Sundays = _sundays;
+    notifyListeners();
+  }
+  Future fetch4Sundays() async {
+    var authToken = await ShPref.getAuthToken();
+    try{
+      _getStatus = ApiResponse.loading('Fetching coming sundays');
+      dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetch4sundays, {}, authToken);
+      List<String>? get4Sundays=[];
+      response['data'].forEach((item){
+        get4Sundays.add(item);
+      });
+      _getStatus = ApiResponse.completed(get4Sundays);
+      _get4Sundays=get4Sundays;
+      notifyListeners();
+    }catch(e){
+      _getStatus = ApiResponse.error('Please try again.!');
+      notifyListeners();
+    }
+  }
+
 
 
 
@@ -392,7 +417,7 @@ class IndexViewModel extends ChangeNotifier {
     try{
       dynamic response = await _apiServices.getPostApiResponse(AppUrl.register, data);
       Const.toastMessage(response['message']);
-      return jsonDecode(response);
+      return response;
     }catch(e){
       Const.toastMessage(e.toString());
     }
@@ -430,6 +455,7 @@ class IndexViewModel extends ChangeNotifier {
   Future addCar(dynamic data) async {
     String authToken= await ShPref.getAuthToken();
     try{
+      print(data);
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.createCarSubscription, data,authToken);
       Const.toastMessage(response['message']);
       return response;
@@ -530,9 +556,6 @@ class IndexViewModel extends ChangeNotifier {
         print('object ${e.toString()}');
       }
     }
-
   }
-
-  
 
 }

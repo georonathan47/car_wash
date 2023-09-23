@@ -159,7 +159,13 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                                   children: [
                                                     Container(
                                                       padding: EdgeInsets.only(bottom: 10),
-                                                      child: Text('Start Date : ${cars[i]?.order?.tasks?[x].date}'),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text('Date : ${cars[i]?.order?.tasks?[x].date}'),
+                                                          Text('Time : ${cars[i]?.order?.tasks?[x].time}'),
+                                                        ],
+                                                      )
                                                     ),
                                                     (cars[i]?.order?.tasks?[x].images?.length == 0) ? Container() :
                                                     SingleChildScrollView(

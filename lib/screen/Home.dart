@@ -21,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? authUser;
 
+  String? authRole;
+
   Future<void> _pullTasks() async {
     Provider.of<IndexViewModel>(context, listen: false).setTasksList([]);
     Provider.of<IndexViewModel>(context, listen: false).fetchTaskList({});
@@ -39,9 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await _pullTasks();
-      _pullAuthUser();
-      _pullMyCars();
+
+      authRole=await ShPref.getAuthRole();
+      await _pullAuthUser();
+      if(authRole ==  Role.customer){
+        _pullMyCars();
+      }else{
+        _pullTasks();
+      }
 
     });
     super.initState();
@@ -74,10 +81,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.all(10),
                   child: Text('My Cars',style: TextStyle(fontSize: 25),),
 
+                )
+              else
+                Container(
+                  margin: EdgeInsets.only(top: 10,left: 10,right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        color: Colors.grey.shade200,
+                        child: Text('Upcomming',style: TextStyle(fontWeight: FontWeight.bold),),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        color: Colors.blue.shade50,
+                        child: Text('Pending',style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        color: Colors.green.shade100,
+                        child: Text('Completed',style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
                 ),
 
-              if(authUser?.role==Role.customer)
-                if(_indexViewModel.getStatus.status ==  Status.IDLE)
+              if(_indexViewModel.getStatus.status ==  Status.IDLE)
+                if(authUser?.role==Role.customer)
                   if(cars.length==0)
                     Container(
                       width: double.infinity,
@@ -134,35 +165,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
 
-                                 Row(
-                                   children: [
+                                  Row(
+                                    children: [
 
-                                     ElevatedButton(
-                                       onPressed: ()async {
-                                         Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerDetail(customer: cars[x]!.customer!,carId:  cars[x]!.id,))).then((value) => _pullMyCars());
+                                      ElevatedButton(
+                                        onPressed: ()async {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerDetail(customer: cars[x]!.customer!,carId:  cars[x]!.id,))).then((value) => _pullMyCars());
 
-                                       },
-                                       style: ElevatedButton.styleFrom(
-                                         primary: Colors.black, // Background color
-                                       ),
-                                       child: Text('Show Details', style: TextStyle(color: Colors.white)),
-                                     ),
-                                     SizedBox(width: 10,),
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.black, // Background color
+                                        ),
+                                        child: Text('Show Details', style: TextStyle(color: Colors.white)),
+                                      ),
+                                      SizedBox(width: 10,),
 
-                                     if(cars[x]?.order?.payment == OrderPayment.pending)
-                                       ElevatedButton(
-                                         onPressed: ()async {
-                                           Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(car: cars[x],))).then((value) => _pullMyCars());
+                                      if(cars[x]?.order?.payment == OrderPayment.pending)
+                                        ElevatedButton(
+                                          onPressed: ()async {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(car: cars[x],))).then((value) => _pullMyCars());
 
-                                         },
-                                         style: ElevatedButton.styleFrom(
-                                           primary: Colors.black, // Background color
-                                         ),
-                                         child: Text('Pay Now', style: TextStyle(color: Colors.white)),
-                                       ),
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.black, // Background color
+                                          ),
+                                          child: Text('Pay Now', style: TextStyle(color: Colors.white)),
+                                        ),
 
-                                   ],
-                                 )
+                                    ],
+                                  )
                                 ],
                               ),
 
@@ -170,45 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       )
-                else if (_indexViewModel.getStatus.status == Status.BUSY)
-                  Container(
-                    width: Const.wi(context),
-                    height: Const.hi(context)/1.2,
-                    child:   Const.LoadingIndictorWidtet(),
-                  ),
-
-
-
-
-              if(authUser?.role==Role.manager || authUser?.role ==Role.technician)
-              Container(
-                margin: EdgeInsets.only(top: 10,left: 10,right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-
-
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      color: Colors.grey.shade200,
-                      child: Text('Upcomming',style: TextStyle(fontWeight: FontWeight.bold),),
-                    ),
-
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      color: Colors.blue.shade50,
-                      child: Text('Pending',style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      color: Colors.green.shade100,
-                      child: Text('Completed',style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
-              ),
-              if(authUser?.role==Role.manager || authUser?.role ==Role.technician)
-                if(_indexViewModel.getStatus.status ==  Status.IDLE)
+                else
                   if(tasks.length==0)
                     Center(
                       child: Container(
@@ -253,10 +246,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           padding: EdgeInsets.all(20),
                                           margin: EdgeInsets.all(5),
                                           color: (tasks[x]!.tasks![y].accessor == false)
-                                                ? Colors.grey.shade200
-                                                : (tasks[x]!.tasks![y].status==TaskStatus.complete)
-                                                    ? Colors.green.shade100
-                                                    : Colors.blue.shade50,
+                                              ? Colors.grey.shade200
+                                              : (tasks[x]!.tasks![y].status==TaskStatus.complete)
+                                              ? Colors.green.shade100
+                                              : Colors.blue.shade50,
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
@@ -266,20 +259,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Text('${tasks[x]!.tasks![y].order?.user?.name} ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
 
                                                   if(tasks[x]!.tasks![y].order?.user?.long != null)
-                                                  InkWell(
-                                                    onTap: (){
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowLocation(
-                                                        User(
-                                                          id: tasks[x]!.tasks![y].order?.user?.id,
-                                                          name: tasks[x]!.tasks![y].order?.user?.name,
-                                                          long: tasks[x]!.tasks![y].order?.user?.long,
-                                                          lat: tasks[x]!.tasks![y].order?.user?.lat,
-                                                          address: tasks[x]!.tasks![y].order?.user?.location,
-                                                        )
-                                                      )));
-                                                    },
-                                                    child: Icon(Icons.pin_drop_outlined),
-                                                  )
+                                                    InkWell(
+                                                      onTap: (){
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ShowLocation(
+                                                            User(
+                                                              id: tasks[x]!.tasks![y].order?.user?.id,
+                                                              name: tasks[x]!.tasks![y].order?.user?.name,
+                                                              long: tasks[x]!.tasks![y].order?.user?.long,
+                                                              lat: tasks[x]!.tasks![y].order?.user?.lat,
+                                                              address: tasks[x]!.tasks![y].order?.user?.location,
+                                                            )
+                                                        )));
+                                                      },
+                                                      child: Icon(Icons.pin_drop_outlined),
+                                                    )
                                                 ],
                                               ),
                                               Text('Car ➤ ${tasks[x]!.tasks![y].order?.car?.make} | ${tasks[x]!.tasks![y].order?.car?.model} | ${tasks[x]!.tasks![y].order?.car?.plate}'),
@@ -296,12 +289,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       )
                 else if (_indexViewModel.getStatus.status == Status.BUSY)
-                  Container(
-                    width: Const.wi(context),
-                    height: Const.hi(context)/1.2,
-                    child:   Const.LoadingIndictorWidtet(),
-                  )
-                
+                Container(
+                  width: Const.wi(context),
+                  height: Const.hi(context)/1.2,
+                  child:   Const.LoadingIndictorWidtet(),
+                ),
             ],
           ),
         ),

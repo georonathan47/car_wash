@@ -23,20 +23,26 @@ class _CreateCarState extends State<CreateCar> {
   final TextEditingController plateNumberController = TextEditingController();
   int? selectedSubscription = 0;
   List<Subscription?> subscriptions=[];
+  List<String>? sundays=[];
 
   Future<void> _pullSubscriptions() async {
     Provider.of<IndexViewModel>(context, listen: false).fetchSubscriptions({});
   }
+  Future<void> _pullSundays() async {
+    Provider.of<IndexViewModel>(context, listen: false).set4Sundays([]);
+    Provider.of<IndexViewModel>(context, listen: false).fetch4Sundays();
+  }
+
   bool _isLoading=false;
+  Map<String, TimeOfDay?> selectedTimesMap = {};
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Provider.of<IndexViewModel>(context, listen: false).setSubscriptions([]);
       _pullSubscriptions();
+      _pullSundays();
     });
-
-
     super.initState();
   }
   @override
@@ -51,10 +57,12 @@ class _CreateCarState extends State<CreateCar> {
   Widget build(BuildContext context) {
     IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
     subscriptions = _indexViewModel.getSubscriptionList;
+    sundays = _indexViewModel.get4Sundays;
 
     return Scaffold(
       appBar: Const.appbar('Add New Car'),
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,35 +91,69 @@ class _CreateCarState extends State<CreateCar> {
               'Select Subscription:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Column(
-              children:[
-                if(_indexViewModel.getStatus.status ==  Status.IDLE)
-                  if(subscriptions.length==0)
-                    Center(
-                      child: Container(
-                        width: double.infinity,
-                        child: Text('No Subscription',textAlign: TextAlign.center,),
-                      ),
-                    )
-                  else
-                    for(int i=0;i<subscriptions.length;i++)
-                      CheckboxListTile(
-                        title: Text('${subscriptions[i]!.title} (${subscriptions[i]!.price} SAR)'),
-                        value: subscriptions[i]!.id == selectedSubscription,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedSubscription = subscriptions[i]!.id;
-                          });
-                        },
-                      )
-                else if (_indexViewModel.getStatus.status == Status.BUSY)
-                  Container(
-                    width: Const.wi(context),
-                    child:   Const.LoadingIndictorWidtet(),
-                  ),
-              ]
 
+          if(_indexViewModel.getStatus.status ==  Status.IDLE)...[
+            if(subscriptions.length==0)
+              Center(
+                child: Container(
+                  width: double.infinity,
+                  child: Text('No Subscription',textAlign: TextAlign.center,),
+                ),
+              )
+            else
+              for(int i=0;i<subscriptions.length;i++)
+                CheckboxListTile(
+                  title: Text('${subscriptions[i]!.title} (${subscriptions[i]!.price} SAR)'),
+                  value: subscriptions[i]!.id == selectedSubscription,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSubscription = subscriptions[i]!.id;
+                    });
+                  },
+                ),
+
+
+
+            Text(
+              'Choose Time:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: sundays!.length,
+              itemBuilder: (context, index) {
+                final date = sundays![index];
+                final selectedTime = selectedTimesMap[date] ?? TimeOfDay.now();
+
+                selectedTimesMap[date] = selectedTime;
+
+                return ListTile(
+                  title: Text(date),
+                  trailing: ElevatedButton(
+                    onPressed: () async {
+                      TimeOfDay? newTime = await showTimePicker(
+                        context: context,
+                        initialTime: selectedTime,
+                      );
+                      if (newTime != null) {
+                        setState(() {
+                          selectedTimesMap[date] = newTime;
+                        });
+                      }
+                    },
+                    child: Text(selectedTime.format(context)),
+                  ),
+                );
+              },
+            ),
+          ]
+          else if (_indexViewModel.getStatus.status == Status.BUSY)...[
+            Container(
+              width: Const.wi(context),
+              child:   Const.LoadingIndictorWidtet(),
+            ),
+          ],
 
 
             SizedBox(height: 20),
@@ -132,10 +174,17 @@ class _CreateCarState extends State<CreateCar> {
                     } else {
                       if(!_isLoading){
                         setState(() { _isLoading=true; });
+
+                        String formattedTime = '';
+                        selectedTimesMap.forEach((date, time) {
+                          formattedTime += '$date#${time!.hour}:${time.minute}@';
+                        });
+
                         Map<String, dynamic> data = {
                           'make': makeController.text,
                           'model': modelController.text,
                           'plate': plateNumberController.text,
+                          'time': formattedTime,
                           'user_id': widget.customer.id.toString(),
                           'subscription_id': selectedSubscription.toString(),
                         };
