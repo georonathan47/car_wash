@@ -4,6 +4,7 @@ import 'package:carwash/model/Product.dart';
 import 'package:carwash/model/Subscription.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carwash/apis/api_response.dart';
@@ -25,6 +26,8 @@ class _CreateCarState extends State<CreateCar> {
   List<Subscription?> subscriptions=[];
   List<String>? sundays=[];
 
+  bool showTimeWidget=false;
+
   Future<void> _pullSubscriptions() async {
     Provider.of<IndexViewModel>(context, listen: false).fetchSubscriptions({});
   }
@@ -34,7 +37,12 @@ class _CreateCarState extends State<CreateCar> {
   }
 
   bool _isLoading=false;
-  Map<String, TimeOfDay?> selectedTimesMap = {};
+
+  Map<int, dynamic> selectedDateTimeMap = {};
+
+  List<DateTime?> selectedDates=[];
+
+
 
   @override
   void initState() {
@@ -92,10 +100,12 @@ class _CreateCarState extends State<CreateCar> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
 
+            Divider(),
           if(_indexViewModel.getStatus.status ==  Status.IDLE)...[
             if(subscriptions.length==0)
               Center(
                 child: Container(
+                  padding: EdgeInsets.all(20),
                   width: double.infinity,
                   child: Text('No Subscription',textAlign: TextAlign.center,),
                 ),
@@ -107,50 +117,79 @@ class _CreateCarState extends State<CreateCar> {
                   value: subscriptions[i]!.id == selectedSubscription,
                   onChanged: (value) {
                     setState(() {
+                      showTimeWidget=true;
                       selectedSubscription = subscriptions[i]!.id;
                     });
                   },
                 ),
+            SizedBox(height: 20),
 
-
-
-            Text(
-              'Choose Time:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Visibility(
+              visible: showTimeWidget,
+              child: Text(
+                'Select Date and Time:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
+            Divider(),
 
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: sundays!.length,
-              itemBuilder: (context, index) {
-                final date = sundays![index];
-                final selectedTime = selectedTimesMap[date] ?? TimeOfDay.now();
 
-                selectedTimesMap[date] = selectedTime;
+            Visibility(
+              visible: showTimeWidget,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: selectedSubscription == 3 ? 1:sundays!.length,
+                itemBuilder: (context, index) {
+                  DateTime selectedDateTime = DateTime.parse(sundays![index]);
+                  if(selectedDates.length<4){
+                    selectedDates.add(selectedDateTime);
+                  }
 
-                return ListTile(
-                  title: Text(date),
-                  trailing: ElevatedButton(
+                  return ElevatedButton(
                     onPressed: () async {
-                      TimeOfDay? newTime = await showTimePicker(
+                      final TimeOfDay? pickedTime = await showTimePicker(
                         context: context,
-                        initialTime: selectedTime,
+                        initialTime: TimeOfDay.now(),
                       );
-                      if (newTime != null) {
-                        setState(() {
-                          selectedTimesMap[date] = newTime;
-                        });
+
+                      if (pickedTime != null) {
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: selectedDateTime,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+
+                        if (pickedDate != null) {
+                          setState(() {
+                            selectedDateTime = DateTime(
+                              pickedDate.year,
+                              pickedDate.month,
+                              pickedDate.day,
+                              pickedTime.hour,
+                              pickedTime.minute,
+                            );
+                            selectedDates[index] = selectedDateTime;
+                          });
+                        }
                       }
                     },
-                    child: Text(selectedTime.format(context)),
-                  ),
-                );
-              },
+                    child: Text(DateFormat('yyyy-MM-dd').add_jm().format(selectedDates[index]!)),
+                  );
+                },
+              ),
+
             ),
+
+
+
+
+
           ]
           else if (_indexViewModel.getStatus.status == Status.BUSY)...[
             Container(
               width: Const.wi(context),
+              padding: EdgeInsets.all(20),
               child:   Const.LoadingIndictorWidtet(),
             ),
           ],
@@ -162,6 +201,13 @@ class _CreateCarState extends State<CreateCar> {
               children: [
                 ElevatedButton(
                   onPressed: () async{
+                    String formattedDateTime = '';
+                    int take = (selectedSubscription==3) ? 1 : 4;
+                    selectedDates.take(take).forEach((dateTime) {
+                      String date = DateFormat('yyyy-MM-dd').format(dateTime!);
+                      String time = DateFormat('HH:mm').format(dateTime);
+                      formattedDateTime += '$date#$time@';
+                    });
 
                     if (makeController.text.isEmpty) {
                       Const.toastMessage('Make of card is required.');
@@ -175,16 +221,12 @@ class _CreateCarState extends State<CreateCar> {
                       if(!_isLoading){
                         setState(() { _isLoading=true; });
 
-                        String formattedTime = '';
-                        selectedTimesMap.forEach((date, time) {
-                          formattedTime += '$date#${time!.hour}:${time.minute}@';
-                        });
 
                         Map<String, dynamic> data = {
                           'make': makeController.text,
                           'model': modelController.text,
                           'plate': plateNumberController.text,
-                          'time': formattedTime,
+                          'date_time': formattedDateTime,
                           'user_id': widget.customer.id.toString(),
                           'subscription_id': selectedSubscription.toString(),
                         };

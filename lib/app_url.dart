@@ -29,5 +29,6 @@ class AppUrl {
   static var uploadTaskImage = baseUrl + 'uploadTaskImage';
   static var uploadReceipt = baseUrl + 'uploadReceipt';
   static var checkout = baseUrl + 'checkout';
+  static var fetchTasksFromDate = baseUrl + 'fetchTasksFromDate';
   static var storeNotificationDevice = baseUrl + 'storeNotificationDevice';
 }

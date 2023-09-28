@@ -407,6 +407,42 @@ class IndexViewModel extends ChangeNotifier {
 
 
 
+  ///////////////////////////////////////////////////////
+  List<Task>? _getTaskByDate=[];
+  List<Task>? get getTaskByDate => _getTaskByDate;
+  void setTaskByDate(List<Task> _t) {
+    _getTaskByDate = _t;
+    notifyListeners();
+  }
+  Future fetchTaskByDate(data) async {
+    var authToken = await ShPref.getAuthToken();
+    try{
+      _getStatus = ApiResponse.loading('Fetching task by date');
+      dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchTasksFromDate,data, authToken);
+      List<Task>? tasks=[];
+      response['data'].forEach((item){
+
+        Task _task=Task.fromJson(item);
+        tasks.add(_task);
+      });
+
+
+      print(tasks.length);
+
+      print('object');
+
+
+      _getStatus = ApiResponse.completed(tasks);
+      _getTaskByDate=tasks;
+      notifyListeners();
+    }catch(e){
+      _getStatus = ApiResponse.error('Please try again.!');
+      notifyListeners();
+    }
+  }
+
+
+
 
 
 
