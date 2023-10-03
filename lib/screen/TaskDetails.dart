@@ -4,12 +4,15 @@ import 'package:carwash/apis/api_response.dart';
 import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Task.dart';
+import 'package:carwash/model/User.dart';
+import 'package:carwash/screen/ShowLocation.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class TaskScreen extends StatefulWidget {
@@ -31,6 +34,7 @@ class _TaskScreenState extends State<TaskScreen> {
   XFile? imagePath;
   bool isSelectedFile=false;
 
+  String? selectedImageType;
 
   void getImage(String type) async {
     final ImagePicker _picker = ImagePicker();
@@ -96,14 +100,50 @@ class _TaskScreenState extends State<TaskScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('${task?.order?.user?.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
-                            Text('${task?.order?.user?.phone}'),
+                            InkWell(
+                              onTap: () async{
+                                String phone='${task?.order?.user?.phone}';
+                                try{
+                                  if (await canLaunchUrl(Uri.parse(phone))) {
+                                    await launch(phone);
+                                  } else {
+                                    Const.toastMessage('Phone format not correct');
+                                  }
+                                }catch(e){
+                                  Const.toastMessage('Phone format not correct');
+                                }
+                              },
+                                child: Text('${task?.order?.user?.phone}')
+                            ),
                           ],
                         ),
                         SizedBox(height: 10,),
                         Row(
                           children: [
-                            Icon(Icons.pin_drop,size: 16,),
-                            Text('${task?.order?.user?.location}'),
+                            Icon(Icons.pin_drop,size:20,
+                                color: task?.order?.user?.long == null ? Colors.red : Colors.green
+                            ),
+                            Container(
+                              width: Const.wi(context)/1.3,
+                              child: InkWell(
+                                onTap: (){
+                                  if(task?.order?.user?.long != null){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowLocation(
+                                        User(
+                                          id: task?.order?.user?.id,
+                                          name: task?.order?.user?.name,
+                                          long: task?.order?.user?.long,
+                                          lat: task?.order?.user?.lat,
+                                          address: task?.order?.user?.location,
+                                        )
+                                    )));
+                                  }
+                                },
+                                  child: Text('${task?.order?.user?.location}',overflow: TextOverflow.fade,
+                                    style: TextStyle(color: task?.order?.user?.long == null ? Colors.red : Colors.green),
+                                  )
+                              ),
+                            )
                           ],
                         ),
                         SizedBox(height: 50,),
@@ -137,9 +177,8 @@ class _TaskScreenState extends State<TaskScreen> {
                           mainAxisAlignment: imagePath==null ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            (imagePath==null)
-                                ? Container()
-                                : Container(
+                            (imagePath!=null && selectedImageType=='order')
+                                ? Container(
                               width: Const.wi(context) / 5,
                               height: Const.wi(context) / 5,
                               padding: EdgeInsets.all(10),
@@ -153,11 +192,14 @@ class _TaskScreenState extends State<TaskScreen> {
                                 shape: BoxShape.rectangle,
                               ),
                               child: Image.file(File(imagePath!.path)),
-                            ),
+                            ): Container(),
 
                             (imagePath==null) ? InkWell(
                               onTap: (){
                                 getImage('gallery');
+                                setState(() {
+                                  selectedImageType='order';
+                                });
                               },
                               child: Container(
                                 width: Const.wi(context) / 10,
@@ -181,6 +223,9 @@ class _TaskScreenState extends State<TaskScreen> {
                             (imagePath==null)  ? InkWell(
                               onTap: (){
                                 getImage('camera');
+                                setState(() {
+                                  selectedImageType='order';
+                                });
                               },
                               child: Container(
                                 width: Const.wi(context) / 10,
@@ -203,7 +248,7 @@ class _TaskScreenState extends State<TaskScreen> {
                             ) : Container(),
 
 
-                            (imagePath==null) ? Container() : Container(
+                            (imagePath!=null && selectedImageType=='order') ? Container(
                               padding:EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
@@ -216,8 +261,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ),
                                 child: Text('Cancel', style: TextStyle(color: Colors.white)),
                               ),
-                            ) ,
-                            (imagePath==null) ? Container() : Container(
+                            ) :Container(),
+                            (imagePath!=null && selectedImageType=='order') ?  Container(
                               padding:EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
@@ -228,7 +273,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ),
                                 child: Text('Upload', style: TextStyle(color: Colors.white)),
                               ),
-                            ) ,
+                            ): Container() ,
 
 
                           ],
@@ -291,9 +336,8 @@ class _TaskScreenState extends State<TaskScreen> {
                           mainAxisAlignment: imagePath==null ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            (imagePath==null)
-                                ? Container()
-                                : Container(
+                            (imagePath!=null && selectedImageType=='task')
+                                ? Container(
                               width: Const.wi(context) / 5,
                               height: Const.wi(context) / 5,
                               padding: EdgeInsets.all(10),
@@ -307,11 +351,14 @@ class _TaskScreenState extends State<TaskScreen> {
                                 shape: BoxShape.rectangle,
                               ),
                               child: Image.file(File(imagePath!.path)),
-                            ),
+                            ): Container(),
 
                             (imagePath==null) ? InkWell(
                               onTap: (){
                                 getImage('gallery');
+                                setState(() {
+                                  selectedImageType='task';
+                                });
                               },
                               child: Container(
                                 width: Const.wi(context) / 10,
@@ -335,6 +382,9 @@ class _TaskScreenState extends State<TaskScreen> {
                             (imagePath==null)  ? InkWell(
                               onTap: (){
                                 getImage('camera');
+                                setState(() {
+                                  selectedImageType='task';
+                                });
                               },
                               child: Container(
                                 width: Const.wi(context) / 10,
@@ -357,8 +407,9 @@ class _TaskScreenState extends State<TaskScreen> {
                             ) : Container(),
 
 
-                            (imagePath==null) ? Container() : Container(
-                              padding:EdgeInsets.only(top: 10),
+                            (imagePath!=null && selectedImageType=='task') ?  Container(
+
+                            padding:EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
                                   setState(() {
@@ -370,8 +421,9 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ),
                                 child: Text('Cancel', style: TextStyle(color: Colors.white)),
                               ),
-                            ) ,
-                            (imagePath==null) ? Container() : Container(
+                            ) :Container(),
+                            (imagePath!=null && selectedImageType=='task') ?  Container(
+
                               padding:EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
@@ -382,7 +434,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ),
                                 child: Text('Upload', style: TextStyle(color: Colors.white)),
                               ),
-                            ) ,
+                            ) :Container(),
 
 
 

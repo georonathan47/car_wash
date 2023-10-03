@@ -1,4 +1,5 @@
 import 'package:carwash/apis/api_response.dart';
+import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Car.dart';
 import 'package:carwash/model/Customer.dart';
@@ -275,8 +276,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     )
                                                 ],
                                               ),
-                                              Text('Car ➤ ${tasks[x]!.tasks![y].order?.car?.make} | ${tasks[x]!.tasks![y].order?.car?.model} | ${tasks[x]!.tasks![y].order?.car?.plate}'),
-                                              Text('Status ➤ ${tasks[x]!.tasks![y].status == TaskStatus.pending ? ' Pending' : 'Done'}')
+
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text('Car ➤ ${tasks[x]!.tasks![y].order?.car?.make} | ${tasks[x]!.tasks![y].order?.car?.model} | ${tasks[x]!.tasks![y].order?.car?.plate}'),
+                                                      Text('Status ➤ ${tasks[x]!.tasks![y].status == TaskStatus.pending ? ' Pending' : 'Done'}')
+
+                                                    ],
+                                                  ),
+                                                  (tasks[x]!.tasks![y].order?.car?.image == null)? Container():
+                                                  Container(
+                                                      padding: EdgeInsets.all(10),
+                                                      child: Center(
+                                                        child: Image.network('${AppUrl.url}storage/car/${tasks[x]!.tasks![y].order?.car?.image}',width: 70,),
+                                                      )
+                                                  ),
+                                                ],
+                                              ),
+
                                             ],
                                           ),
                                         ),

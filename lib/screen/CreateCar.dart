@@ -1,12 +1,17 @@
+import 'dart:io';
+
+import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Customer.dart';
 import 'package:carwash/model/Product.dart';
 import 'package:carwash/model/Subscription.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:path/path.dart';
 import 'package:carwash/apis/api_response.dart';
 
 class CreateCar extends StatefulWidget {
@@ -29,25 +34,48 @@ class _CreateCarState extends State<CreateCar> {
   bool showTimeWidget=false;
 
   Future<void> _pullSubscriptions() async {
-    Provider.of<IndexViewModel>(context, listen: false).fetchSubscriptions({});
+    Provider.of<IndexViewModel>(this.context, listen: false).fetchSubscriptions({});
   }
   Future<void> _pullSundays() async {
-    Provider.of<IndexViewModel>(context, listen: false).set4Sundays([]);
-    Provider.of<IndexViewModel>(context, listen: false).fetch4Sundays();
+    Provider.of<IndexViewModel>(this.context, listen: false).set4Sundays([]);
+    Provider.of<IndexViewModel>(this.context, listen: false).fetch4Sundays();
   }
 
   bool _isLoading=false;
-
   Map<int, dynamic> selectedDateTimeMap = {};
-
   List<DateTime?> selectedDates=[];
+
+
+  XFile? imagePath;
+  bool isSelectedFile=false;
+
+  void getImage(String type) async {
+    final ImagePicker _picker = ImagePicker();
+    imagePath = await _picker.pickImage(
+      source: (type == 'gallery') ? ImageSource.gallery : ImageSource.camera,
+      imageQuality: 100,
+      maxHeight: 1000,
+    );
+    if (imagePath != null) {
+      File file = File(imagePath!.path);
+      double temp = file.lengthSync() / (1024 * 1024);
+      setState(() {
+        isSelectedFile = true;
+      });
+    } else {
+      setState(() {
+        isSelectedFile = false;
+      });
+      Const.toastMessage('Image not selected!');
+    }
+  }
 
 
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Provider.of<IndexViewModel>(context, listen: false).setSubscriptions([]);
+      Provider.of<IndexViewModel>(this.context, listen: false).setSubscriptions([]);
       _pullSubscriptions();
       _pullSundays();
     });
@@ -95,13 +123,104 @@ class _CreateCarState extends State<CreateCar> {
               decoration: InputDecoration(labelText: 'Plate Number'),
             ),
             SizedBox(height: 40),
+
+            Row(
+              mainAxisAlignment: imagePath==null ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                (imagePath==null)
+                    ? Container()
+                    : Container(
+                  width: Const.wi(context) / 5,
+                  height: Const.wi(context) / 5,
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey, // Color of the dashed border
+                      width: 1, // Width of the dashed border
+                    ),
+                    borderRadius: BorderRadius.circular(8), // Adjust the radius as needed
+                    shape: BoxShape.rectangle,
+                  ),
+                  child: Image.file(File(imagePath!.path)),
+                ),
+
+                (imagePath==null) ? InkWell(
+                  onTap: (){
+                    getImage('gallery');
+                  },
+                  child: Container(
+                    width: Const.wi(context) / 10,
+                    height: Const.wi(context) / 10,
+                    margin: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey, // Color of the dashed border
+                        width: 1, // Width of the dashed border
+                      ),
+                      borderRadius: BorderRadius.circular(8), // Adjust the radius as needed
+                      shape: BoxShape.rectangle,
+                    ),
+                    child: Icon(
+                      Icons.image,
+                      size: 25,
+                      color: Colors.black.withOpacity(0.7),
+                    ),
+                  ),
+                ) : Container(),
+                (imagePath==null)  ? InkWell(
+                  onTap: (){
+                    getImage('camera');
+                  },
+                  child: Container(
+                    width: Const.wi(context) / 10,
+                    height: Const.wi(context) / 10,
+                    margin: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey, // Color of the dashed border
+                        width: 1, // Width of the dashed border
+                      ),
+                      borderRadius: BorderRadius.circular(8), // Adjust the radius as needed
+                      shape: BoxShape.rectangle,
+                    ),
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 25,
+                      color: Colors.black.withOpacity(0.7),
+                    ),
+                  ),
+                ) : Container(),
+
+
+                (imagePath==null) ? Container() : Container(
+                  padding:EdgeInsets.only(top: 10),
+                  child: ElevatedButton(
+                    onPressed: ()async {
+                      setState(() {
+                        imagePath=null;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.grey, // Background color
+                    ),
+                    child: Text('Cancel', style: TextStyle(color: Colors.white)),
+                  ),
+                ) ,
+
+              ],
+            ),
+
+            Divider(),
+            SizedBox(height: 16),
             Text(
               'Select Subscription:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-
             Divider(),
-          if(_indexViewModel.getStatus.status ==  Status.IDLE)...[
+
+            if(_indexViewModel.getStatus.status ==  Status.IDLE)...[
             if(subscriptions.length==0)
               Center(
                 child: Container(
@@ -220,21 +339,17 @@ class _CreateCarState extends State<CreateCar> {
                     } else {
                       if(!_isLoading){
                         setState(() { _isLoading=true; });
-
-
-                        Map<String, dynamic> data = {
+                        String path = imagePath!.path;
+                        dynamic formData=FormData.fromMap({
                           'make': makeController.text,
                           'model': modelController.text,
                           'plate': plateNumberController.text,
                           'date_time': formattedDateTime,
                           'user_id': widget.customer.id.toString(),
                           'subscription_id': selectedSubscription.toString(),
-                        };
-                        try{
-                          dynamic response=await _indexViewModel.addCar(data);
-                          Navigator.pop(context);
-                        }catch (e){
-                        }
+                          'image': await MultipartFile.fromFile(path, filename: basename(path)),
+                        });
+                        createCar(context, formData);
                         setState(() { _isLoading=false; });
                       }
                     }
@@ -253,5 +368,39 @@ class _CreateCarState extends State<CreateCar> {
         ),
       ),
     );
+  }
+
+
+
+  Dio dio = new Dio();
+  createCar(context,formData) async {
+    String authToken=await ShPref.getAuthToken();
+    String uploadUrl = AppUrl.createCarSubscription;
+    Response response = await dio.post(
+      uploadUrl,
+      data: formData,
+      options: Options(
+        headers: {
+          "Accept": "application/json",
+          'Authorization': "Bearer " + authToken
+        },
+        receiveTimeout: 200000,
+        sendTimeout: 200000,
+        followRedirects: false,
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      ),
+    );
+    setState(() { _isLoading=false; });
+    if (response.statusCode == 200){
+      setState(() {
+        imagePath=null;
+      });
+      Navigator.pop(context);
+      Const.toastMessage('Expense booked successfully!!');
+    } else{
+      Const.toastMessage('Something went wrong! Please try again!');
+    }
   }
 }

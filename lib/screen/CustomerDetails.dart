@@ -1,4 +1,5 @@
 import 'package:carwash/apis/api_response.dart';
+import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Car.dart';
 import 'package:carwash/model/Customer.dart';
@@ -138,6 +139,15 @@ class _CustomerDetailState extends State<CustomerDetail> {
 
                                 ],
                               ),
+
+                              (cars[i]?.image == null)? Container():
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: Center(
+                                  child: Image.network('${AppUrl.url}storage/car/${cars[i]?.image}',width: 100,),
+                                )
+                              ),
+
                               Divider(),
                               (cars[i]?.order?.tasks?.length == 0)
                                   ? Container()

@@ -8,6 +8,7 @@ class Car {
   final String? make;
   final String? model;
   final String? plate;
+  final String? image;
   final Order? order;
   final Customer? customer;
 
@@ -17,6 +18,7 @@ class Car {
     this.make,
     this.model,
     this.plate,
+    this.image,
     this.order,
     this.customer,
   });
@@ -30,6 +32,7 @@ class Car {
       make :json['make'] as String?,
       model: json['model'] as String?,
       plate : json['plate'] as String?,
+      image : json['image'] as String?,
       order : json['order'] as Order?,
       customer : json['user'] as Customer?,
     );
