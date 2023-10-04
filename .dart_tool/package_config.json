@@ -20,6 +20,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "badges",
+      "rootUri": "file:///Users/devops/.pub-cache/hosted/pub.dev/badges-3.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///Users/devops/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
@@ -794,7 +800,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-10-03T10:27:58.608455Z",
+  "generated": "2023-10-04T09:28:49.331187Z",
   "generator": "pub",
   "generatorVersion": "3.1.3"
 }

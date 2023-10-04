@@ -284,8 +284,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Text('Car ➤ ${tasks[x]!.tasks![y].order?.car?.make} | ${tasks[x]!.tasks![y].order?.car?.model} | ${tasks[x]!.tasks![y].order?.car?.plate}'),
+                                                      Text('Subscription ➤ ${tasks[x]!.tasks![y].order?.subscription?.title}'),
                                                       Text('Status ➤ ${tasks[x]!.tasks![y].status == TaskStatus.pending ? ' Pending' : 'Done'}')
-
                                                     ],
                                                   ),
                                                   (tasks[x]!.tasks![y].order?.car?.image == null)? Container():

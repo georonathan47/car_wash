@@ -64,9 +64,13 @@ class _CustomerDetailState extends State<CustomerDetail> {
                         style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 5.0),
-                      Text(
-                        'Location: ${widget.customer.location}',
-                        style: TextStyle(fontSize: 16.0),
+                      Container(
+                        width: Const.wi(context)/2,
+                        child: Text(
+                          'Location: ${widget.customer.location}',
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 16.0),
+                        ),
                       ),
                       SizedBox(height: 5.0),
                       Text(

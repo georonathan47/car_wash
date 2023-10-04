@@ -80,13 +80,18 @@ class _CustomerPageState extends State<CustomerPage> {
                                     Text('${customers[x]?.phone}'),
                                   ],
                                 ),
+
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
-                                        Text('${customers[x]?.location}'),
-                                        Icon(Icons.pin_drop_outlined,size: 14,),
+                                        Icon(Icons.pin_drop_outlined,size: 20,),
+                                        Container(
+                                          width: Const.wi(context)/2,
+                                          child: Text('${customers[x]?.location}'),
+                                        ),
+
                                       ],
                                     ),
 

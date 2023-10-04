@@ -104,8 +104,9 @@ class _TaskScreenState extends State<TaskScreen> {
                               onTap: () async{
                                 String phone='${task?.order?.user?.phone}';
                                 try{
-                                  if (await canLaunchUrl(Uri.parse(phone))) {
-                                    await launch(phone);
+                                  final call = Uri.parse('tel:${phone}');
+                                  if (await canLaunchUrl(call)) {
+                                    launchUrl(call);
                                   } else {
                                     Const.toastMessage('Phone format not correct');
                                   }

@@ -4,7 +4,7 @@ class Subscription {
   final String? price;
   final String? is_recurring;
 
-  Subscription({required this.id, required this.title, required this.price,this.is_recurring});
+  Subscription({ this.id, this.title, this.price,this.is_recurring});
 
 
   factory Subscription.fromJson(Map<String, dynamic> json) {

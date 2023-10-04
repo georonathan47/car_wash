@@ -289,6 +289,18 @@ class _CreateCarState extends State<CreateCar> {
                               pickedTime.minute,
                             );
                             selectedDates[index] = selectedDateTime;
+
+
+                            for(int x=0;x<selectedDates.length;x++){
+                              selectedDates[x]=DateTime(
+                                selectedDates[x]!.year,
+                                selectedDates[x]!.month,
+                                selectedDates[x]!.day,
+                                pickedTime.hour,
+                                pickedTime.minute,
+                              );
+                            }
+
                           });
                         }
                       }

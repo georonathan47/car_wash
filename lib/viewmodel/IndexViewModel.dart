@@ -5,6 +5,7 @@ import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Activity.dart';
 import 'package:carwash/model/Expense.dart';
+import 'package:carwash/model/TaskCount.dart';
 import 'package:carwash/model/Trx.dart';
 import 'package:carwash/model/Car.dart';
 import 'package:carwash/model/Customer.dart';
@@ -173,6 +174,7 @@ class IndexViewModel extends ChangeNotifier {
           task['order']['user']=Customer.fromJson(task['order']['car']['user']);
           task['order']['car']['user']=Customer();
           task['order']['car']=Car.fromJson(task['order']['car']);
+          task['order']['subscription']=Subscription.fromJson(task['order']['subscription']);
           task['order']=Order.fromJson(task['order']);
           Task _t=Task.fromJson(task);
           //Task _t=Task();
@@ -421,17 +423,18 @@ class IndexViewModel extends ChangeNotifier {
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchTasksFromDate,data, authToken);
       List<Task>? tasks=[];
       response['data'].forEach((item){
+        //item['order']['customer']=Customer.fromJson(item['order']['car']['user']);
+        //item['order']['car']=Car.fromJson(item['order']['car']);
 
+        dynamic jsonOrder=item['order'];
+        dynamic jsonCar=item['order']['car'];
+        dynamic jsonUser=item['order']['car']['user'];
+        item['order']=Order(price: jsonOrder['price'],
+            car: Car(make: jsonCar['make'],model: jsonCar['model'],plate: jsonCar['plate']),
+            user: Customer(id: jsonUser['id'],name: jsonUser['name']));
         Task _task=Task.fromJson(item);
         tasks.add(_task);
       });
-
-
-      print(tasks.length);
-
-      print('object');
-
-
       _getStatus = ApiResponse.completed(tasks);
       _getTaskByDate=tasks;
       notifyListeners();
@@ -440,6 +443,38 @@ class IndexViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+
+
+  ///////////////////////////////////////////////////////
+  List<TaskCount>? _getTaskCount=[];
+  List<TaskCount>? get getTaskCount => _getTaskCount;
+  void setTaskCount(List<TaskCount> _t) {
+    _getTaskCount = _t;
+    notifyListeners();
+  }
+  Future fetchTaskCount() async {
+    var authToken = await ShPref.getAuthToken();
+    try{
+      _getStatus = ApiResponse.loading('Fetching task counter');
+      dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchTasksFromDates,{}, authToken);
+      List<TaskCount>? tasks=[];
+      response['data'].forEach((item){
+        print(item);
+        tasks.add(TaskCount(date: item['task_date'],count: item['task_count']));
+      });
+      _getStatus = ApiResponse.completed(tasks);
+      _getTaskCount=tasks;
+      notifyListeners();
+    }catch(e){
+      _getStatus = ApiResponse.error('Please try again.!');
+      notifyListeners();
+    }
+  }
+
+
+
+
 
 
 
