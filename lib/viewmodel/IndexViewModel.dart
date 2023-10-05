@@ -205,6 +205,10 @@ class IndexViewModel extends ChangeNotifier {
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchMyCars, data, authToken);
       List<Car?> _cars=[];
       response['data'].forEach((item) {
+        dynamic jsonSubscription=item['order']['subscription'];
+        item['order']['subscription']=Subscription(
+            id: jsonSubscription['id'],title: jsonSubscription['title'],price: jsonSubscription['price'],
+            is_recurring: jsonSubscription['is_recurring']);
         item['order']=Order.fromJson(item['order']);
         item['user']=Customer.fromJson(item['user']);
         _cars.add(Car.fromJson(item));
@@ -522,6 +526,18 @@ class IndexViewModel extends ChangeNotifier {
       Const.toastMessage(e.toString());
     }
   }
+  Future updatePackage(dynamic data) async {
+    print(data);
+    String authToken= await ShPref.getAuthToken();
+    try{
+      dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.updateSubscription, data,authToken);
+      Const.toastMessage(response['message']);
+      return response;
+    }catch(e){
+      Const.toastMessage(e.toString());
+    }
+  }
+
 
   Future addCar(dynamic data) async {
     String authToken= await ShPref.getAuthToken();

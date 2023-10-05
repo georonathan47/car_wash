@@ -17,6 +17,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
 
   List<Subscription?> subscriptions=[];
+  List<bool?> updateSubscriptionBool=[false,false,false];
+
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+
 
   Future<void> _pullSubscriptions() async {
     Provider.of<IndexViewModel>(context, listen: false).fetchSubscriptions({});
@@ -64,7 +70,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     else
                       for(int i=0;i<subscriptions.length;i++)
                         Container(
-                          width: Const.wi(context)/1.5,
+                          width: Const.wi(context)/1.2,
                           child: Card(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,23 +81,122 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                   color: Colors.black,
                                   child: Image.asset('assets/gradient.jpeg'),
                                 ),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('${subscriptions[i]?.title} Package',style: TextStyle(fontWeight: FontWeight.bold),),
-                                      (subscriptions[i]?.is_recurring== SubscriptionType.recurring)
-                                      ? Icon(Icons.refresh)
-                                      : Container(),
-                                    ],
+                                Visibility(
+                                  visible: updateSubscriptionBool[i]==false,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('${subscriptions[i]?.title} Package',style: TextStyle(fontWeight: FontWeight.bold),),
+                                        (subscriptions[i]?.is_recurring== SubscriptionType.recurring)
+                                        ? Icon(Icons.refresh)
+                                        : Container(),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('${subscriptions[i]?.price} SAR'),
+                                Visibility(
+                                  visible: updateSubscriptionBool[i]==false,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('${subscriptions[i]?.price} SAR'),
+                                        InkWell(
+                                          onTap: (){
+                                            setState(() {
+                                              _titleController.text='${subscriptions[i]?.title}';
+                                              _priceController.text='${subscriptions[i]?.price}';
+                                              _idController.text='${subscriptions[i]?.id}';
+                                              updateSubscriptionBool[i]=true;
+                                            });
+                                          },
+                                          child: Text('Update',style: TextStyle(fontWeight: FontWeight.bold),),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
+                                Visibility(
+                                  visible: updateSubscriptionBool[i]==true,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+
+                                        TextField(
+                                          controller: _titleController,
+                                          decoration: InputDecoration(
+                                            labelText: 'Title',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        TextField(
+                                          controller: _priceController,
+                                          decoration: InputDecoration(
+                                            labelText: 'Price',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              onTap: (){
+                                                setState(() { updateSubscriptionBool[i]=false; });
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.only(left: 5),
+                                                  child: Text('Cancel',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
+                                              ),
+                                            ),
+
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize: Size(100, 40),
+                                                primary: Const.primaryColor,
+                                                onPrimary: Colors.white,
+                                                textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+                                              ),
+                                              child: Text('Update'),
+                                              onPressed: () async{
+                                                if (_titleController.text.isEmpty) {
+                                                  Const.toastMessage('Title is required.');
+                                                } else if (_priceController.text.isEmpty) {
+                                                  Const.toastMessage('Price is required.');
+                                                } else {
+                                                  Map<String,dynamic> data = {
+                                                    'id': _idController.text,
+                                                    'title': _titleController.text,
+                                                    'price': _priceController.text,
+                                                  };
+                                                  try{
+                                                    Map response=await _indexViewModel.updatePackage(data);
+                                                  }catch(e){
+                                                    print('e');
+                                                  }
+                                                }
+
+                                              },
+                                            ),
+
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),

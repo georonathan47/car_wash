@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       if(cars[x]?.order?.subscription_id!=3)
                                         Icon(Icons.refresh),
-                                      Text('${Const.subscription(cars[x]?.order?.subscription_id)} ',style: TextStyle(fontSize: 20),),
+                                      Text('${cars[x]?.order?.subscription?.title} ',style: TextStyle(fontSize: 20),),
                                     ],
                                   ),
 

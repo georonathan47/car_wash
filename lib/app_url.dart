@@ -32,4 +32,5 @@ class AppUrl {
   static var fetchTasksFromDate = baseUrl + 'fetchTasksFromDate';
   static var fetchTasksFromDates = baseUrl + 'fetchTasksFromDates';
   static var storeNotificationDevice = baseUrl + 'storeNotificationDevice';
+  static var updateSubscription = baseUrl + 'updateSubscription';
 }

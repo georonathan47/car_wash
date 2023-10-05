@@ -38,8 +38,8 @@ class NetworkApiServices extends BaseApiServices {
       */
       https.Response response = await https.post(Uri.parse(url), body: data, headers: {'Authorization': 'Bearer ${token}'});
       var logger = Logger();
-      //logger.d(response.body);
-      logger.d(url);
+      logger.d(response.body);
+      //logger.d(url);
       responseJson = returnResponse(response);
     } catch (e) {
       var logger = Logger();
