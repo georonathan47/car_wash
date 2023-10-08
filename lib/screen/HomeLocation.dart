@@ -1,10 +1,8 @@
-import 'dart:io';
 
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/User.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_google_places/flutter_google_places.dart';
@@ -41,7 +39,7 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
   double lng = 0.0;
   double lat = 0.0;
 
-  static CameraPosition initialCameraPosition = CameraPosition(target: LatLng(37.42796, -122.08574), zoom: 14.0);
+  static CameraPosition initialCameraPosition = const CameraPosition(target: LatLng(37.42796, -122.08574), zoom: 14.0);
 
   User? user;
 
@@ -70,7 +68,7 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
             Marker(
                 markerId: const MarkerId("0"),
                 position: LatLng(lat, long),
-                infoWindow: InfoWindow(title: 'Location')
+                infoWindow: const InfoWindow(title: 'Location')
             )
         );
       });
@@ -96,9 +94,9 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
           color: Const.primaryColor,
           height: double.infinity,
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Card(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -109,8 +107,8 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
                       },
                       child: Container(
                         width: double.infinity,
-                        margin: EdgeInsets.only(bottom: 5,top: 10,left: 10,right: 10),
-                        padding: EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+                        margin: const EdgeInsets.only(bottom: 5,top: 10,left: 10,right: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
                         decoration: BoxDecoration(
                             border: Border.all(
                                 color: Colors.grey.shade500
@@ -121,16 +119,16 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              Icon(Icons.search,color: Colors.grey,),
-                              SizedBox(width: 10,),
-                              Text(_currentAddress == null ?'Search your home location' :_currentAddress!,style: TextStyle(fontSize: 20,color: Colors.grey),),
+                              const Icon(Icons.search,color: Colors.grey,),
+                              const SizedBox(width: 10,),
+                              Text(_currentAddress == null ?'Search your home location' :_currentAddress!,style: const TextStyle(fontSize: 20,color: Colors.grey),),
                             ],
                           ),
                         ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,14 +138,14 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
                             children: [
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
+                                  backgroundColor: Colors.black,
                                 ),
                                 onPressed: () async {
                                   Map data = {
-                                    'long': '${lng}',
-                                    'lat': '${lat}',
+                                    'long': '$lng',
+                                    'lat': '$lat',
                                     'user_id': '${user?.id}',
-                                    'address': '${_currentAddress}',
+                                    'address': '$_currentAddress',
                                   };
                                   try{
                                     dynamic response = await indexViewModel.updateLocation(data);
@@ -172,16 +170,16 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
                         onMapCreated: (GoogleMapController controller) {
                           googleMapController = controller;
                         },
-                        circles: Set.from([
+                        circles: {
                           Circle(
-                            circleId: CircleId("1"),
+                            circleId: const CircleId("1"),
                             center: LatLng(lat, lng),
                             radius: 1000, // 1000 meters
                             fillColor: Colors.blue.withOpacity(0.3),
                             strokeColor: Colors.blue,
                             strokeWidth: 2,
                           )
-                        ]),
+                        },
                       ),
                     )
                   ],
@@ -202,12 +200,12 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
         language: 'en',
         strictbounds: false,
         types: [""],
-        logo: SizedBox(),
+        logo: const SizedBox(),
         decoration: InputDecoration(
             hintText: 'Search your home location',
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: Colors.white))
+                borderSide: const BorderSide(color: Colors.white))
         ),
         components: [
           Component(Component.country, "pk"),
@@ -249,15 +247,15 @@ class _HomeLocationScreenState extends State<HomeLocationScreen> {
   Widget fakeInput(String title){
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(bottom: 5),
-      padding: EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+      margin: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
       decoration: BoxDecoration(
           border: Border.all(
               color: Colors.grey.shade500
           ),
           borderRadius: BorderRadius.circular(5)
       ),
-      child: Text(title,style: TextStyle(fontSize: 17),),
+      child: Text(title,style: const TextStyle(fontSize: 17),),
     );
   }
 

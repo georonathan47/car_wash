@@ -1,6 +1,5 @@
 import 'package:carwash/model/Customer.dart';
 import 'package:carwash/model/Order.dart';
-import 'package:carwash/model/User.dart';
 
 class Car {
   final int? id;

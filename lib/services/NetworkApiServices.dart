@@ -13,7 +13,7 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future getPostApiResponse(String url, dynamic data) async {
     try {
-      final ioc = new HttpClient();
+      final ioc = HttpClient();
       ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       https.Response response = await https.post(
         Uri.parse(url),
@@ -36,14 +36,14 @@ class NetworkApiServices extends BaseApiServices {
       /*final ioc = new HttpClient();
       ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       */
-      https.Response response = await https.post(Uri.parse(url), body: data, headers: {'Authorization': 'Bearer ${token}'});
+      https.Response response = await https.post(Uri.parse(url), body: data, headers: {'Authorization': 'Bearer $token'});
       var logger = Logger();
       logger.d(response.body);
       //logger.d(url);
       responseJson = returnResponse(response);
     } catch (e) {
       var logger = Logger();
-      logger.d('${e.toString()}');
+      logger.d(e.toString());
     }
     return responseJson;
   }

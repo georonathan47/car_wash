@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class SubscribeProduct extends StatelessWidget {
   final Product product;
 
-  SubscribeProduct(this.product);
+  const SubscribeProduct(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class SubscribeProduct extends StatelessWidget {
             children: [
               Container(
                 height: Const.hi(context)/3,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/car_wash.jpeg'),
                     fit: BoxFit.cover,
@@ -30,13 +30,13 @@ class SubscribeProduct extends StatelessWidget {
                 right: 0,
                 child: Container(
                   color: Const.primaryColor,
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child:Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${product.title}',
-                        style: TextStyle(
+                        product.title,
+                        style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.bold
@@ -44,7 +44,7 @@ class SubscribeProduct extends StatelessWidget {
                       ),
                       Text(
                         '\$${product.price.toStringAsFixed(2)}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                         ),
@@ -56,33 +56,33 @@ class SubscribeProduct extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                TextField(
+                const TextField(
                   decoration: InputDecoration(labelText: 'Make of Car'),
                 ),
-                SizedBox(height: 16),
-                TextField(
+                const SizedBox(height: 16),
+                const TextField(
                   decoration: InputDecoration(labelText: 'Model of Car'),
                 ),
-                SizedBox(height: 16),
-                TextField(
+                const SizedBox(height: 16),
+                const TextField(
                   decoration: InputDecoration(labelText: 'Plate Number'),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     // Implement subscription logic here
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Const.primaryColor, // Set the background color
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32), // Set padding
+                    backgroundColor: Const.primaryColor, // Set the background color
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32), // Set padding
                   ),
-                  child: Text('Subscribe Product'),
+                  child: const Text('Subscribe Product'),
                 ),
               ],
             ),

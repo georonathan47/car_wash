@@ -4,6 +4,8 @@ import 'package:carwash/screen/Layout.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -18,16 +20,16 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final String? token = await ShPref.getAuthToken();
       if (token!='') {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CWLayout()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CWLayout()));
       }else{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LandingPage()));
       }
     });
 
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
     _controller!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {

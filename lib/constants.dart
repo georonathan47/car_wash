@@ -79,7 +79,7 @@ class ShPref{
     prefs.remove(Const.authRole);
     Const.toastMessage('Logout successful');
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-        LoginPage()), (Route<dynamic> route) => false);
+        const LoginPage()), (Route<dynamic> route) => false);
   }
 }
 class Const{
@@ -96,10 +96,10 @@ class Const{
 
   static LoadingIndictorWidtet({size = 20.0}) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: size,
         height: size,
-        child: CircularProgressIndicator(
+        child: const CircularProgressIndicator(
           semanticsLabel: 'Circular progress indicator',
           color: Colors.black,
         ),
@@ -115,7 +115,7 @@ class Const{
     return MediaQuery.of(context).size.height;
   }
   static getReceiptPath(image){
-    return AppUrl.url+'storage/receipt/'+image;
+    return '${AppUrl.url}storage/receipt/'+image;
   }
 
   static appbar(String title){

@@ -2,7 +2,6 @@ import 'package:carwash/model/Car.dart';
 import 'package:carwash/model/Customer.dart';
 import 'package:carwash/model/Subscription.dart';
 import 'package:carwash/model/Task.dart';
-import 'package:carwash/model/User.dart';
 
 class Order {
   final int? id;

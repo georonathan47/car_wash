@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Customer.dart';
-import 'package:carwash/model/Product.dart';
 import 'package:carwash/model/Subscription.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:dio/dio.dart';
@@ -17,7 +16,7 @@ import 'package:carwash/apis/api_response.dart';
 class CreateCar extends StatefulWidget {
 
   final Customer customer;
-  CreateCar({required this.customer});
+  const CreateCar({super.key, required this.customer});
 
   @override
   _CreateCarState createState() => _CreateCarState();
@@ -50,8 +49,8 @@ class _CreateCarState extends State<CreateCar> {
   bool isSelectedFile=false;
 
   void getImage(String type) async {
-    final ImagePicker _picker = ImagePicker();
-    imagePath = await _picker.pickImage(
+    final ImagePicker picker = ImagePicker();
+    imagePath = await picker.pickImage(
       source: (type == 'gallery') ? ImageSource.gallery : ImageSource.camera,
       imageQuality: 100,
       maxHeight: 1000,
@@ -91,38 +90,38 @@ class _CreateCarState extends State<CreateCar> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    subscriptions = _indexViewModel.getSubscriptionList;
-    sundays = _indexViewModel.get4Sundays;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    subscriptions = indexViewModel.getSubscriptionList;
+    sundays = indexViewModel.get4Sundays;
 
     return Scaffold(
       appBar: Const.appbar('Add New Car'),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Car Details',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Divider(),
+            const Divider(),
             TextField(
               controller: makeController,
-              decoration: InputDecoration(labelText: 'Make of Car'),
+              decoration: const InputDecoration(labelText: 'Make of Car'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: modelController,
-              decoration: InputDecoration(labelText: 'Model of Car'),
+              decoration: const InputDecoration(labelText: 'Model of Car'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: plateNumberController,
-              decoration: InputDecoration(labelText: 'Plate Number'),
+              decoration: const InputDecoration(labelText: 'Plate Number'),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
 
             Row(
               mainAxisAlignment: imagePath==null ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
@@ -133,8 +132,8 @@ class _CreateCarState extends State<CreateCar> {
                     : Container(
                   width: Const.wi(context) / 5,
                   height: Const.wi(context) / 5,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.grey, // Color of the dashed border
@@ -153,7 +152,7 @@ class _CreateCarState extends State<CreateCar> {
                   child: Container(
                     width: Const.wi(context) / 10,
                     height: Const.wi(context) / 10,
-                    margin: EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(left: 10),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.grey, // Color of the dashed border
@@ -176,7 +175,7 @@ class _CreateCarState extends State<CreateCar> {
                   child: Container(
                     width: Const.wi(context) / 10,
                     height: Const.wi(context) / 10,
-                    margin: EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(left: 10),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.grey, // Color of the dashed border
@@ -195,7 +194,7 @@ class _CreateCarState extends State<CreateCar> {
 
 
                 (imagePath==null) ? Container() : Container(
-                  padding:EdgeInsets.only(top: 10),
+                  padding:const EdgeInsets.only(top: 10),
                   child: ElevatedButton(
                     onPressed: ()async {
                       setState(() {
@@ -203,30 +202,30 @@ class _CreateCarState extends State<CreateCar> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.grey, // Background color
+                      backgroundColor: Colors.grey, // Background color
                     ),
-                    child: Text('Cancel', style: TextStyle(color: Colors.white)),
+                    child: const Text('Cancel', style: TextStyle(color: Colors.white)),
                   ),
                 ) ,
 
               ],
             ),
 
-            Divider(),
-            SizedBox(height: 16),
-            Text(
+            const Divider(),
+            const SizedBox(height: 16),
+            const Text(
               'Select Subscription:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Divider(),
+            const Divider(),
 
-            if(_indexViewModel.getStatus.status ==  Status.IDLE)...[
-            if(subscriptions.length==0)
+            if(indexViewModel.getStatus.status ==  Status.IDLE)...[
+            if(subscriptions.isEmpty)
               Center(
                 child: Container(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   width: double.infinity,
-                  child: Text('No Subscription',textAlign: TextAlign.center,),
+                  child: const Text('No Subscription',textAlign: TextAlign.center,),
                 ),
               )
             else
@@ -241,16 +240,16 @@ class _CreateCarState extends State<CreateCar> {
                     });
                   },
                 ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             Visibility(
               visible: showTimeWidget,
-              child: Text(
+              child: const Text(
                 'Select Date and Time:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            Divider(),
+            const Divider(),
 
 
             Visibility(
@@ -317,16 +316,16 @@ class _CreateCarState extends State<CreateCar> {
 
 
           ]
-          else if (_indexViewModel.getStatus.status == Status.BUSY)...[
+          else if (indexViewModel.getStatus.status == Status.BUSY)...[
             Container(
               width: Const.wi(context),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child:   Const.LoadingIndictorWidtet(),
             ),
           ],
 
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -367,11 +366,11 @@ class _CreateCarState extends State<CreateCar> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.black, // Set background color to black
+                    backgroundColor: Colors.black, // Set background color to black
                   ),
                   child: Text(
                     _isLoading?'Processing':'Submit',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],
@@ -384,7 +383,7 @@ class _CreateCarState extends State<CreateCar> {
 
 
 
-  Dio dio = new Dio();
+  Dio dio = Dio();
   createCar(context,formData) async {
     String authToken=await ShPref.getAuthToken();
     String uploadUrl = AppUrl.createCarSubscription;
@@ -394,7 +393,7 @@ class _CreateCarState extends State<CreateCar> {
       options: Options(
         headers: {
           "Accept": "application/json",
-          'Authorization': "Bearer " + authToken
+          'Authorization': "Bearer $authToken"
         },
         receiveTimeout: 200000,
         sendTimeout: 200000,

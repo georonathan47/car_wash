@@ -3,7 +3,6 @@ import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Car.dart';
 import 'package:carwash/model/Customer.dart';
-import 'package:carwash/model/Task.dart';
 import 'package:carwash/screen/CreateCar.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ import 'package:timeline_list/timeline_model.dart';
 class CustomerDetail extends StatefulWidget {
   final Customer customer;
   final int? carId;
-  CustomerDetail({required this.customer,this.carId=null});
+  const CustomerDetail({super.key, required this.customer,this.carId});
 
   @override
   State<CustomerDetail> createState() => _CustomerDetailState();
@@ -40,8 +39,8 @@ class _CustomerDetailState extends State<CustomerDetail> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    cars=_indexViewModel.getCars;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    cars=indexViewModel.getCars;
 
     return Scaffold(
       appBar: Const.appbar('Details of Car Wash'),
@@ -61,36 +60,36 @@ class _CustomerDetailState extends State<CustomerDetail> {
                     children: [
                       Text(
                         'Name: ${widget.customer.name}',
-                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 5.0),
-                      Container(
+                      const SizedBox(height: 5.0),
+                      SizedBox(
                         width: Const.wi(context)/2,
                         child: Text(
                           'Location: ${widget.customer.location}',
                           overflow: TextOverflow.fade,
-                          style: TextStyle(fontSize: 16.0),
+                          style: const TextStyle(fontSize: 16.0),
                         ),
                       ),
-                      SizedBox(height: 5.0),
+                      const SizedBox(height: 5.0),
                       Text(
                         'Phone: ${widget.customer.phone}',
-                        style: TextStyle(fontSize: 16.0),
+                        style: const TextStyle(fontSize: 16.0),
                       ),
 
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(right: 16.0),
+                  margin: const EdgeInsets.only(right: 16.0),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => CreateCar(customer: widget.customer,))).then((value) => _pullCars());
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.black, // Background color
+                      backgroundColor: Colors.black, // Background color
                     ),
-                    child: Text('Add Car', style: TextStyle(color: Colors.white)),
+                    child: const Text('Add Car', style: TextStyle(color: Colors.white)),
                   ),
                 ),
 
@@ -98,10 +97,10 @@ class _CustomerDetailState extends State<CustomerDetail> {
             ),
             Column(
               children: [
-                if(_indexViewModel.getStatus.status ==  Status.IDLE)
-                  if(cars.length==0)
-                    Center(
-                      child: Container(
+                if(indexViewModel.getStatus.status ==  Status.IDLE)
+                  if(cars.isEmpty)
+                    const Center(
+                      child: SizedBox(
                         width: double.infinity,
                         child: Text('No Cars',textAlign: TextAlign.center,),
                       ),
@@ -110,10 +109,10 @@ class _CustomerDetailState extends State<CustomerDetail> {
                     for(int i=0;i<cars.length;i++)
                       Card(
                         elevation: 3.0,
-                        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Container(
                           width: Const.wi(context),
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,19 +123,19 @@ class _CustomerDetailState extends State<CustomerDetail> {
 
                                   Column(
                                     children: [
-                                      Text('Make',style: TextStyle(fontWeight: FontWeight.bold),),
+                                      const Text('Make',style: TextStyle(fontWeight: FontWeight.bold),),
                                       Text('${cars[i]?.make}'),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      Text('Model',style: TextStyle(fontWeight: FontWeight.bold),),
+                                      const Text('Model',style: TextStyle(fontWeight: FontWeight.bold),),
                                       Text('${cars[i]?.model}'),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      Text('Plate No.',style: TextStyle(fontWeight: FontWeight.bold),),
+                                      const Text('Plate No.',style: TextStyle(fontWeight: FontWeight.bold),),
                                       Text('${cars[i]?.plate}'),
                                     ],
                                   ),
@@ -146,16 +145,17 @@ class _CustomerDetailState extends State<CustomerDetail> {
 
                               (cars[i]?.image == null)? Container():
                               Container(
-                                padding: EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(10),
                                 child: Center(
                                   child: Image.network('${AppUrl.url}storage/car/${cars[i]?.image}',width: 100,),
                                 )
                               ),
 
-                              Divider(),
-                              (cars[i]?.order?.tasks?.length == 0)
-                                  ? Container()
-                                  : Container(
+                              const Divider(),
+                              // (cars[i]?.order?.tasks.isEmpty)
+                              //     ? Container()
+                              //     :
+                                  SizedBox(
                                     height: Const.hi(context)/2,
                                     child: Timeline(
                                       lineColor:Colors.black,
@@ -163,7 +163,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                         for (int x = 0; x < (cars[i]?.order?.tasks?.length ?? 0); x++)
                                           TimelineModel(
                                             Container(
-                                              margin: EdgeInsets.only(top: 20),
+                                              margin: const EdgeInsets.only(top: 20),
                                             height: 100,
                                             child: Row(
                                               children: [
@@ -172,7 +172,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Container(
-                                                      padding: EdgeInsets.only(bottom: 10),
+                                                      padding: const EdgeInsets.only(bottom: 10),
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
@@ -181,13 +181,13 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                                         ],
                                                       )
                                                     ),
-                                                    (cars[i]?.order?.tasks?[x].images?.length == 0) ? Container() :
+                                                    // (cars[i]?.order?.tasks?[x].images.isEmpty) ? Container() :
                                                     SingleChildScrollView(
                                                       scrollDirection: Axis.horizontal,
                                                       child: Row(
                                                         children: [
                                                           for (int ii = 0; ii < (cars[i]?.order?.tasks?[x].images?.length ?? 0); ii++)
-                                                            Container(
+                                                            SizedBox(
                                                               width: Const.wi(context)/8,
                                                               height: Const.wi(context)/8,
                                                               child: Image.network('${cars[i]?.order?.tasks?[x].images?[ii]}'),
@@ -198,12 +198,12 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                                     ),
                                                   ],
                                                 ),
-                                                Spacer(),
+                                                const Spacer(),
                                                 Icon(Icons.check_circle_outline,color: cars[i]?.order?.tasks?[x].status == TaskStatus.pending ? Colors.black: Colors.green,),
                                               ],
                                             ),
                                           ),
-                                          icon: Icon(Icons.receipt,color: Colors.white,),
+                                          icon: const Icon(Icons.receipt,color: Colors.white,),
                                           iconBackground: cars[i]?.order?.tasks?[x].status == TaskStatus.pending ? Colors.black: Colors.green,
                                         ),
                                       ],
@@ -212,7 +212,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                       iconSize: 25,
                                     ),
                                   ),
-                              Divider(),
+                              const Divider(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -221,7 +221,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                       Text('Subscription : ${cars[i]?.order?.subscription?.title}'),
                                       (cars[i]?.order?.subscription?.is_recurring == SubscriptionType.oneTime)
                                           ? Container()
-                                          : Icon(Icons.refresh)
+                                          : const Icon(Icons.refresh)
                                     ],
                                   ),
                                   ((cars[i]?.order?.subscription?.is_recurring == SubscriptionType.recurring) && cars[i]?.order?.renew_on!=null)
@@ -236,20 +236,20 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                   : Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Divider(),
-                                      Text('Receipt Image',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                                      const Divider(),
+                                      const Text('Receipt Image',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                                       Image.network(
                                         Const.getReceiptPath(cars[i]?.order?.receipt),width: Const.wi(context)/2,
                                         errorBuilder: (context, error, stackTrace) {
                                           return Container(
-                                            child: Text('Not Found'),
+                                            child: const Text('Not Found'),
                                           );
                                         },
                                       )
                                     ],
                                   ),
 
-                              Divider(),
+                              const Divider(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -257,24 +257,24 @@ class _CustomerDetailState extends State<CustomerDetail> {
                                     onPressed: () {
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: cars[i]?.order?.payment == OrderPayment.pending? Colors.red : Colors.green, // Background color
+                                      backgroundColor: cars[i]?.order?.payment == OrderPayment.pending? Colors.red : Colors.green, // Background color
                                     ),
                                     child:
                                     cars[i]?.order?.payment == OrderPayment.pending
-                                      ? Text('Payment Pending')
-                                      : Text('Payment Done'),
+                                      ? const Text('Payment Pending')
+                                      : const Text('Payment Done'),
                                   ),
                                   cars[i]?.order?.subscription?.is_recurring == SubscriptionType.recurring
                                   ?
                                   ElevatedButton(
                                     onPressed: () async{
-                                      dynamic response=await _indexViewModel.cancelSubscription({'id':'${ cars[i]?.order?.id}'});
+                                      dynamic response=await indexViewModel.cancelSubscription({'id':'${ cars[i]?.order?.id}'});
                                       print(response);
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // Background color
+                                      backgroundColor: Colors.red, // Background color
                                     ),
-                                    child: Text('Cancel Subscription'),
+                                    child: const Text('Cancel Subscription'),
                                   ):Container(),
                                 ],
                               ),
@@ -282,8 +282,8 @@ class _CustomerDetailState extends State<CustomerDetail> {
                           ),
                         ),
                       )
-                else if (_indexViewModel.getStatus.status == Status.BUSY)
-                  Container(
+                else if (indexViewModel.getStatus.status == Status.BUSY)
+                  SizedBox(
                     width: Const.wi(context),
                     child:   Const.LoadingIndictorWidtet(),
                   ),

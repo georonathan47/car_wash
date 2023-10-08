@@ -1,11 +1,10 @@
-import 'dart:convert';
 
 import 'package:carwash/apis/api_response.dart';
 import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Activity.dart';
 import 'package:carwash/model/Expense.dart';
-import 'package:carwash/model/TaskCount.dart';
+// import 'package:carwash/model/TaskCount.dart';
 import 'package:carwash/model/Trx.dart';
 import 'package:carwash/model/Car.dart';
 import 'package:carwash/model/Customer.dart';
@@ -17,10 +16,9 @@ import 'package:carwash/model/User.dart';
 import 'package:carwash/services/BaseApiServices.dart';
 import 'package:carwash/services/NetworkApiServices.dart';
 import 'package:flutter/foundation.dart';
-import 'package:logger/logger.dart';
 
 class IndexViewModel extends ChangeNotifier {
-  BaseApiServices _apiServices = NetworkApiServices();
+  final BaseApiServices _apiServices = NetworkApiServices();
 
   ApiResponse _getStatus=ApiResponse();
   ApiResponse get getStatus => _getStatus;
@@ -40,7 +38,7 @@ class IndexViewModel extends ChangeNotifier {
       List<Customer?> customers=[];
       response['data'].forEach((item) {
         //item['created_at']=NpDateTime.fromJson(item['created_at']);
-        print('item ${item}');
+        print('item $item');
         customers.add(Customer.fromJson(item));
       });
       _getStatus = ApiResponse.completed(customers);
@@ -167,23 +165,23 @@ class IndexViewModel extends ChangeNotifier {
     try{
       _getStatus = ApiResponse.loading('Fetching tasks list');
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchTasks, data, authToken);
-      List<TaskWithDate> _taskWithDate=[];
+      List<TaskWithDate> taskWithDate=[];
       response['data'].forEach((index,item) {
-        List<Task> _tasks=[];
+        List<Task> tasks=[];
         item.forEach((task){
           task['order']['user']=Customer.fromJson(task['order']['car']['user']);
           task['order']['car']['user']=Customer();
           task['order']['car']=Car.fromJson(task['order']['car']);
           task['order']['subscription']=Subscription.fromJson(task['order']['subscription']);
           task['order']=Order.fromJson(task['order']);
-          Task _t=Task.fromJson(task);
+          Task t=Task.fromJson(task);
           //Task _t=Task();
-          _tasks.add(_t);
+          tasks.add(t);
         });
-        _taskWithDate.add(TaskWithDate(date: index,tasks:_tasks ));
+        taskWithDate.add(TaskWithDate(date: index,tasks:tasks ));
       });
-      _getStatus = ApiResponse.completed(_taskWithDate);
-      _getTasksList=_taskWithDate;
+      _getStatus = ApiResponse.completed(taskWithDate);
+      _getTasksList=taskWithDate;
       notifyListeners();
     }catch(e){
       _getStatus = ApiResponse.error('Please try again.!');
@@ -203,7 +201,7 @@ class IndexViewModel extends ChangeNotifier {
     try{
       _getStatus = ApiResponse.loading('Fetching my cars list');
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchMyCars, data, authToken);
-      List<Car?> _cars=[];
+      List<Car?> cars=[];
       response['data'].forEach((item) {
         dynamic jsonSubscription=item['order']['subscription'];
         item['order']['subscription']=Subscription(
@@ -211,14 +209,14 @@ class IndexViewModel extends ChangeNotifier {
             is_recurring: jsonSubscription['is_recurring']);
         item['order']=Order.fromJson(item['order']);
         item['user']=Customer.fromJson(item['user']);
-        _cars.add(Car.fromJson(item));
+        cars.add(Car.fromJson(item));
       });
 
 
 
 
-      _getStatus = ApiResponse.completed(_cars);
-      _getMyCars=_cars;
+      _getStatus = ApiResponse.completed(cars);
+      _getMyCars=cars;
       notifyListeners();
     }catch(e){
       _getStatus = ApiResponse.error('Please try again.!');
@@ -242,23 +240,23 @@ class IndexViewModel extends ChangeNotifier {
       _getStatus = ApiResponse.loading('Fetching task');
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchTask, data, authToken);
       response=response['data'];
-      Task? _tsk=new Task();
+      Task? tsk=Task();
 
 
-      List<String> _images=[];
+      List<String> images=[];
       if(response['images']!='[]'){
         response['images'].forEach((image){
-          _images.add(AppUrl.url+'storage/tasks/'+image);
+          images.add('${AppUrl.url}storage/tasks/'+image);
         });
       }
-      response['images']=_images;
+      response['images']=images;
       response['order']['user']=Customer.fromJson(response['order']['car']['user']);
       response['order']['car']['user']=Customer();
       response['order']['car']=Car.fromJson(response['order']['car']);
       response['order']=Order.fromJson(response['order']);
-      _tsk=Task.fromJson(response);
-      _getStatus = ApiResponse.completed(_tsk);
-      _getTask=_tsk;
+      tsk=Task.fromJson(response);
+      _getStatus = ApiResponse.completed(tsk);
+      _getTask=tsk;
       notifyListeners();
     }catch(e){
       _getStatus = ApiResponse.error('Please try again.!');
@@ -291,19 +289,19 @@ class IndexViewModel extends ChangeNotifier {
         _getInvoiceList=orders;
       }else if(type=='pending'){
         List<Order?> filteringOrders=[];
-        orders.forEach((element) { 
+        for (var element in orders) {
           if(element?.payment == OrderPayment.pending){
             filteringOrders.add(element);
           }
-        });
+        }
         _getInvoiceList=filteringOrders;
       }else if(type=='complete'){
         List<Order?> filteringOrders=[];
-        orders.forEach((element) { 
+        for (var element in orders) {
           if(element?.payment == OrderPayment.complete){
             filteringOrders.add(element);
           }
-        });
+        }
         _getInvoiceList=filteringOrders;
       }else{
         _getInvoiceList=orders;
@@ -329,21 +327,21 @@ class IndexViewModel extends ChangeNotifier {
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchCars, data, authToken);
       List<Car?> sub=[];
       response['data'].forEach((item) {
-        List<Task> _tasks=[];
+        List<Task> tasks=[];
 
         item['order']['tasks'].forEach((it) {
-          List<String> _images=[];
+          List<String> images=[];
           if(it['images']!='[]'){
             it['images'].forEach((image){
-              _images.add(AppUrl.url+'storage/tasks/'+image);
+              images.add('${AppUrl.url}storage/tasks/'+image);
             });
           }
-          it['images']=_images;
+          it['images']=images;
 
           Task task=Task.fromJson(it);
-          _tasks.add(task);
+          tasks.add(task);
         });
-        item['order']['tasks']=_tasks;
+        item['order']['tasks']=tasks;
         item['order']['subscription']=Subscription.fromJson(item['order']['subscription']);
         item['order']=Order.fromJson(item['order']);
         Car car=Car.fromJson(item);
@@ -377,9 +375,9 @@ class IndexViewModel extends ChangeNotifier {
     try{
       _getStatus = ApiResponse.loading('Fetching auth user');
       dynamic response = await _apiServices.getPostAuthApiResponse(AppUrl.fetchUser, {}, authToken);
-      User? _user= User.fromJson(response['data']);
-      _getStatus = ApiResponse.completed(_user);
-      _getUser=_user;
+      User? user= User.fromJson(response['data']);
+      _getStatus = ApiResponse.completed(user);
+      _getUser=user;
       notifyListeners();
     }catch(e){
       _getStatus = ApiResponse.error('Please try again.!');
@@ -389,8 +387,8 @@ class IndexViewModel extends ChangeNotifier {
   ///////////////////////////////////////////////////////
   List<String>? _get4Sundays=[];
   List<String>? get get4Sundays => _get4Sundays;
-  void set4Sundays(List<String> _sundays) {
-    _get4Sundays = _sundays;
+  void set4Sundays(List<String> sundays) {
+    _get4Sundays = sundays;
     notifyListeners();
   }
   Future fetch4Sundays() async {
@@ -416,8 +414,8 @@ class IndexViewModel extends ChangeNotifier {
   ///////////////////////////////////////////////////////
   List<Task>? _getTaskByDate=[];
   List<Task>? get getTaskByDate => _getTaskByDate;
-  void setTaskByDate(List<Task> _t) {
-    _getTaskByDate = _t;
+  void setTaskByDate(List<Task> t) {
+    _getTaskByDate = t;
     notifyListeners();
   }
   Future fetchTaskByDate(data) async {
@@ -436,8 +434,8 @@ class IndexViewModel extends ChangeNotifier {
         item['order']=Order(price: jsonOrder['price'],
             car: Car(make: jsonCar['make'],model: jsonCar['model'],plate: jsonCar['plate']),
             user: Customer(id: jsonUser['id'],name: jsonUser['name']));
-        Task _task=Task.fromJson(item);
-        tasks.add(_task);
+        Task task=Task.fromJson(item);
+        tasks.add(task);
       });
       _getStatus = ApiResponse.completed(tasks);
       _getTaskByDate=tasks;
@@ -453,8 +451,8 @@ class IndexViewModel extends ChangeNotifier {
   ///////////////////////////////////////////////////////
   List<TaskCount>? _getTaskCount=[];
   List<TaskCount>? get getTaskCount => _getTaskCount;
-  void setTaskCount(List<TaskCount> _t) {
-    _getTaskCount = _t;
+  void setTaskCount(List<TaskCount> t) {
+    _getTaskCount = t;
     notifyListeners();
   }
   Future fetchTaskCount() async {
@@ -465,7 +463,7 @@ class IndexViewModel extends ChangeNotifier {
       List<TaskCount>? tasks=[];
       response['data'].forEach((item){
         print(item);
-        tasks.add(TaskCount(date: item['task_date'],count: item['task_count']));
+        // tasks.add(TaskCount(date: item['task_date'],count: item['task_count']));
       });
       _getStatus = ApiResponse.completed(tasks);
       _getTaskCount=tasks;
@@ -501,7 +499,7 @@ class IndexViewModel extends ChangeNotifier {
     try{
       dynamic response = await _apiServices.getPostApiResponse(AppUrl.login, data);
       //Const.toastMessage(response['message']);
-      print('object ${response}');
+      print('object $response');
       return response;
     }catch(e){
       Const.toastMessage(e.toString());
@@ -510,7 +508,7 @@ class IndexViewModel extends ChangeNotifier {
   Future updateUser(dynamic data) async {
     try{
       dynamic response = await _apiServices.getPostApiResponse(AppUrl.updateUser, data);
-      print('object ${response}');
+      print('object $response');
       return response;
     }catch(e){
       Const.toastMessage(e.toString());
@@ -632,7 +630,7 @@ class IndexViewModel extends ChangeNotifier {
   }
   Future storeDeviceId(deviceId) async {
     String authToken= await ShPref.getAuthToken();
-    print('deviceId ${deviceId}');
+    print('deviceId $deviceId');
     if(deviceId != null){
       try{
         dynamic data={'device_id':deviceId};
@@ -645,4 +643,7 @@ class IndexViewModel extends ChangeNotifier {
     }
   }
 
+}
+
+class TaskCount {
 }

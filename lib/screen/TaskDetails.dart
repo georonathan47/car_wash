@@ -17,7 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class TaskScreen extends StatefulWidget {
   final Task? task;
-  TaskScreen({required this.task});
+  const TaskScreen({super.key, required this.task});
 
   @override
   State<TaskScreen> createState() => _TaskScreenState();
@@ -25,7 +25,7 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> {
 
-  
+
   Task? task;
   Future<void> _pullTask() async {
     Provider.of<IndexViewModel>(this.context, listen: false).setTask(Task());
@@ -37,8 +37,8 @@ class _TaskScreenState extends State<TaskScreen> {
   String? selectedImageType;
 
   void getImage(String type) async {
-    final ImagePicker _picker = ImagePicker();
-    imagePath = await _picker.pickImage(
+    final ImagePicker picker = ImagePicker();
+    imagePath = await picker.pickImage(
       source: (type == 'gallery') ? ImageSource.gallery : ImageSource.camera,
       imageQuality: 100,
       maxHeight: 1000,
@@ -68,8 +68,8 @@ class _TaskScreenState extends State<TaskScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    task=_indexViewModel.getTask;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    task=indexViewModel.getTask;
 
     return Scaffold(
       appBar: Const.appbar('Task Details'),
@@ -77,34 +77,34 @@ class _TaskScreenState extends State<TaskScreen> {
         onRefresh: ()async{
           await _pullTask();
         },
-        child: Container(
+        child: SizedBox(
           width: Const.wi(context),
           height: Const.hi(context),
           child: ListView(
             children: [
               Container(
                 width: double.infinity,
-                padding:EdgeInsets.all(10),
+                padding:const EdgeInsets.all(10),
                 child: Card(
                   child: Container(
-                    padding:EdgeInsets.all(10),
+                    padding:const EdgeInsets.all(10),
                     child:
 
-                    (_indexViewModel.getStatus.status == Status.IDLE)
+                    (indexViewModel.getStatus.status == Status.IDLE)
                     ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Customer :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
-                        Divider(),
+                        const Text('Customer :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
+                        const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${task?.order?.user?.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
+                            Text('${task?.order?.user?.name}',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
                             InkWell(
                               onTap: () async{
                                 String phone='${task?.order?.user?.phone}';
                                 try{
-                                  final call = Uri.parse('tel:${phone}');
+                                  final call = Uri.parse('tel:$phone');
                                   if (await canLaunchUrl(call)) {
                                     launchUrl(call);
                                   } else {
@@ -118,13 +118,13 @@ class _TaskScreenState extends State<TaskScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Row(
                           children: [
                             Icon(Icons.pin_drop,size:20,
                                 color: task?.order?.user?.long == null ? Colors.red : Colors.green
                             ),
-                            Container(
+                            SizedBox(
                               width: Const.wi(context)/1.3,
                               child: InkWell(
                                 onTap: (){
@@ -147,18 +147,18 @@ class _TaskScreenState extends State<TaskScreen> {
                             )
                           ],
                         ),
-                        SizedBox(height: 50,),
-                        Text('Car Details :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
-                        Divider(),
+                        const SizedBox(height: 50,),
+                        const Text('Car Details :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
+                        const Divider(),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${task?.order?.car?.make}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
-                            Text('${task?.order?.car?.model}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
+                            Text('${task?.order?.car?.make}',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
+                            Text('${task?.order?.car?.model}',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -167,11 +167,11 @@ class _TaskScreenState extends State<TaskScreen> {
                         ),
 
 
-                        SizedBox(height: 50,),
-                        Text('Payment Details :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
-                        Divider(),
+                        const SizedBox(height: 50,),
+                        const Text('Payment Details :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
+                        const Divider(),
                         Text('Order # ${task?.order?.id.toString().padLeft(4, '0')}'),
-                        Divider(),
+                        const Divider(),
 
                         (task?.order?.payment == OrderPayment.pending)?
                         Row(
@@ -182,8 +182,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ? Container(
                               width: Const.wi(context) / 5,
                               height: Const.wi(context) / 5,
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.grey, // Color of the dashed border
@@ -205,7 +205,7 @@ class _TaskScreenState extends State<TaskScreen> {
                               child: Container(
                                 width: Const.wi(context) / 10,
                                 height: Const.wi(context) / 10,
-                                margin: EdgeInsets.only(left: 10),
+                                margin: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: Colors.grey, // Color of the dashed border
@@ -231,7 +231,7 @@ class _TaskScreenState extends State<TaskScreen> {
                               child: Container(
                                 width: Const.wi(context) / 10,
                                 height: Const.wi(context) / 10,
-                                margin: EdgeInsets.only(left: 10),
+                                margin: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: Colors.grey, // Color of the dashed border
@@ -250,7 +250,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
 
                             (imagePath!=null && selectedImageType=='order') ? Container(
-                              padding:EdgeInsets.only(top: 10),
+                              padding:const EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
                                   setState(() {
@@ -258,21 +258,21 @@ class _TaskScreenState extends State<TaskScreen> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.grey, // Background color
+                                  backgroundColor: Colors.grey, // Background color
                                 ),
-                                child: Text('Cancel', style: TextStyle(color: Colors.white)),
+                                child: const Text('Cancel', style: TextStyle(color: Colors.white)),
                               ),
                             ) :Container(),
                             (imagePath!=null && selectedImageType=='order') ?  Container(
-                              padding:EdgeInsets.only(top: 10),
+                              padding:const EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
                                   uploadFile(context,'receipt',task?.order?.id);
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.black, // Background color
+                                  backgroundColor: Colors.black, // Background color
                                 ),
-                                child: Text('Upload', style: TextStyle(color: Colors.white)),
+                                child: const Text('Upload', style: TextStyle(color: Colors.white)),
                               ),
                             ): Container() ,
 
@@ -295,40 +295,40 @@ class _TaskScreenState extends State<TaskScreen> {
 
                         task?.order?.payment == OrderPayment.pending
                             ? Container(
-                                margin: EdgeInsets.only(right: 16.0),
+                                margin: const EdgeInsets.only(right: 16.0),
                                 child: ElevatedButton(
                                   onPressed: ()async {
-                                    await _indexViewModel.markPaymentAsDone({'id':'${task?.order?.id}'});
+                                    await indexViewModel.markPaymentAsDone({'id':'${task?.order?.id}'});
                                     _pullTask();
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.black, // Background color
+                                    backgroundColor: Colors.black, // Background color
                                   ),
-                                  child: Text('Mark Order # ${task?.order?.id.toString().padLeft(4, '0')} as Paid', style: TextStyle(color: Colors.white)),
+                                  child: Text('Mark Order # ${task?.order?.id.toString().padLeft(4, '0')} as Paid', style: const TextStyle(color: Colors.white)),
                                 ),
                               )
                             : Container(
-                                margin: EdgeInsets.only(right: 16.0),
+                                margin: const EdgeInsets.only(right: 16.0),
                                 child: ElevatedButton(
                                   onPressed: (){
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.grey, // Background color
+                                    backgroundColor: Colors.grey, // Background color
                                   ),
-                                  child: Text('Order was marked as paid on ${task?.order?.payment_date}', style: TextStyle(color: Colors.white)),
+                                  child: Text('Order was marked as paid on ${task?.order?.payment_date}', style: const TextStyle(color: Colors.white)),
                                 ),
                               ),
 
-                        SizedBox(height: 50,),
-                        Text('Car Wash Status :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
-                        Divider(),
+                        const SizedBox(height: 50,),
+                        const Text('Car Wash Status :',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.blueGrey),),
+                        const Divider(),
                         task?.status == TaskStatus.pending
-                            ? Text('If you have washed the car. You can mark this car as washed.')
-                            : Text('This car was marked as washed'),
+                            ? const Text('If you have washed the car. You can mark this car as washed.')
+                            : const Text('This car was marked as washed'),
 
 
 
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
 
 
                         (task?.status == TaskStatus.pending)
@@ -341,8 +341,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ? Container(
                               width: Const.wi(context) / 5,
                               height: Const.wi(context) / 5,
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.grey, // Color of the dashed border
@@ -364,7 +364,7 @@ class _TaskScreenState extends State<TaskScreen> {
                               child: Container(
                                 width: Const.wi(context) / 10,
                                 height: Const.wi(context) / 10,
-                                margin: EdgeInsets.only(left: 10),
+                                margin: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: Colors.grey, // Color of the dashed border
@@ -390,7 +390,7 @@ class _TaskScreenState extends State<TaskScreen> {
                               child: Container(
                                 width: Const.wi(context) / 10,
                                 height: Const.wi(context) / 10,
-                                margin: EdgeInsets.only(left: 10),
+                                margin: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: Colors.grey, // Color of the dashed border
@@ -410,7 +410,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
                             (imagePath!=null && selectedImageType=='task') ?  Container(
 
-                            padding:EdgeInsets.only(top: 10),
+                            padding:const EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
                                   setState(() {
@@ -418,22 +418,22 @@ class _TaskScreenState extends State<TaskScreen> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.grey, // Background color
+                                  backgroundColor: Colors.grey, // Background color
                                 ),
-                                child: Text('Cancel', style: TextStyle(color: Colors.white)),
+                                child: const Text('Cancel', style: TextStyle(color: Colors.white)),
                               ),
                             ) :Container(),
                             (imagePath!=null && selectedImageType=='task') ?  Container(
 
-                              padding:EdgeInsets.only(top: 10),
+                              padding:const EdgeInsets.only(top: 10),
                               child: ElevatedButton(
                                 onPressed: ()async {
                                   uploadFile(context,'task',task?.id);
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.black, // Background color
+                                  backgroundColor: Colors.black, // Background color
                                 ),
-                                child: Text('Upload', style: TextStyle(color: Colors.white)),
+                                child: const Text('Upload', style: TextStyle(color: Colors.white)),
                               ),
                             ) :Container(),
 
@@ -446,18 +446,18 @@ class _TaskScreenState extends State<TaskScreen> {
                               : Container()
                             : Container(),
 
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
 
-                        (task!.images!.length == 0) ? Container() :
+                        (task!.images!.isEmpty) ? Container() :
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children:[
                               for(int f=0;f< task!.images!.length; f++)
-                                Container(
+                                SizedBox(
                                   width: Const.wi(context)/3,
                                   height: Const.wi(context)/3,
-                                  child: Image.network('${task!.images![f]}'),
+                                  child: Image.network(task!.images![f]),
                                   //child: Text('${task!.images![f]}'),
                                 ),
                             ],
@@ -469,37 +469,37 @@ class _TaskScreenState extends State<TaskScreen> {
 
 
 
-                        SizedBox(height: 10,),
-                        Divider(),
+                        const SizedBox(height: 10,),
+                        const Divider(),
 
-                        task?.status == TaskStatus.pending && task!.images!.length > 0
+                        task?.status == TaskStatus.pending && task!.images!.isNotEmpty
                             ? (authRole == Role.technician)? Container(
-                                margin: EdgeInsets.only(right: 16.0),
+                                margin: const EdgeInsets.only(right: 16.0),
                                 child: ElevatedButton(
                                   onPressed: ()async {
-                                    await _indexViewModel.taskMarkAsDone({'id':'${task?.id}'});
+                                    await indexViewModel.taskMarkAsDone({'id':'${task?.id}'});
                                     _pullTask();
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue, // Background color
+                                    backgroundColor: Colors.blue, // Background color
                                   ),
-                                  child: Text('Mark as washed', style: TextStyle(color: Colors.white)),
+                                  child: const Text('Mark as washed', style: TextStyle(color: Colors.white)),
                                 ),
                               ): Container()
                             : Container(
-                                margin: EdgeInsets.only(right: 16.0),
+                                margin: const EdgeInsets.only(right: 16.0),
                                 child: ElevatedButton(
                                   onPressed: (){
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.grey, // Background color
+                                    backgroundColor: Colors.grey, // Background color
                                   ),
-                                  child: Text(task!.images!.length==0 ?'Upload images first to mark as washed' :'Marked as Washed' , style: TextStyle(color: Colors.white)),
+                                  child: Text(task!.images!.isEmpty ?'Upload images first to mark as washed' :'Marked as Washed' , style: const TextStyle(color: Colors.white)),
                                 ),
                               ),
                       ],
                     )
-                    : Container(
+                    : SizedBox(
                       height: Const.hi(context)-100,
                       child: Center(
                         child: Const.LoadingIndictorWidtet(),
@@ -519,17 +519,17 @@ class _TaskScreenState extends State<TaskScreen> {
 
 
 
-  Dio dio = new Dio();
+  Dio dio = Dio();
   uploadFile(context,type,id) async {
     String authToken=await ShPref.getAuthToken();
     String uploadUrl = type=='receipt'? AppUrl.uploadReceipt : AppUrl.uploadTaskImage;
-    var formData;
+    FormData? formData;
     if (imagePath != null) {
       String path;
       path = imagePath!.path;
       formData = FormData.fromMap(
         {
-          'id':'${id}',
+          'id':'$id',
           'image': await MultipartFile.fromFile(path, filename: basename(path)),
         },
       );
@@ -543,7 +543,7 @@ class _TaskScreenState extends State<TaskScreen> {
       options: Options(
         headers: {
           "Accept": "application/json",
-          'Authorization': "Bearer " + authToken
+          'Authorization': "Bearer $authToken"
         },
         receiveTimeout: 200000,
         sendTimeout: 200000,

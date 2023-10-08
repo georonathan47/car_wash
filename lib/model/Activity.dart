@@ -1,4 +1,3 @@
-import 'package:carwash/model/Order.dart';
 
 class Activity {
   final int? id;

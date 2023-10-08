@@ -3,7 +3,6 @@ import 'package:carwash/screen/Layout.dart';
 import 'package:carwash/screen/Register.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
       final String? token = await ShPref.getAuthToken();
       if (token!='') {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CWLayout()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CWLayout()));
       }
     });
     super.initState();
@@ -34,19 +33,19 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
 
 
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: Const.hi(context),
         child: ListView(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 40),
+              margin: const EdgeInsets.only(top: 40),
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Image.asset(
                   Const.logo,
                   width: Const.wi(context) / 2,
@@ -61,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
                         controller: _emailController,
                         decoration: InputDecoration(
@@ -72,9 +71,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
                         controller: _passwordController,
                         obscureText: _passwordVisible,
@@ -89,19 +88,17 @@ class _LoginPageState extends State<LoginPage> {
                                 _passwordVisible = !_passwordVisible;
                               });
                             },
-                            child: new Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                            child: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                           ),
                         ),
 
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),
-                        primary: Const.primaryColor,
-                        onPrimary: Colors.white,
-                        textStyle: TextStyle(color: Colors.black, fontSize: 22),
+                        foregroundColor: Colors.white, backgroundColor: Const.primaryColor, minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),
+                        textStyle: const TextStyle(color: Colors.black, fontSize: 22),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
@@ -120,14 +117,14 @@ class _LoginPageState extends State<LoginPage> {
                               'password': _passwordController.text,
                             };
                             try{
-                              Map response=await _indexViewModel.loginApi(data);
+                              Map response=await indexViewModel.loginApi(data);
                               print(response['data']['user']);
                               print(response['data']['token']);
                               ShPref.saveAuthToken(response['data']['token']);
                               ShPref.saveAuthId(response['data']['user']['id']);
                               ShPref.saveAuthRole(response['data']['user']['role']);
 
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CWLayout()));
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CWLayout()));
                             }catch(e){
                               print('e');
                             }
@@ -141,14 +138,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             TextButton(
               onPressed: () {
                 // Navigate to registration page
                 // For example:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
               },
               child: Text("Don't have an account? Register here",style: TextStyle(color: Const.primaryColor),),
             ),

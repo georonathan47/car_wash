@@ -1,6 +1,5 @@
 import 'package:carwash/apis/api_response.dart';
 import 'package:carwash/constants.dart';
-import 'package:carwash/model/Car.dart';
 import 'package:carwash/model/Customer.dart';
 import 'package:carwash/screen/CreateCustomer.dart';
 import 'package:carwash/screen/CustomerDetails.dart';
@@ -9,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CustomerPage extends StatefulWidget {
+  const CustomerPage({super.key});
+
   @override
   State<CustomerPage> createState() => _CustomerPageState();
 }
@@ -35,8 +36,8 @@ class _CustomerPageState extends State<CustomerPage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    customers = _indexViewModel.getCustomerList;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    customers = indexViewModel.getCustomerList;
 
     return Scaffold(
       appBar: Const.appbar('Customers'),
@@ -44,17 +45,17 @@ class _CustomerPageState extends State<CustomerPage> {
         onRefresh: ()async{
           await _pullRefresh();
         },
-        child: Container(
+        child: SizedBox(
           width: Const.wi(context),
           child: ListView(
             children: [
-              if(_indexViewModel.getStatus.status ==  Status.IDLE)
-                if(customers.length==0)
+              if(indexViewModel.getStatus.status ==  Status.IDLE)
+                if(customers.isEmpty)
                   Center(
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       height: Const.hi(context)/1.3,
-                      child: Center(
+                      child: const Center(
                         child: Text('No Customer'),
                       ),
                     ),
@@ -66,17 +67,17 @@ class _CustomerPageState extends State<CustomerPage> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerDetail(customer: customers[x]!,)));
                       },
                       child: Container(
-                        margin: EdgeInsets.only(top: 10,left: 10,right: 10),
+                        margin: const EdgeInsets.only(top: 10,left: 10,right: 10),
                         width: Const.wi(context),
                         child: Card(
                           child: Container(
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('${customers[x]?.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                                    Text('${customers[x]?.name}',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                                     Text('${customers[x]?.phone}'),
                                   ],
                                 ),
@@ -86,8 +87,8 @@ class _CustomerPageState extends State<CustomerPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Icon(Icons.pin_drop_outlined,size: 20,),
-                                        Container(
+                                        const Icon(Icons.pin_drop_outlined,size: 20,),
+                                        SizedBox(
                                           width: Const.wi(context)/2,
                                           child: Text('${customers[x]?.location}'),
                                         ),
@@ -105,8 +106,8 @@ class _CustomerPageState extends State<CustomerPage> {
                         ),
                       ),
                     )
-              else if (_indexViewModel.getStatus.status == Status.BUSY)
-                Container(
+              else if (indexViewModel.getStatus.status == Status.BUSY)
+                SizedBox(
                   width: Const.wi(context),
                   height: Const.hi(context)/1.2,
                   child:   Const.LoadingIndictorWidtet(),
@@ -118,9 +119,9 @@ class _CustomerPageState extends State<CustomerPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Const.primaryColor,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddCustomerPage())).then((value) => _pullRefresh());
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddCustomerPage())).then((value) => _pullRefresh());
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

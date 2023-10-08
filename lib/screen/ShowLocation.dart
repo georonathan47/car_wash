@@ -1,11 +1,7 @@
-import 'dart:io';
 
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/User.dart';
-import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoding/geocoding.dart';
@@ -19,7 +15,7 @@ import 'package:google_api_headers/google_api_headers.dart';
 
 class ShowLocation extends StatefulWidget {
   final User? user;
-  const ShowLocation(this.user);
+  const ShowLocation(this.user, {super.key});
 
   @override
   State<ShowLocation> createState() => _ShowLocationState();
@@ -42,7 +38,7 @@ class _ShowLocationState extends State<ShowLocation> {
   double lng = 0.0;
   double lat = 0.0;
 
-  static CameraPosition initialCameraPosition = CameraPosition(target: LatLng(37.42796, -122.08574), zoom: 14.0);
+  static CameraPosition initialCameraPosition = const CameraPosition(target: LatLng(37.42796, -122.08574), zoom: 14.0);
 
   @override
   void initState() {
@@ -85,9 +81,9 @@ class _ShowLocationState extends State<ShowLocation> {
           color: Const.primaryColor,
           height: double.infinity,
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Card(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -100,16 +96,16 @@ class _ShowLocationState extends State<ShowLocation> {
                         onMapCreated: (GoogleMapController controller) {
                           googleMapController = controller;
                         },
-                        circles: Set.from([
+                        circles: {
                           Circle(
-                            circleId: CircleId("1"),
+                            circleId: const CircleId("1"),
                             center: LatLng(lat, lng),
                             radius: 1000, // 1000 meters
                             fillColor: Colors.blue.withOpacity(0.3),
                             strokeColor: Colors.blue,
                             strokeWidth: 2,
                           )
-                        ]),
+                        },
                       ),
                     )
                   ],
@@ -130,12 +126,12 @@ class _ShowLocationState extends State<ShowLocation> {
         language: 'en',
         strictbounds: false,
         types: [""],
-        logo: SizedBox(),
+        logo: const SizedBox(),
         decoration: InputDecoration(
             hintText: 'Search your home location',
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: Colors.white))
+                borderSide: const BorderSide(color: Colors.white))
         ),
         components: [
           Component(Component.country, "pk"),
@@ -177,15 +173,15 @@ class _ShowLocationState extends State<ShowLocation> {
   Widget fakeInput(String title){
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(bottom: 5),
-      padding: EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+      margin: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
       decoration: BoxDecoration(
           border: Border.all(
               color: Colors.grey.shade500
           ),
           borderRadius: BorderRadius.circular(5)
       ),
-      child: Text(title,style: TextStyle(fontSize: 17),),
+      child: Text(title,style: const TextStyle(fontSize: 17),),
     );
   }
 

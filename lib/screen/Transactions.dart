@@ -1,13 +1,13 @@
 import 'package:carwash/apis/api_response.dart';
 import 'package:carwash/constants.dart';
-import 'package:carwash/model/Activity.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:carwash/model/Trx.dart';
 
 class TransactionsPage extends StatefulWidget {
+  const TransactionsPage({super.key});
+
   @override
   State<TransactionsPage> createState() => _TransactionsPageState();
 }
@@ -29,26 +29,26 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    trx = _indexViewModel.getTrx;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    trx = indexViewModel.getTrx;
 
     return Scaffold(
       appBar: Const.appbar('My Transactions'),
-      body: (_indexViewModel.getStatus.status == Status.IDLE)
-          ? (trx.length==0)
+      body: (indexViewModel.getStatus.status == Status.IDLE)
+          ? (trx.isEmpty)
             ? Container(
-                padding: EdgeInsets.all(30),
-                child: Text('No transactions'),
+                padding: const EdgeInsets.all(30),
+                child: const Text('No transactions'),
               )
             : ListView.builder(
         itemCount: trx.length,
         itemBuilder: (context, index) {
           return Card(
-            margin: EdgeInsets.all(16),
+            margin: const EdgeInsets.all(16),
             child: ListTile(
               title: Text(
                 '${trx[index]?.narration}',
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 10),
@@ -57,11 +57,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   children: [
                     Text(
                       '${trx[index]?.amount} SAR',
-                      style: TextStyle(fontSize: 16, color: Colors.grey,),textAlign: TextAlign.right,
+                      style: const TextStyle(fontSize: 16, color: Colors.grey,),textAlign: TextAlign.right,
                     ),
                     Text(
                       '${trx[index]?.date}',
-                      style: TextStyle(fontSize: 16, color: Colors.grey,),textAlign: TextAlign.right,
+                      style: const TextStyle(fontSize: 16, color: Colors.grey,),textAlign: TextAlign.right,
                     ),
 
                   ],
@@ -71,7 +71,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           );
         },
       )
-          : Container(
+          : SizedBox(
               width: Const.wi(context),
               height: Const.hi(context)/1.3,
               child: Const.LoadingIndictorWidtet(),

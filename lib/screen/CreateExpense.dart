@@ -11,6 +11,8 @@ import 'package:path/path.dart';
 
 
 class CreateExpensePage extends StatefulWidget {
+  const CreateExpensePage({super.key});
+
   @override
   _CreateExpensePageState createState() => _CreateExpensePageState();
 }
@@ -25,8 +27,8 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
   bool isSelectedFile=false;
 
   void getImage(String type) async {
-    final ImagePicker _picker = ImagePicker();
-    imagePath = await _picker.pickImage(
+    final ImagePicker picker = ImagePicker();
+    imagePath = await picker.pickImage(
       source: (type == 'gallery') ? ImageSource.gallery : ImageSource.camera,
       imageQuality: 100,
       maxHeight: 1000,
@@ -54,7 +56,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
 
     return Scaffold(
       appBar: Const.appbar('Create Expense'),
@@ -68,26 +70,26 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  SizedBox(height: 16),
-                  Text('Type the Details of Expense'),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
+                  const Text('Type the Details of Expense'),
+                  const SizedBox(height: 16),
                   TextField(
                     controller:narrationController,
                     maxLines: 5,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         hintText: 'Narration',
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller:amountController,
-                    decoration: InputDecoration(labelText: 'Amount'),
+                    decoration: const InputDecoration(labelText: 'Amount'),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   for(int i=0;i<Const.ExpenseTypes.length;i++)
                     CheckboxListTile(
-                      title: Text('${Const.ExpenseTypes[i]}'),
+                      title: Text(Const.ExpenseTypes[i]),
                       value: Const.ExpenseTypes[i]==typeController.text,
                       onChanged: (value) {
                         setState(() {
@@ -95,7 +97,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                         });
                       },
                     ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
 
                   Row(
@@ -107,8 +109,8 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                           : Container(
                         width: Const.wi(context) / 5,
                         height: Const.wi(context) / 5,
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.only(left: 10),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.grey, // Color of the dashed border
@@ -127,7 +129,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                         child: Container(
                           width: Const.wi(context) / 10,
                           height: Const.wi(context) / 10,
-                          margin: EdgeInsets.only(left: 10),
+                          margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.grey, // Color of the dashed border
@@ -150,7 +152,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                         child: Container(
                           width: Const.wi(context) / 10,
                           height: Const.wi(context) / 10,
-                          margin: EdgeInsets.only(left: 10),
+                          margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.grey, // Color of the dashed border
@@ -169,7 +171,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
 
 
                       (imagePath==null) ? Container() : Container(
-                        padding:EdgeInsets.only(top: 10),
+                        padding:const EdgeInsets.only(top: 10),
                         child: ElevatedButton(
                           onPressed: ()async {
                             setState(() {
@@ -177,9 +179,9 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.grey, // Background color
+                            backgroundColor: Colors.grey, // Background color
                           ),
-                          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+                          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
                         ),
                       ) ,
 
@@ -187,13 +189,13 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                   ),
 
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Const.primaryColor, // Set the background color to black
+                          backgroundColor: Const.primaryColor, // Set the background color to black
                         ),
                         onPressed: ()async {
                           if (typeController.text.isEmpty) {
@@ -234,7 +236,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
 
 
 
-  Dio dio = new Dio();
+  Dio dio = Dio();
   uploadFile(context,formData) async {
     String authToken=await ShPref.getAuthToken();
     String uploadUrl = AppUrl.createExpense;
@@ -244,7 +246,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
       options: Options(
         headers: {
           "Accept": "application/json",
-          'Authorization': "Bearer " + authToken
+          'Authorization': "Bearer $authToken"
         },
         receiveTimeout: 200000,
         sendTimeout: 200000,

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -38,8 +40,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    authUser=_indexViewModel.getUser;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    authUser=indexViewModel.getUser;
     nameController.text='${authUser?.name}';
     emailController.text='${authUser?.email}';
     phoneController.text='${authUser?.phone}';
@@ -50,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return SingleChildScrollView(
       child:
-      (_indexViewModel.getStatus.status == Status.IDLE)?
+      (indexViewModel.getStatus.status == Status.IDLE)?
       Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -59,70 +61,70 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               ((role) !=null)
                 ?Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       color: Colors.amber,
                     borderRadius: BorderRadius.circular(5)
                   ),
-                  child: Text('${role?.toUpperCase()}',style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text('${role?.toUpperCase()}',style: const TextStyle(fontWeight: FontWeight.bold),),
                 )
                 :Container(),
             ],
           ),
-          SizedBox(height: 20),
-          CircleAvatar(
+          const SizedBox(height: 20),
+          const CircleAvatar(
             radius: 60,
             backgroundImage: AssetImage('assets/car_wash.jpeg'), // Replace with user's profile image
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           TextButton(
             onPressed: () {
               // Implement logic to change profile image
             },
             child: /*Text('Change Profile Picture',style: TextStyle(color: Const.primaryColor),)*/ Container(),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 TextField(
                   controller:nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextField(
                   enabled: false,
                   controller:emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Email'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextField(
                   controller:phoneController,
-                  decoration: InputDecoration(labelText: 'Phone'),
+                  decoration: const InputDecoration(labelText: 'Phone'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextField(
                   controller:addressController,
-                  decoration: InputDecoration(labelText: 'Address'),
+                  decoration: const InputDecoration(labelText: 'Address'),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.amber, // Set the background color to black
+                        backgroundColor: Colors.amber, // Set the background color to black
                       ),
                       onPressed: ()async {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeLocationScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeLocationScreen()));
                       },
-                      child: Text('My Google Location'),
+                      child: const Text('My Google Location'),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Const.primaryColor, // Set the background color to black
+                        backgroundColor: Const.primaryColor, // Set the background color to black
                       ),
                       onPressed: ()async {
                         if (nameController.text.isEmpty) {
@@ -133,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Const.toastMessage('Address is required.');
                         } else {
                           Map<String, dynamic> data = {
-                            'user_id':_indexViewModel.getUser?.id.toString(),
+                            'user_id':indexViewModel.getUser?.id.toString(),
                             'email':emailController.text,
                             'name': nameController.text,
                             'phone': phoneController.text,
@@ -142,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           if(!_loading){
                             try{
                               setState(() { _loading=true; });
-                              Map response=await _indexViewModel.editUser(data);
+                              Map response=await indexViewModel.editUser(data);
                             }catch(e){ }
                             setState(() { _loading=true; });
                           }
@@ -156,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ],
-      ): Container(
+      ): SizedBox(
         width: double.infinity,
         height: Const.hi(context)-100,
         child: Center(

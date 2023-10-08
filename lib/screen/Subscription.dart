@@ -1,5 +1,4 @@
 import 'package:carwash/constants.dart';
-import 'package:carwash/model/Product.dart';
 import 'package:carwash/model/Subscription.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,8 @@ import 'package:carwash/apis/api_response.dart';
 
 
 class SubscriptionPage extends StatefulWidget {
+  const SubscriptionPage({super.key});
+
   @override
   _SubscriptionPageState createState() => _SubscriptionPageState();
 }
@@ -45,31 +46,31 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    subscriptions = _indexViewModel.getSubscriptionList;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    subscriptions = indexViewModel.getSubscriptionList;
     return Scaffold(
       appBar: Const.appbar('Packages'),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if(_indexViewModel.getStatus.status ==  Status.IDLE)
-                    if(subscriptions.length==0)
-                      Center(
-                        child: Container(
+                  if(indexViewModel.getStatus.status ==  Status.IDLE)
+                    if(subscriptions.isEmpty)
+                      const Center(
+                        child: SizedBox(
                           width: double.infinity,
                           child: Text('No Subscription',textAlign: TextAlign.center,),
                         ),
                       )
                     else
                       for(int i=0;i<subscriptions.length;i++)
-                        Container(
+                        SizedBox(
                           width: Const.wi(context)/1.2,
                           child: Card(
                             child: Column(
@@ -88,9 +89,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('${subscriptions[i]?.title} Package',style: TextStyle(fontWeight: FontWeight.bold),),
+                                        Text('${subscriptions[i]?.title} Package',style: const TextStyle(fontWeight: FontWeight.bold),),
                                         (subscriptions[i]?.is_recurring== SubscriptionType.recurring)
-                                        ? Icon(Icons.refresh)
+                                        ? const Icon(Icons.refresh)
                                         : Container(),
                                       ],
                                     ),
@@ -113,7 +114,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                               updateSubscriptionBool[i]=true;
                                             });
                                           },
-                                          child: Text('Update',style: TextStyle(fontWeight: FontWeight.bold),),
+                                          child: const Text('Update',style: TextStyle(fontWeight: FontWeight.bold),),
                                         )
                                       ],
                                     ),
@@ -135,7 +136,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 10,),
+                                        const SizedBox(height: 10,),
                                         TextField(
                                           controller: _priceController,
                                           decoration: InputDecoration(
@@ -145,7 +146,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 10,),
+                                        const SizedBox(height: 10,),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
@@ -154,22 +155,20 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                                 setState(() { updateSubscriptionBool[i]=false; });
                                               },
                                               child: Container(
-                                                padding: EdgeInsets.only(left: 5),
-                                                  child: Text('Cancel',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
+                                                padding: const EdgeInsets.only(left: 5),
+                                                  child: const Text('Cancel',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
                                               ),
                                             ),
 
                                             ElevatedButton(
                                               style: ElevatedButton.styleFrom(
-                                                minimumSize: Size(100, 40),
-                                                primary: Const.primaryColor,
-                                                onPrimary: Colors.white,
-                                                textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                                                foregroundColor: Colors.white, backgroundColor: Const.primaryColor, minimumSize: const Size(100, 40),
+                                                textStyle: const TextStyle(color: Colors.black, fontSize: 18),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(5),
                                                 ),
                                               ),
-                                              child: Text('Update'),
+                                              child: const Text('Update'),
                                               onPressed: () async{
                                                 if (_titleController.text.isEmpty) {
                                                   Const.toastMessage('Title is required.');
@@ -182,7 +181,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                                     'price': _priceController.text,
                                                   };
                                                   try{
-                                                    Map response=await _indexViewModel.updatePackage(data);
+                                                    Map response=await indexViewModel.updatePackage(data);
                                                   }catch(e){
                                                     print('e');
                                                   }
@@ -202,8 +201,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                           ),
                         )
 
-                  else if (_indexViewModel.getStatus.status == Status.BUSY)
-                    Container(
+                  else if (indexViewModel.getStatus.status == Status.BUSY)
+                    SizedBox(
                       width: Const.wi(context),
                       child:   Const.LoadingIndictorWidtet(),
                     ),

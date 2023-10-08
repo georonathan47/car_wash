@@ -1,11 +1,12 @@
 import 'package:carwash/constants.dart';
-import 'package:carwash/model/Product.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
 class AddCustomerPage extends StatefulWidget {
+  const AddCustomerPage({super.key});
+
   @override
   _AddCustomerPageState createState() => _AddCustomerPageState();
 }
@@ -30,24 +31,24 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   @override
   Widget build(BuildContext context) {
 
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
 
 
     return Scaffold(
       appBar: Const.appbar('Add Customer'),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Customer Details',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
 
 
-            SizedBox(height: 20),
-            Center(
+            const SizedBox(height: 20),
+            const Center(
               child:CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage('assets/car_wash.jpeg'), // Replace with user's profile image
@@ -55,35 +56,35 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
             ),
 
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             TextField(
               controller: nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: const InputDecoration(labelText: 'Name'),
             ),
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             TextField(
               controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
 
 
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: phoneController,
-              decoration: InputDecoration(labelText: 'Phone'),
+              decoration: const InputDecoration(labelText: 'Phone'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             TextField(
               controller: locationController,
-              decoration: InputDecoration(labelText: 'Location'),
+              decoration: const InputDecoration(labelText: 'Location'),
             ),
 
-            SizedBox(height: 20), // Add spacing between sections
+            const SizedBox(height: 20), // Add spacing between sections
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -106,13 +107,13 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                         'address': locationController.text,
                         'role': Role.customer,
                       };
-                      await _indexViewModel.registerApi(data);
+                      await indexViewModel.registerApi(data);
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.black, // Set background color to black
+                    backgroundColor: Colors.black, // Set background color to black
                   ),
-                  child: Text(
+                  child: const Text(
                     'Create Customer',
                     style: TextStyle(color: Colors.white),
                   ),

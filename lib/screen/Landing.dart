@@ -30,7 +30,7 @@ class _LandingPageState extends State<LandingPage> {
                         child: Container(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -51,37 +51,33 @@ class _LandingPageState extends State<LandingPage> {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: Size((MediaQuery.of(context).size.width / 2.3), 70),
-                                  primary:Const.primaryColor,
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(color: Colors.black, fontSize: 22),
+                                  foregroundColor: Colors.white, backgroundColor: Const.primaryColor, minimumSize: Size((MediaQuery.of(context).size.width / 2.3), 70),
+                                  textStyle: const TextStyle(color: Colors.black, fontSize: 22),
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(50))),
-                              child: Text('Sign Up'),
+                              child: const Text('Sign Up'),
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
                               },
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: Size((Const.wi(context) / 2.3), 70),
-                                  primary: Colors.white,
-                                  onPrimary: Colors.black,
-                                  textStyle: TextStyle(color: Colors.black, fontSize: 22),
+                                  foregroundColor: Colors.black, backgroundColor: Colors.white, minimumSize: Size((Const.wi(context) / 2.3), 70),
+                                  textStyle: const TextStyle(color: Colors.black, fontSize: 22),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50),
                                   ),
                               ),
-                              child: Text('Sign In'),
+                              child: const Text('Sign In'),
                               onPressed: () {
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
                               },
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       )
                     ],

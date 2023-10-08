@@ -6,7 +6,7 @@ import 'package:checkout_sdk_flutter/checkout_sdk_flutter.dart';
 import 'package:provider/provider.dart';
 class PaymentPage extends StatefulWidget {
   final Car? car;
-  PaymentPage({required this.car});
+  const PaymentPage({super.key, required this.car});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -15,7 +15,7 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
 
 
-  var cko = new Checkout(publicKey: Const.CHECKOUT_PUBLIC_KEY);
+  var cko = Checkout(publicKey: Const.CHECKOUT_PUBLIC_KEY);
   bool _loading=false;
 
   checkout()async{
@@ -65,31 +65,31 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
 
-  TextEditingController _cardNumberController = TextEditingController();
-  TextEditingController _expiryMonthController = TextEditingController();
-  TextEditingController _expiryYearController = TextEditingController();
-  TextEditingController _cvvController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cardNumberController = TextEditingController();
+  final TextEditingController _expiryMonthController = TextEditingController();
+  final TextEditingController _expiryYearController = TextEditingController();
+  final TextEditingController _cvvController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Const.appbar('Checkout'),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text('Order # ${widget.car?.order?.id.toString().padLeft(4, '0')}',style: TextStyle(fontSize: 20),),
-              Divider(),
+              Text('Order # ${widget.car?.order?.id.toString().padLeft(4, '0')}',style: const TextStyle(fontSize: 20),),
+              const Divider(),
               Text('Payment of Order # ${widget.car?.order?.id.toString().padLeft(4, '0')} against '
-                  '${widget.car?.make} , ${widget.car?.model} # ${widget.car?.plate}.',style: TextStyle(fontSize: 16),),
+                  '${widget.car?.make} , ${widget.car?.model} # ${widget.car?.plate}.',style: const TextStyle(fontSize: 16),),
 
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: TextField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -101,7 +101,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: TextField(
                   controller: _cardNumberController,
                   keyboardType: TextInputType.number,
@@ -129,7 +129,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: TextField(
                       controller: _expiryYearController,
@@ -146,7 +146,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: TextField(
                   controller: _cvvController,
                   keyboardType: TextInputType.number,
@@ -186,10 +186,8 @@ class _PaymentPageState extends State<PaymentPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size((MediaQuery.of(context).size.width / 2.5), 60,),
-                      primary: Const.primaryColor, // Change to your desired button color
-                      onPrimary: Colors.white,
-                      textStyle: TextStyle(color: Colors.black, fontSize: 22),
+                      foregroundColor: Colors.white, backgroundColor: Const.primaryColor, minimumSize: Size((MediaQuery.of(context).size.width / 2.5), 60,),
+                      textStyle: const TextStyle(color: Colors.black, fontSize: 22),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),

@@ -1,5 +1,4 @@
 import 'package:carwash/constants.dart';
-import 'package:carwash/screen/Landing.dart';
 import 'package:carwash/screen/Splash.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
@@ -64,8 +63,8 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Car Wash',
         theme: ThemeData(
-          appBarTheme: AppBarTheme(),
-          inputDecorationTheme: InputDecorationTheme(
+          appBarTheme: const AppBarTheme(),
+          inputDecorationTheme: const InputDecorationTheme(
             suffixIconColor: Colors.black54,
             prefixIconColor: Colors.black54,
             iconColor: Colors.grey,
@@ -84,7 +83,7 @@ class _MyAppState extends State<MyApp> {
         ),
         initialRoute: 'splash',
         routes: {
-          'splash': (context) => SplashScreen(),
+          'splash': (context) => const SplashScreen(),
         },
       ),
     );

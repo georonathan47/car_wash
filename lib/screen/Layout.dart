@@ -1,14 +1,12 @@
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/User.dart';
 import 'package:carwash/screen/Activites.dart';
-import 'package:carwash/screen/Calendar.dart';
+// import 'package:carwash/screen/Calendar.dart';
 import 'package:carwash/screen/ChangePassword.dart';
 import 'package:carwash/screen/Customers.dart';
 import 'package:carwash/screen/Expenses.dart';
 import 'package:carwash/screen/Home.dart';
 import 'package:carwash/screen/Invoice.dart';
-import 'package:carwash/screen/Login.dart';
-import 'package:carwash/screen/Payment.dart';
 import 'package:carwash/screen/Profile.dart';
 import 'package:carwash/screen/Subscription.dart';
 import 'package:carwash/screen/Transactions.dart';
@@ -19,7 +17,7 @@ import 'package:provider/provider.dart';
 
 class CWLayout extends StatefulWidget {
   final int selectedIndex;
-  CWLayout({this.selectedIndex = 0});
+  const CWLayout({super.key, this.selectedIndex = 0});
   @override
   _CWLayoutState createState() => _CWLayoutState();
 }
@@ -75,9 +73,9 @@ class _CWLayoutState extends State<CWLayout> {
   }
 
   final List<Widget> _pages = [
-    HomeScreen(),
-    ActivityPage(),
-    ProfilePage(),
+    const HomeScreen(),
+    const ActivityPage(),
+    const ProfilePage(),
   ];
 
   @override
@@ -89,7 +87,7 @@ class _CWLayoutState extends State<CWLayout> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Const.primaryColor,
-        title: Text('Car Wash App'),
+        title: const Text('Car Wash App'),
       ),
       body: _pages[_selectedIndex],
       drawer: Drawer(
@@ -99,7 +97,7 @@ class _CWLayoutState extends State<CWLayout> {
             Container(
               height: Const.hi(context)/3,
               color: Const.primaryColor,
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,120 +111,120 @@ class _CWLayoutState extends State<CWLayout> {
                         child: Container(
                           width: double.infinity,
                           height: double.infinity,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.transparent,
                           ),
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
+                        margin: const EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 2),
                         decoration: BoxDecoration(
                             color: Colors.amber,
                             borderRadius: BorderRadius.circular(3)
                         ),
-                        child: Text('${authUser?.role?.toUpperCase()}',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                        child: Text('${authUser?.role?.toUpperCase()}',style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
                       )
                     ],
                   ),
-                  SizedBox(height: 20,),
-                  Text('${authUser?.name}',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                  const SizedBox(height: 20,),
+                  Text('${authUser?.name}',style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
 
-                  SizedBox(height: 5,),
-                  Text('${authUser?.email}',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 5,),
+                  Text('${authUser?.email}',style: const TextStyle(color: Colors.white)),
+                  const SizedBox(height: 20,),
                 ],
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Profile'),
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout(selectedIndex: 2,)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CWLayout(selectedIndex: 2,)));
                 // Handle profile menu action
               },
             ),
 
             if(authUser?.role==Role.manager)
               ListTile(
-                leading: Icon(Icons.supervised_user_circle_rounded),
-                title: Text('Customers'),
+                leading: const Icon(Icons.supervised_user_circle_rounded),
+                title: const Text('Customers'),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomerPage()));
                   // Handle packages menu action
                 },
               ),
             if(authUser?.role==Role.manager || authUser?.role==Role.customer)
               ListTile(
-              leading: Icon(Icons.padding),
-              title: Text('Packages'),
+              leading: const Icon(Icons.padding),
+              title: const Text('Packages'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SubscriptionPage()));
                 // Handle packages menu action
               },
             ),
             if(authUser?.role==Role.manager)
               ListTile(
-              leading: Icon(Icons.payment),
-              title: Text('Invoice'),
+              leading: const Icon(Icons.payment),
+              title: const Text('Invoice'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => InvoicePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const InvoicePage()));
                 // Handle packages menu action
               },
             ),
 
             if(authUser?.role==Role.manager)
               ListTile(
-              leading: Icon(Icons.history),
-              title: Text('Activities'),
+              leading: const Icon(Icons.history),
+              title: const Text('Activities'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CWLayout()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CWLayout()));
                 // Handle order history menu action
               },
             ),
             if(authUser?.role==Role.manager)
               ListTile(
-              leading: Icon(Icons.calendar_month),
-              title: Text('Calendar'),
+              leading: const Icon(Icons.calendar_month),
+              title: const Text('Calendar'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarScreen()));
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarScreen()));
                 // Handle order history menu action
               },
             ),
 
             if(authUser?.role==Role.technician)
               ListTile(
-              leading: Icon(Icons.bar_chart_sharp),
-              title: Text('My Expenses'),
+              leading: const Icon(Icons.bar_chart_sharp),
+              title: const Text('My Expenses'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ExpensePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ExpensePage()));
                 // Handle order history menu action
               },
             ),
             if(authUser?.role==Role.manager)
               ListTile(
-              leading: Icon(Icons.bar_chart_sharp),
-              title: Text('All Expenses'),
+              leading: const Icon(Icons.bar_chart_sharp),
+              title: const Text('All Expenses'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ExpensePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ExpensePage()));
                 // Handle order history menu action
               },
             ),
 
 
             ListTile(
-              leading: Icon(Icons.lock),
-              title: Text('Change Password'),
+              leading: const Icon(Icons.lock),
+              title: const Text('Change Password'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordPage()));
                 // Handle order history menu action
               },
             ),
 
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
               onTap: ()async {
                 await ShPref.logout(context);
               },
@@ -247,26 +245,26 @@ class _CWLayoutState extends State<CWLayout> {
           onTap: (index) {
             setState(() {
               if (index == 1 && authUser!.role == Role.customer) {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionsPage(),));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TransactionsPage(),));
               } else {
                 _selectedIndex = index;
               }
             });
           },
           items: [
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
             ),
             (authUser!.role ==  Role.customer)
-            ? BottomNavigationBarItem(
+            ? const BottomNavigationBarItem(
               icon: Icon(Icons.payment),
               label: 'Transactions',
-            ) :BottomNavigationBarItem(
+            ) :const BottomNavigationBarItem(
               icon: Icon(Icons.history),
               label: 'Activities',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.settings),
               label: 'Profile',
             ),

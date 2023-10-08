@@ -1,5 +1,4 @@
 import 'package:carwash/constants.dart';
-import 'package:carwash/screen/Layout.dart';
 import 'package:carwash/screen/Login.dart';
 import 'package:carwash/viewmodel/IndexViewModel.dart';
 import 'package:flutter/material.dart';
@@ -35,18 +34,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
 
     return Scaffold(
       appBar: Const.appbar('Create your account'),
-      body: Container(
+      body: SizedBox(
         height: Const.hi(context),
         child: ListView(
           children: <Widget>[
             Container(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Image.asset(
                   Const.logo,
                   width: Const.wi(context) / 2,
@@ -59,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
@@ -70,9 +69,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -83,9 +82,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       controller: _phoneController,
                       decoration: InputDecoration(
@@ -99,10 +98,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       obscureText: _passwordVisible,
                       controller: _passwordController,
@@ -117,16 +116,16 @@ class _RegisterPageState extends State<RegisterPage> {
                               _passwordVisible = !_passwordVisible;
                             });
                           },
-                          child: new Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                          child: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                         ),
                       ),
                     ),
                   ),
 
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       controller: _addressController,
                       decoration: InputDecoration(
@@ -138,20 +137,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
 
 
 
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Select Role :',style: TextStyle(fontWeight: FontWeight.bold),),
+                        const Text('Select Role :',style: TextStyle(fontWeight: FontWeight.bold),),
 
                         RadioListTile<String>(
-                          title: Text('Manager'),
+                          title: const Text('Manager'),
                           value: Role.manager,
                           groupValue: selectedRole,
                           onChanged: (value) {
@@ -161,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text('Technician'),
+                          title: const Text('Technician'),
                           value: Role.technician,
                           groupValue: selectedRole,
                           onChanged: (value) {
@@ -171,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text('Customer'),
+                          title: const Text('Customer'),
                           value: Role.customer,
                           groupValue: selectedRole,
                           onChanged: (value) {
@@ -181,7 +180,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
 
-                        Divider(),
+                        const Divider(),
 
                       ],
                     ),
@@ -191,10 +190,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),
-                      primary: Const.primaryColor,
-                      onPrimary: Colors.white,
-                      textStyle: TextStyle(
+                      foregroundColor: Colors.white, backgroundColor: Const.primaryColor, minimumSize: Size((MediaQuery.of(context).size.width / 3), 60),
+                      textStyle: const TextStyle(
                           color: Colors.black, fontSize: 22),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
@@ -222,8 +219,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         if(!_loading){
                           try{
                             setState(() { _loading=true; });
-                            await _indexViewModel.registerApi(data);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                            await indexViewModel.registerApi(data);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
                           }catch(e){
                             print(e);
                           }
@@ -236,14 +233,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             TextButton(
               onPressed: () {
                 // Navigate to registration page
                 // For example:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
               },
               child: Text("Already have an account. Login here",style: TextStyle(color: Const.primaryColor),),
             ),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({super.key});
+
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
@@ -22,24 +24,24 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
 
     return Scaffold(
       appBar: Const.appbar('Password Settings'),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Change Password',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               obscureText: _currentPasswordVisible,
               controller: _currentPasswordController,
@@ -59,7 +61,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               obscureText: _newPasswordVisible,
               controller: _newPasswordController,
@@ -80,7 +82,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               obscureText: _confirmPasswordVisible,
               controller: _confirmPasswordController,
@@ -100,7 +102,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -124,7 +126,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     if(!_loading){
                       try{
                         setState(() { _loading=true; });
-                        await _indexViewModel.changePassword(data);
+                        await indexViewModel.changePassword(data);
                         Navigator.pop(context);
                       }catch(e){ }
                       setState(() { _loading=false; });
@@ -132,11 +134,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Const.primaryColor, // Set background color to black
+                  backgroundColor: Const.primaryColor, // Set background color to black
                 ),
                 child: Text(
                   _loading? 'Processing..':'Change Password',
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),
@@ -148,7 +150,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ChangePasswordPage(),
   ));
 }

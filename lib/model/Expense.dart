@@ -1,4 +1,3 @@
-import 'package:carwash/model/Order.dart';
 import 'package:carwash/model/User.dart';
 
 class Expense {

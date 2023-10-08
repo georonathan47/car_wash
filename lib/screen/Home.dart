@@ -2,7 +2,6 @@ import 'package:carwash/apis/api_response.dart';
 import 'package:carwash/app_url.dart';
 import 'package:carwash/constants.dart';
 import 'package:carwash/model/Car.dart';
-import 'package:carwash/model/Customer.dart';
 import 'package:carwash/model/Task.dart';
 import 'package:carwash/model/TaskWithDate.dart';
 import 'package:carwash/model/User.dart';
@@ -15,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -56,14 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    IndexViewModel _indexViewModel=Provider.of<IndexViewModel>(context);
-    List<TaskWithDate?> tasks = _indexViewModel.getTasksList;
+    IndexViewModel indexViewModel=Provider.of<IndexViewModel>(context);
+    List<TaskWithDate?> tasks = indexViewModel.getTasksList;
 
-    authUser = _indexViewModel.getUser;
-    List<Car?> cars = _indexViewModel.getMyCars;
+    authUser = indexViewModel.getUser;
+    List<Car?> cars = indexViewModel.getMyCars;
 
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: Const.wi(context),
         height: Const.hi(context)-200,
         child: RefreshIndicator(
@@ -79,90 +80,90 @@ class _HomeScreenState extends State<HomeScreen> {
               if(authUser?.role==Role.customer)
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  child: Text('My Cars',style: TextStyle(fontSize: 25),),
+                  padding: const EdgeInsets.all(10),
+                  child: const Text('My Cars',style: TextStyle(fontSize: 25),),
 
                 )
               else
                 Container(
-                  margin: EdgeInsets.only(top: 10,left: 10,right: 10),
+                  margin: const EdgeInsets.only(top: 10,left: 10,right: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         color: Colors.grey.shade200,
-                        child: Text('Upcomming',style: TextStyle(fontWeight: FontWeight.bold),),
+                        child: const Text('Upcomming',style: TextStyle(fontWeight: FontWeight.bold),),
                       ),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         color: Colors.blue.shade50,
-                        child: Text('Pending',style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: const Text('Pending',style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         color: Colors.green.shade100,
-                        child: Text('Completed',style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: const Text('Completed',style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
                 ),
 
-              if(_indexViewModel.getStatus.status ==  Status.IDLE)
+              if(indexViewModel.getStatus.status ==  Status.IDLE)
                 if(authUser?.role==Role.customer)
-                  if(cars.length==0)
-                    Container(
+                  if(cars.isEmpty)
+                    SizedBox(
                       width: double.infinity,
                       height: Const.hi(context)/1.3,
-                      child: Center(
+                      child: const Center(
                         child: Text('No Cars'),
                       ),
                     )
                   else
                     for(int x=0;x<cars.length;x++)
                       Container(
-                        margin: EdgeInsets.only(top: 10,left: 10,right: 10),
+                        margin: const EdgeInsets.only(top: 10,left: 10,right: 10),
                         width: Const.wi(context),
                         child: Container(
                           color: Colors.grey.shade200,
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('${cars[x]?.make}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                                  Text('${cars[x]?.model}',style: TextStyle(fontSize: 20),),
+                                  Text('${cars[x]?.make}',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                                  Text('${cars[x]?.model}',style: const TextStyle(fontSize: 20),),
                                 ],
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('${cars[x]?.plate}',style: TextStyle(fontSize: 20),),
+                                  Text('${cars[x]?.plate}',style: const TextStyle(fontSize: 20),),
                                 ],
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                               Container(height: 1,color: Colors.black12,),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Order # ${cars[x]?.order?.id.toString().padLeft(4, '0')}',style: TextStyle(fontSize: 20),),
-                                  Text('${cars[x]?.order?.price} SAR',style: TextStyle(fontSize: 20),),
+                                  Text('Order # ${cars[x]?.order?.id.toString().padLeft(4, '0')}',style: const TextStyle(fontSize: 20),),
+                                  Text('${cars[x]?.order?.price} SAR',style: const TextStyle(fontSize: 20),),
 
                                 ],
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
                                       if(cars[x]?.order?.subscription_id!=3)
-                                        Icon(Icons.refresh),
-                                      Text('${cars[x]?.order?.subscription?.title} ',style: TextStyle(fontSize: 20),),
+                                        const Icon(Icons.refresh),
+                                      Text('${cars[x]?.order?.subscription?.title} ',style: const TextStyle(fontSize: 20),),
                                     ],
                                   ),
 
@@ -175,11 +176,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          primary: Colors.black, // Background color
+                                          backgroundColor: Colors.black, // Background color
                                         ),
-                                        child: Text('Show Details', style: TextStyle(color: Colors.white)),
+                                        child: const Text('Show Details', style: TextStyle(color: Colors.white)),
                                       ),
-                                      SizedBox(width: 10,),
+                                      const SizedBox(width: 10,),
 
                                       if(cars[x]?.order?.payment == OrderPayment.pending)
                                         ElevatedButton(
@@ -188,9 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            primary: Colors.black, // Background color
+                                            backgroundColor: Colors.black, // Background color
                                           ),
-                                          child: Text('Pay Now', style: TextStyle(color: Colors.white)),
+                                          child: const Text('Pay Now', style: TextStyle(color: Colors.white)),
                                         ),
 
                                     ],
@@ -203,12 +204,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       )
                 else
-                  if(tasks.length==0)
+                  if(tasks.isEmpty)
                     Center(
-                      child: Container(
+                      child: SizedBox(
                         width: double.infinity,
                         height: Const.hi(context)-100,
-                        child: Center(
+                        child: const Center(
                           child: Text('No Task'),
                         ),
                       ),
@@ -216,17 +217,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   else
                     for(int x=0;x<tasks.length;x++)
                       Container(
-                        margin: EdgeInsets.only(top: 10,left: 10,right: 10),
+                        margin: const EdgeInsets.only(top: 10,left: 10,right: 10),
                         width: Const.wi(context),
                         child: Container(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('${tasks[x]?.date}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                                  Text('${tasks[x]?.date}',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                                 ],
                               ),
                               Container(
@@ -236,16 +237,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       InkWell(
                                         onTap:(){
                                           if(tasks[x]!.tasks![y].accessor==true){
-                                            Task _tysk = tasks[x]!.tasks![y];
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => TaskScreen(task: _tysk,))).then((value) => _pullTasks());
+                                            Task tysk = tasks[x]!.tasks![y];
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => TaskScreen(task: tysk,))).then((value) => _pullTasks());
                                           }else{
                                             Const.toastMessage('Its previous car washes are pending');
                                           }
                                         },
                                         child: Container(
                                           width: Const.wi(context)-10,
-                                          padding: EdgeInsets.all(20),
-                                          margin: EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(20),
+                                          margin: const EdgeInsets.all(5),
                                           color: (tasks[x]!.tasks![y].accessor == false)
                                               ? Colors.grey.shade200
                                               : (tasks[x]!.tasks![y].status==TaskStatus.complete)
@@ -257,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Text('${tasks[x]!.tasks![y].order?.user?.name} ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                                                  Text('${tasks[x]!.tasks![y].order?.user?.name} ',style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
 
                                                   if(tasks[x]!.tasks![y].order?.user?.long != null)
                                                     InkWell(
@@ -272,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             )
                                                         )));
                                                       },
-                                                      child: Icon(Icons.pin_drop_outlined),
+                                                      child: const Icon(Icons.pin_drop_outlined),
                                                     )
                                                 ],
                                               ),
@@ -290,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                   (tasks[x]!.tasks![y].order?.car?.image == null)? Container():
                                                   Container(
-                                                      padding: EdgeInsets.all(10),
+                                                      padding: const EdgeInsets.all(10),
                                                       child: Center(
                                                         child: Image.network('${AppUrl.url}storage/car/${tasks[x]!.tasks![y].order?.car?.image}',width: 70,),
                                                       )
@@ -309,8 +310,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       )
-                else if (_indexViewModel.getStatus.status == Status.BUSY)
-                Container(
+                else if (indexViewModel.getStatus.status == Status.BUSY)
+                SizedBox(
                   width: Const.wi(context),
                   height: Const.hi(context)/1.2,
                   child:   Const.LoadingIndictorWidtet(),
